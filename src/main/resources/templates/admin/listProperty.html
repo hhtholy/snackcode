@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--th:include 这样还会保留外面的head标签   加入导入界面的内容 不包含最外标签-->
+<!--主要是引入js  一些公共的js函数  比如判空等-->
+<head th:include="include/commonJs::commonJs('后台产品属性管理')" ></head>
+
+<!--引入分页函数-->
+<div th:include="include/commonFunctionsForPage::pageFunctions" ></div>
+
+
+<!--##############################body##############################-->
+<body>
+<!--th:replace  自己的最外标签不会保留 这里是div  直接放置导入界面的内容 包含导入内容的最外标签-->
+<!--引入导航页-->
+<div th:replace="include/admin/adminNavigator::navigator" ></div>
+
+<script>
+    $(function(){
+        // 获取url栏目上的 分类id  cid
+        var cid = getUrlParms("cid");  //函数定义在公共的js中
+        var data4Vue = {  //vue的数据域
+            uri:'properties', //请求 url
+            beans: [],     //展示属性数据
+            bean: {id:"",name:'',category:{}},
+            pagination:{},  //分页信息
+            category:{}  //导航栏那里的信息 需要查询出来
+        };
+
+        //ViewModel
+        var vue = new Vue({
+            el: '#workingArea',
+            data: data4Vue,
+            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+                this.list(0);
+                this.getCategory();  //面包屑导航哪里获取分页的名称
+            },
+            methods: {
+                list:function (currentPage) {
+                    var url = "categories/"+cid + "/" + this.uri +"?currentPage="+currentPage;
+                    axios.get(url).then(function (response) {
+                        vue.beans = response.data.content;  // 内容
+                        vue.pagination = response.data;  //分页信息
+                    });
+                },
+                //分页导航
+                jump: function(page){
+                    jump(page,vue); //定义在adminHeader.html 中
+                },
+                jumpByNumber: function(currentPage){
+                    jumpByNumber(currentPage,vue); //定义在adminHeader.html 中
+                },
+                //面包屑导航
+                getCategory:function () {
+                      var url = "categories/"+cid;
+                     axios.get(url).then(function (response) {
+                           vue.category = response.data;  //查询出分类的信息
+                     });
+
+                },
+                //属性的添加
+                add:function () {
+                     var url = this.uri;
+                    //属性的name值 已经双向绑定 id 自增 所以只需要 设置属性下对应的分类的值就可以了
+                    this.bean.category.id = cid;
+
+                    //其他的已经有值了  比如说属性name
+                     axios.post(url,this.bean).then(function (response) {
+                         //重新查询属性值
+                         vue.list(0);
+
+                         //输入框的值 赋为空  bean的值恢复为原来的值
+                         vue.bean = {id:"",name:'',category:{}};
+                     });
+                },
+                //属性的删除
+                deleteBean:function (id) {
+                    if(!checkDeleteLink())
+                        return;
+                    var url = this.uri + "/" + id;
+
+                    axios.delete(url).then(function (response) {
+                              if(response.data == "failure"){
+                                  alert("删除失败");
+                              }else{
+                                   vue.list(0); //刷新界面
+                              }
+                    });
+
+                }
+            }
+
+        });
+    });
+
+</script>
+
+<div id="workingArea" >
+    <!--面包屑导航-->
+    <ol class="breadcrumb">
+        <li><a href="admin_category_list">所有分类</a></li>
+        <!--注意和vue结合的时候  书写 href的写法   ：href  'admin_property_list?cid='+category.id  -->
+        <li><a :href="'admin_property_list?cid='+category.id">{{category.name}}</a></li>
+        <li class="active">属性管理</li>
+    </ol>
+    <div class="listDataTableDiv">
+        <table class="table table-striped table-bordered table-hover  table-condensed">
+            <thead>
+            <tr class="success">
+                <th>属性id</th>
+                <th>属性名称</th>
+                <th>编辑</th>
+                <th>删除</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="bean in beans ">
+                <td>{{bean.id}}</td>
+                <td>
+                    {{bean.name}}
+                </td>
+                <td>
+                    <a :href="'admin_property_edit?id=' + bean.id "><span class="glyphicon glyphicon-edit"></span></a>
+                </td>
+                <td>
+                    <a href="#"  @click="deleteBean(bean.id)"><span class="glyphicon glyphicon-trash"></span></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--分页条-->
+    <div th:replace="include/admin/adminPage::page"></div>
+
+   <!-- <div class="panel panel-warning addDiv">
+        <div class="panel-heading">新增属性</div>
+        <div class="panel-body">
+            <table class="addTable">
+                <tr>
+                    <td>属性名称</td>
+                    <td><input  @keyup.enter="add"  v-model.trim="bean.name" type="text" class="form-control"></td>
+                </tr>
+                <tr class="submitTR">
+                    <td colspan="2" align="center">
+                        <a href="#nowhere"  @click="add" class="btn btn-success">提交</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>-->
+</div>
+
+<!--站脚-->
+<div th:replace="include/admin/adminFooter::footer" ></div>
+</body>
+</html>

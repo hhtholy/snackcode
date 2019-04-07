@@ -1,0 +1,22 @@
+<!--前端的公共部分抽取出来在这个文件中 -->
+<template th:fragment="pageFunctions">
+	<script>
+		function jumpPage(page,vue){//跳转函数  上一页 下一页  首页 末页
+			if('first'== page && !vue.pagination.first) //这个 pagenation是vue中定义的一个数据域  类型是 json格式
+				vue.list(0);
+			else if('pre'== page &&	vue.pagination.hasPrecious)  //如果有前页的话
+				vue.list(vue.pagination.currentPage - 1);  //调用Vue中定义的方法
+
+			else if('next'== page && vue.pagination.hasNext) //如果有后页的话
+				vue.list(vue.pagination.currentPage + 1);
+
+			else if('last'== page && !vue.pagination.last) //点击到最后一页 本身不是在最后一页
+				vue.list(vue.pagination.totalPage-1);
+		}
+		function jumpPageByNumber(currentPage,vue){   //跳转函数  根据页码进行跳转
+			if(currentPage!=vue.pagination.currentPage)
+				vue.list(currentPage);
+		}
+	</script>
+
+</template>
