@@ -55,7 +55,7 @@ public class CategoryController {
     @PostMapping("/categories")
     public Category addCategory(Category category, @RequestParam("image") MultipartFile file, HttpServletRequest request) throws IOException {
         categoryService.addCategory(category);       //经过这一部分操作后  id就有值了
-        uploadFile(category,file,request);     //文件上传操作
+      //  uploadFile(category,file,request);     //文件上传操作
         return category;
     }
 
@@ -66,7 +66,7 @@ public class CategoryController {
      * @param request
      * @throws IOException
      */
-    public  void uploadFile(Category category, MultipartFile file, HttpServletRequest request) throws IOException {
+   /* public  void uploadFile(Category category, MultipartFile file, HttpServletRequest request) throws IOException {
         // getServletContext().getRealPath("/");获得绝对路径。
         String realPath = request.getServletContext().getRealPath("img/category");
         File imageFolder = new File(realPath);
@@ -79,6 +79,6 @@ public class CategoryController {
         BufferedImage bufferedImage = ImageUtil.change2jpg(fileImage);
         // 转换为jpg格式图片
         ImageIO.write(bufferedImage,"jpg",fileImage);
-    }
+    }*/
 
 }

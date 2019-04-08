@@ -58,7 +58,7 @@
                         return;
                     }
                     this.file = event.target.files[0];  //  获取文件对象
-                    var windowURL = window.URL || window.webkitURL;
+                    var windowURL = window.URL || window.webkitURL;  //文件回显需要用到
                     for(var i = 0;i <image.files.length;i++) {  //createObjectURL创建一个指向该参数对象(图片)的URL
                         var dataURL = windowURL.createObjectURL(image.files[i]);
                         this.imageUrl = dataURL;
