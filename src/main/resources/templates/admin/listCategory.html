@@ -9,9 +9,6 @@
 <div th:include="include/commonFunctionsForPage::pageFunctions" ></div>
 
 <body>
-<!--th:replace  自己的最外标签不会保留 这里是div  直接放置导入界面的内容 包含导入内容的最外标签-->
-<!--引入导航页-->
-<div th:replace="include/admin/adminNavigator::navigator" ></div>
 
 
 <!--数据请求-->
@@ -54,10 +51,10 @@
                     var imageValue = image.value;
                     if(!imageValue.match(/.jpg|.gif|.png|.bmp/)){  //进行上传文件判断
                         alert('上传图片不符合要求');
-                        $("#categoryPic").val("");  //图片置空
+                        $("#categoryPic").val("");  //图片(值)置空
                         return;
                     }
-                    this.file = event.target.files[0];  //  获取文件对象
+                    this.file = event.target.files[0];  //  获取文件对象 赋值给vue数据
                     var windowURL = window.URL || window.webkitURL;  //文件回显需要用到
                     for(var i = 0;i <image.files.length;i++) {  //createObjectURL创建一个指向该参数对象(图片)的URL
                         var dataURL = windowURL.createObjectURL(image.files[i]);
@@ -75,23 +72,25 @@
                     formdata.append("name",this.bean.name);//  类似表单添加数据
                     axios.post(url,formdata).then(function (response) {
                         vue.list(0); //重新刷新界面
-                        vue.bean = {id:0,name:''}
+                        vue.bean = {id:0,name:""}
                         $("#categoryPic").val(""); //图片置空
                         vue.file = null;
-                    });},
-                //删除分类
-                deleteBean:function (id) {
+                        vue.imageUrl = null; //回显置空
+                        location.href="admin";
+                    });
+                    },
+                 modalAdd:function(){  //弹出添加分类的框  执行添加分类的操作
+                    $("#addCategoryModal").modal('show');
+                 },
+                 deleteBean:function (id) { //删除分类 根据分类id
                     if(!checkDeleteLink())
                         return;
                     var url = this.uri + "/" +id;
                     axios.delete(url).then(function (response) {
                         if(response.data == 'failure'){
-
                             alert("删除失败！！");
-
                         }else {
                             vue.list(0); //重新刷新界面
-
                         }
                     });
                 }
@@ -103,15 +102,15 @@
 
 <!--页面展示区域-->
 <div id="workingArea" >
-    <h1 class="label label-info" >后台分类管理</h1>
-    <br>
-    <br>
+    <!--th:replace  自己的最外标签不会保留 这里是div  直接放置导入界面的内容 包含导入内容的最外标签-->
+    <!--引入导航页-->  <!--这里因为需要添加分类 于是放在这里-->
+    <div th:replace="include/admin/adminNavigator::navigator" ></div>
     <div class="listDataTableDiv">
         <table class="table table-striped table-bordered table-hover  table-condensed">
             <thead>
             <tr class="success">
                 <th>分类id</th>
-                <th>图片</th>
+                <th>分类图片</th>
                 <th>分类名称</th>
                 <th>属性管理</th>
                 <th>产品管理</th>
@@ -126,7 +125,8 @@
             <tr v-for="bean in beans ">
                 <td>{{bean.id}}</td>
                 <td>
-                    <img height="40px"  :src="'img/category/'+bean.id+'.jpg'">
+                    <!--http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/1010.jpg-->
+                    <img height="40px"  :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/category/'+bean.imageurl">
                 </td>
                 <td>
                     {{bean.name}}
@@ -142,8 +142,9 @@
                 <td>
                     <a :href="'admin_category_edit?id=' + bean.id "><span class="glyphicon glyphicon-edit"></span></a>
                 </td>
+                <!--删除分类-->
                 <td>
-                    <a href="#nowhere"  @click="deleteBean(bean.id)"><span class="   glyphicon glyphicon-trash"></span></a>
+                    <a href="#"  @click="deleteBean(bean.id)"><span class="   glyphicon glyphicon-trash"></span></a>
                 </td>
             </tr>
             </tbody>
@@ -155,32 +156,7 @@
 <!--
 添加分类
  -->
- <div class="panel panel-warning addDiv">分类的添加
-        <div class="panel-heading">新增分类</div>
-        <div class="panel-body">
-            <table class="addTable">
-                <tr>
-                    <td>分类名称</td> <!-- @keyup.enter="add"  按回车键也是会触发add方法-->
-                    <td><input  @keyup.enter="add" v-model.trim="bean.name" type="text" class="form-control"></td>
-                </tr>
-                <tr>
-                    <td>分类图片</td>
-                    <td>
-                        <input id="categoryPic" accept="image/*" type="file" name="image" @change="getFile($event)" />
-                    </td>
-                </tr>
-                <tr>
-                      <!--图片回显-->
-                        <img src="" alt=""  :src="imageUrl" height="100px" width="100px">
-                </tr>
-                <tr class="submitTR">
-                    <td colspan="2" align="center">
-                        <a href="#"  @click="add" class="btn btn-success">提交</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
+    <div th:replace="include/admin/adminModalAddCategory::addCategory"></div>
 </div>
 <!--站脚-->
 <div th:replace="include/admin/adminFooter::footer" ></div>

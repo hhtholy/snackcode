@@ -197,19 +197,23 @@ public class Ossutil {
     public static void main(String[] args) {
         //初始化OSSClient
         OSSClient ossClient=Ossutil.getOSSClient();
-        //上传文件
+     /*   //上传文件
         String files="D:\\1111.jpg";
         String[] file=files.split(",");
         for(String filename:file){
             //System.out.println("filename:"+filename);
             File filess=new File(filename);
-            String md5key = Ossutil.uploadObject2OSS(ossClient, filess, BACKET_NAME, FOLDER);
+            String md5key = Ossutil.uploadObject2OSS(ossClient, filess, BACKET_NAME, FOLDER+"category/");
             //上传后的文件MD5数字唯一签名:40F4131427068E08451D37F02021473A
             System.out.println(md5key);
-        }
-
+        }*/
+        Ossutil.deleteFile(ossClient,BACKET_NAME,FOLDER+"category/","1111.jpg");
 
     }
+
+
+
+
 
 
 }

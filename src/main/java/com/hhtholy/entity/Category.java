@@ -18,9 +18,20 @@ public class Category {
 
     @Column(name = "name")
     private String name;  //分类的名称
+    @Column(name = "imageurl")
+    private String imageurl;  //分类图片的url
+
     /*Gettter and Setter*/
     public Integer getId() {
         return id;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 
     public void setId(Integer id) {
