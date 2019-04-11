@@ -153,10 +153,7 @@
                                });
                            }
                      }
-
                  }
-
-
             }
         });
 
@@ -180,7 +177,8 @@
                 <th>产品管理</th>
                 <th>编辑</th>
                 <th>删除</th>
-                <th width="10%"><input type="checkbox"  v-model="checked"/>  <h1 class="label label-info" @click="deleteBatchBean" style="cursor: pointer">批量删除</h1></th>
+                <th width="10%"><input type="checkbox"  v-model="checked"/>  <h1 class="label label-info" @click="deleteBatchBean" style="cursor: pointer">批量删除</h1>
+                    <h1 class="label label-info"  @click="modalAddCategory" style="cursor: pointer">添加分类</h1></th>
             </tr>
             </thead>
 

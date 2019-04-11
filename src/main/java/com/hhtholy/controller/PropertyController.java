@@ -1,22 +1,24 @@
 package com.hhtholy.controller;
 
+import com.aliyun.oss.OSSClient;
 import com.hhtholy.entity.Category;
 import com.hhtholy.entity.Property;
 import com.hhtholy.service.CategoryService;
 import com.hhtholy.service.PropertyService;
 import com.hhtholy.utils.Page;
 import com.hhtholy.utils.ReadProperties;
+import com.hhtholy.utils.aliyunoss.Ossutil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+
+import static com.hhtholy.config.aliyunConfig.OSSClientConstants.BACKET_NAME;
+import static com.hhtholy.config.aliyunConfig.OSSClientConstants.FOLDER;
 
 /**
  * @author hht
@@ -48,6 +50,36 @@ public class PropertyController {
         Category category = categoryService.getCategory(cid);//根据cid 分类id 查询出分类
         return  propertyService.getPropertyPage(category, currentPage, Integer.valueOf(ReadProperties.getPropertyValue("pagesize", "application.properties")), Integer.valueOf(ReadProperties.getPropertyValue("navigatenums", "application.properties")));
     }
+
+    @ApiOperation(value = "删除分类(包括批量)",notes = "根据属性id删除属性")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="id",value="分类id",required=true,paramType="path",allowMultiple=true, dataType = "String"),
+    })
+    @DeleteMapping("/properties/{id}")
+    public String deleteProperty(@PathVariable("id") String[] ids){
+        String result = "success";
+        try {
+            for (String id : ids) {
+                Integer intId = Integer.parseInt(id);
+                deleteLogic(intId);
+            }
+        }catch (Exception e){
+            result = "failure";
+        }
+        return result;
+    }
+
+    /**
+     * 删除分类的逻辑
+     * @param id  属性id
+     * @return  删除成功后的标志
+     */
+    public String deleteLogic(Integer id){
+        String deleteResult = propertyService.deleteProperty(id);
+        return deleteResult;
+    }
+
+
 
 
 

@@ -11,10 +11,6 @@
 
 <!--##############################body##############################-->
 <body>
-<!--th:replace  自己的最外标签不会保留 这里是div  直接放置导入界面的内容 包含导入内容的最外标签-->
-<!--引入导航页-->
-<div th:replace="include/admin/adminNavigator::navigator" ></div>
-
 <script>
     $(function(){
         // 获取url栏目上的 分类id  cid
@@ -33,7 +29,8 @@
             beans: [],     //展示属性数据
             bean: {id:"",name:'',category:{}},
             pagination:{},  //分页信息
-            category:{}  //导航栏那里的信息 需要查询出来
+            category:{}, //导航栏那里的信息 需要查询出来
+            checkNames:[]  //复选框的checked值
         };
 
         //ViewModel
@@ -75,17 +72,21 @@
                      axios.post(url,this.bean).then(function (response) {
                          //重新查询属性值
                          vue.list(0);
-
                          //输入框的值 赋为空  bean的值恢复为原来的值
                          vue.bean = {id:"",name:'',category:{}};
                      });
                 },
-                //属性的删除
-                deleteBean:function (id) {
+                deleteBatchBean:function(){     //批量删除
+                    this.deleteBean(this.checkNames);
+                },
+                deleteBean:function (id) {      //属性的删除
+                    if(id.length == 0){  //批量的时候 如果没有选择的话 提示选择后再进行删除
+                        alert("请选中一项后再进行批量操作~");
+                        return
+                    }
                     if(!checkDeleteLink())
                         return;
                     var url = this.uri + "/" + id;
-
                     axios.delete(url).then(function (response) {
                               if(response.data == "failure"){
                                   alert("删除失败");
@@ -93,16 +94,32 @@
                                    vue.list(0); //刷新界面
                               }
                     });
-
+                }
+            }, //methods方法结束
+            computed:{     //计算属性   这里属性的改变取决于data数据域的改变
+                checked:{
+                    get() {
+                        return this.checkNames.length == this.beans.length;
+                    },
+                    set(val){   //点击了全选的情况
+                        this.checkNames = [];
+                        if(val){
+                            this.beans.forEach((propertyevery) =>{
+                                this.checkNames.push(propertyevery.id);
+                            });
+                        }
+                    }
                 }
             }
-
         });
     });
 
 </script>
 
 <div id="workingArea" >
+    <!--th:replace  自己的最外标签不会保留 这里是div  直接放置导入界面的内容 包含导入内容的最外标签-->
+    <!--引入导航页-->
+    <div th:replace="include/admin/adminNavigator::navigator" ></div>
     <!--面包屑导航-->
     <ol class="breadcrumb">
         <li><a href="admin_category_list">所有分类</a></li>
@@ -118,6 +135,7 @@
                 <th>属性名称</th>
                 <th>编辑</th>
                 <th>删除</th>
+                <th width="10%"><input type="checkbox"  v-model="checked"/>  <h1 class="label label-info" @click="deleteBatchBean" style="cursor: pointer">批量删除</h1></th>
             </tr>
             </thead>
             <tbody>
@@ -132,6 +150,7 @@
                 <td>
                     <a href="#"  @click="deleteBean(bean.id)"><span class="glyphicon glyphicon-trash"></span></a>
                 </td>
+                <td><input type="checkbox" :value="bean.id" v-model="checkNames"/></td>
             </tr>
             </tbody>
         </table>
