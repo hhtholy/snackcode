@@ -24,7 +24,7 @@ public class PageController {
        }
 
     /**
-     * 跳转到分类管理 界面
+     * 跳转到分类管理 页面
      * @return
      */
     @GetMapping("/admin_category_list")
@@ -39,6 +39,15 @@ public class PageController {
     @GetMapping("/admin_property_list")
     public String propertyList(){
         return "admin/listProperty";
+    }
+
+    /**
+     * 跳转到 分类编辑页面
+     * @return
+     */
+    @GetMapping("/admin_category_edit")
+    public String editCategory(){
+        return "admin/adminEditCategory";
     }
 
 

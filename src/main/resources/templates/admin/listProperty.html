@@ -19,6 +19,15 @@
     $(function(){
         // 获取url栏目上的 分类id  cid
         var cid = getUrlParms("cid");  //函数定义在公共的js中
+
+        /**
+         *
+         * @type {{pagination: {}
+         * beans: Array
+         * category: {}
+         * uri: string
+         * bean: {name: string, id: string, category: {}}}}
+         */
         var data4Vue = {  //vue的数据域
             uri:'properties', //请求 url
             beans: [],     //展示属性数据
@@ -43,15 +52,13 @@
                         vue.pagination = response.data;  //分页信息
                     });
                 },
-                //分页导航
                 jump: function(page){
-                    jump(page,vue); //定义在adminHeader.html 中
+                    jump(page,vue);
                 },
                 jumpByNumber: function(currentPage){
-                    jumpByNumber(currentPage,vue); //定义在adminHeader.html 中
+                    jumpByNumber(currentPage,vue);
                 },
-                //面包屑导航
-                getCategory:function () {
+                getCategory:function () {  //面包屑导航
                       var url = "categories/"+cid;
                      axios.get(url).then(function (response) {
                            vue.category = response.data;  //查询出分类的信息
