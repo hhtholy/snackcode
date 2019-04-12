@@ -85,7 +85,7 @@
                         $("#categoryPic").val(""); //图片置空
                         vue.file = null;
                         vue.imageUrl = null; //回显置空
-                        location.href="admin";
+                        $("#addCategoryModal").modal('hide');
                     });
                     },
                 modalAddCategory:function(){  //弹出添加分类的框
@@ -219,13 +219,11 @@
     </div>
     <!--分页条-->
     <div th:replace="include/admin/adminPage::page"></div>
-
 <!--
 添加分类
  -->
-    <div th:replace="include/admin/adminModalAddCategory::addCategory"></div>
-<!---->
-
+        <div th:replace="include/admin/adminModalAddCategory::addCategory"></div>
+<!--编辑分类-->
         <div th:replace="include/admin/adminModalEditCategory::editCategory"></div>
 </div>
 
