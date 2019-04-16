@@ -1,6 +1,8 @@
 package com.hhtholy.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author hht
@@ -10,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="category")
-public class Category {
+public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -21,7 +23,30 @@ public class Category {
     @Column(name = "imageurl")
     private String imageurl;  //分类图片的url
 
+    @OneToMany(cascade={CascadeType.REMOVE},mappedBy="category",fetch = FetchType.LAZY)
+    private List<Product> products;
+
+    @OneToMany(cascade={CascadeType.REMOVE},mappedBy="category",fetch = FetchType.LAZY)
+    private List<Property> properties;
+
     /*Gettter and Setter*/
+
+    public List<Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(List<Property> properties) {
+        this.properties = properties;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
     public Integer getId() {
         return id;
     }

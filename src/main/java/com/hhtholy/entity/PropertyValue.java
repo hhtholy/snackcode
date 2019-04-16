@@ -1,6 +1,9 @@
 package com.hhtholy.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author hht
@@ -9,7 +12,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "propertyvalue")
-public class PropertyValue {
+@JsonIgnoreProperties(value = {"product"})
+public class PropertyValue implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

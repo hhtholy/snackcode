@@ -1,7 +1,11 @@
 package com.hhtholy.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author hht
@@ -10,7 +14,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name="product")
-public class Product {
+@JsonIgnoreProperties(value = {"category"})
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -24,7 +29,13 @@ public class Product {
     private Float promotePrice;  //优惠价格
     private Integer stock; //库存
     private Date createDate; //创建时间
-    private String imageUrlSingle;  //单图
+    private String imageUrlSingle;  //单图4
+
+    @OneToMany(cascade={CascadeType.REMOVE},mappedBy="product",fetch = FetchType.LAZY)
+    private List<ProductImage> productImages;
+
+    @OneToMany(cascade={CascadeType.REMOVE},mappedBy="product",fetch = FetchType.LAZY)
+    private List<PropertyValue> propertyValues;
 
     public String getImageUrlSingle() {
         return imageUrlSingle;
@@ -96,5 +107,21 @@ public class Product {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public List<ProductImage> getProductImages() {
+        return productImages;
+    }
+
+    public void setProductImages(List<ProductImage> productImages) {
+        this.productImages = productImages;
+    }
+
+    public List<PropertyValue> getPropertyValues() {
+        return propertyValues;
+    }
+
+    public void setPropertyValues(List<PropertyValue> propertyValues) {
+        this.propertyValues = propertyValues;
     }
 }

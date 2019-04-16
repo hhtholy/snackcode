@@ -2,8 +2,11 @@ package com.hhtholy.controller;
 
 import com.hhtholy.entity.Category;
 import com.hhtholy.entity.Product;
+import com.hhtholy.entity.ProductImage;
 import com.hhtholy.service.CategoryService;
+import com.hhtholy.service.ProductImageService;
 import com.hhtholy.service.ProductService;
+import com.hhtholy.utils.Constant;
 import com.hhtholy.utils.Page;
 import com.hhtholy.utils.ReadProperties;
 import io.swagger.annotations.Api;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author hht
@@ -25,6 +29,7 @@ import java.io.IOException;
 public class ProductController {
     @Autowired private ProductService productService;
     @Autowired private CategoryService categoryService;
+    @Autowired private ProductImageService productImageService;
 
 
     @ApiOperation(value = "获取产品列表",notes = "获取一个分类下所有的产品")
@@ -96,6 +101,7 @@ public class ProductController {
      * @return
      */
     public String deleteLogic(Integer id){
+        List<ProductImage> imageD = productImageService.getProductImage(productService.getProduct(id), Constant.SINGLEIMAGE.getWord());
         String deleteResult = productService.deleteProduct(id);
         return deleteResult;
     }

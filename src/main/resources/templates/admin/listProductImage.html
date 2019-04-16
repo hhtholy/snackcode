@@ -183,7 +183,7 @@
                         <!--展示添加后的单个图片-->
                         <tr v-for="pi in singleProductImages">
                             <td>
-                                <img height="50px" width="50px" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+pi.imageurl">
+                                <img height="50px" width="50px"  v-if="null != pi.imageurl" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+pi.imageurl">
                             </td>
                             <td><a href="#" @click="deleteBean(pi.id)"><span class="glyphicon glyphicon-trash"></span></a></td>
                         </tr>

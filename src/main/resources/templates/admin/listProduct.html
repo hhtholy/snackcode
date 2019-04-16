@@ -136,13 +136,8 @@
                    }
                }
            });
-           
        })
-    
-    
 </script>
-
-
 
 <div id="workingArea" >
     <ol class="breadcrumb">
@@ -176,7 +171,7 @@
             <tr v-for="bean in beans ">
                 <!--<td>{{bean.id}}</td>-->
                 <td>
-                    <img height="50px" width="50px" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+bean.imageUrlSingle">
+                    <img  v-if="null != bean.imageUrlSingle" height="50px" width="50px" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+bean.imageUrlSingle">
                 </td>
                 <td>{{bean.name}}</td>
                 <td>{{bean.subTitle}}</td>

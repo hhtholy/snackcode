@@ -197,7 +197,7 @@
                 <!--<td>{{bean.id}}</td>-->
                 <td>
                     <!--http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/1010.jpg-->
-                    <img height="50px" width="50px" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/category/'+bean.imageurl">
+                    <img height="50px" width="50px" v-if="null != bean.imageurl" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/category/'+bean.imageurl">
                 </td>
                 <td>
                     {{bean.name}}

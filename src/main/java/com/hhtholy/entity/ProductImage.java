@@ -1,8 +1,10 @@
 package com.hhtholy.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author hht
@@ -11,7 +13,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="productimage")
-public class ProductImage {
+@JsonIgnoreProperties(value = {"product"})
+public class ProductImage implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -19,7 +22,6 @@ public class ProductImage {
 
     @ManyToOne
     @JoinColumn(name = "pid")
-    @JsonBackReference
     private Product product;
 
     private String type; //图片的类型  单个 或者多个详情

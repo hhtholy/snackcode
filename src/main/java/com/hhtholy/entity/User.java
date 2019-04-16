@@ -1,6 +1,7 @@
 package com.hhtholy.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author hht
@@ -9,7 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
