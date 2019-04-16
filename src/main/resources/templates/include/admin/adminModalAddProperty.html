@@ -1,0 +1,27 @@
+<div  th:fragment="addProperty" class="modal " id="addPropertyModal" tabindex="-1" role="dialog" >
+    <div class="modal-dialog loginDivInProductPageModalDiv">
+        <div class="modal-content">
+            <div class="loginDivInProductPage">
+                <div style="margin-left:250px"><h3>添加属性</h3></div>
+                <div class="panel addDiv">
+                    <div class="panel-body">
+                            <div class="panel-body">
+                                <table class="addTable">
+                                    <tr>
+                                        <td>属性名称</td>
+                                        <td><input  @keyup.enter="add"  v-model.trim="bean.name" type="text" class="form-control"></td>
+                                    </tr>
+                                    <tr class="submitTR">
+                                        <td colspan="2" align="center">
+                                            <a href="#nowhere"  @click="add" class="btn btn-success">提交</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

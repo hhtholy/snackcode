@@ -41,13 +41,54 @@ public class PageController {
         return "admin/listProperty";
     }
 
+
+
     /**
-     * 跳转到 分类编辑页面
+     * 跳转到 产品管理界面
      * @return
      */
-    @GetMapping("/admin_category_edit")
-    public String editCategory(){
-        return "admin/adminEditCategory";
+    @GetMapping("/admin_product_list")
+    public String productList(){
+        return "admin/listProduct";
+    }
+
+    /**
+     * 跳转到   图片管理界面 （针对产品）
+     * @return
+     */
+    @GetMapping("/admin_productImage_list")
+    public String productImageList(){
+        return "admin/listProductImage";
+    }
+
+
+    /**
+     * 跳转到属性值的设定界面
+     * @return
+     */
+    @GetMapping("/admin_propertyValue_edit")
+    public String propertyValueSet(){
+        return "admin/editPropertyValue";
+    }
+
+
+    /**
+     * 跳转到 用户展示界面
+     * @return
+     */
+    @GetMapping("/admin_user_list")
+    public String listUser(){
+        return "admin/listUser";
+    }
+
+    /**
+     * 跳转到订单展示界面
+     * @return
+     */
+    @GetMapping("/admin_order_list")
+    public String listOrders(){
+
+        return "admin/listOrder";
     }
 
 

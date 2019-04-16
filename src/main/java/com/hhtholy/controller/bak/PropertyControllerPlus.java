@@ -1,14 +1,11 @@
-package com.hhtholy.controller;
+package com.hhtholy.controller.bak;
 
-import com.aliyun.oss.OSSClient;
 import com.hhtholy.entity.Category;
 import com.hhtholy.entity.Property;
 import com.hhtholy.service.CategoryService;
 import com.hhtholy.service.PropertyService;
 import com.hhtholy.utils.Page;
 import com.hhtholy.utils.ReadProperties;
-import com.hhtholy.utils.aliyunoss.Ossutil;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -17,18 +14,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-import static com.hhtholy.config.aliyunConfig.OSSClientConstants.BACKET_NAME;
-import static com.hhtholy.config.aliyunConfig.OSSClientConstants.FOLDER;
-
 /**
  * @author hht
  * @create 2019-04-07 16:56
  *
  * 属性相关的前端控制器
  */
-@Api(tags = "属性模块",description = "针对属性相关的Api")
-@RestController
-public class PropertyController {
+/*@Api(tags = "属性模块",description = "针对属性相关的Api")
+@RestController*/
+public class PropertyControllerPlus {
     @Autowired  private PropertyService propertyService;
     @Autowired  private CategoryService categoryService;
 
@@ -96,7 +90,6 @@ public class PropertyController {
     @ApiOperation(value = "更新属性",notes = "更新一个分类下的属性")
     @ApiImplicitParams({
             @ApiImplicitParam(name="id",value="属性id",required=true,paramType="path",dataType = "int"),
-            @ApiImplicitParam(name="property",value="属性实体",required=true,paramType="body",dataType = "com.hhtholy.entity.Property"),
     })
     @PutMapping("/properties/{id}")
     public Property updateProperty(@PathVariable("id") Integer id,@RequestBody Property property){

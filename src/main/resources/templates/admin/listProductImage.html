@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<!--th:include 这样还会保留外面的head标签   加入导入界面的内容 不包含最外标签-->
+<!--主要是引入js  一些公共的js函数  比如判空等-->
+<head th:include="include/commonJs::commonJs('后台产品图片管理')" ></head>
+<!--引入分页函数-->
+<div th:include="include/commonFunctionsForPage::pageFunctions" ></div>
+<body>
+<!--th:replace  自己的最外标签不会保留 这里是div  直接放置导入界面的内容 包含导入内容的最外标签-->
+<!--引入导航页-->  <!--这里因为需要添加分类 于是放在这里-->
+<div th:replace="include/admin/adminNavigator::navigator" ></div>
+
+<script>
+       $(function(){
+           var pid = getUrlParms("pid"); //获取传递过来上的url上的 id
+           var data4Vue = {   //vue的数据域
+               uri:"productimages",
+               singleProductImages:[],
+               detailProductImages:[],
+               category:{},
+               product:{},
+               singleFile:null,
+               detailFile:null,
+               imageUrlsingle:"",  //回显图片路径
+               imageUrldetail:"",  //回显图片路径
+
+           };
+           var vue = new Vue({  //定义vue对象
+                el:"#workingArea",
+                data:data4Vue,
+                mounted:function () {
+                this.listSingles();
+                this.listDetails();
+                this.getProduct();
+                },
+                methods:{
+                    getProduct:function(){
+                        var url = "products/"+pid;  //根据产品id 去获取产品
+                        axios.get(url).then(function (res) {
+                            vue.product = res.data; //返回数据  产品对应着分类
+                            vue.category = res.data.category;
+                        });
+
+                    },
+                    listSingles:function(){   //展示 单个图片的列表
+                        var url = "products"+ "/" + pid + "/" + this.uri +"?type=single";
+                        axios.get(url).then(function (res) {
+                            vue.singleProductImages = res.data; //设置值
+                        });
+                    },
+                    listDetails:function(){   //展示详情图片的列表
+                        var url = "products"+ "/" + pid + "/" + this.uri +"?type=detail";
+                        axios.get(url).then(function (res) {
+                            vue.detailProductImages = res.data;  //设置值
+                        });
+                    },
+                    addSingle:function () {   //添加单个图片
+                        if(!checkEmpty(this.singleFile,"单个产品图片"))
+                            return;
+                        var url = this.uri;
+                        //因为需要上传文件 所以需要使用到formData
+                        var formData = new FormData();
+                        formData.append("file",this.singleFile);
+                        formData.append("type","single");
+                        formData.append("pid",pid);
+                        axios.post(url,formData).then(function (res) {
+                            //展示列表
+                            vue.listSingles();
+                            //清空
+                             vue.singleFile = null;
+                             $("#singlePic").val('');
+                             vue.imageUrlsingle = ""; //回显 图片置空
+
+                        });
+                    },
+                    addDetail: function () {
+                        if(!checkEmpty(this.detailFile,"详情产品图片"))
+                            return;
+                        var url = this.uri;
+                        //因为需要上传文件 所以需要使用到formData
+                        var formData = new FormData();
+                        formData.append("file",this.detailFile);
+                        formData.append("type","detail");
+                        formData.append("pid",pid);
+                        axios.post(url,formData).then(function (res) {
+                             //展示列表
+                              vue.listDetails();
+                              vue.detailFile = null;
+                              $("#detailPic").val('');
+                              vue.imageUrldetail = ""; //回显 图片置空
+                        });
+
+                    },
+                    deleteBean: function (id) { //删除图片
+                        if(!checkDeleteLink())
+                            return;
+                        var url = this.uri + "/" + id;
+                        axios.delete(url).then(function (res) {
+                            if(res.data == 'failure'){
+                                alert("删除失败！！");
+                            }else {
+                                vue.listDetails();
+                                vue.listSingles();
+                            }
+                        });
+                    },
+                    getSingleFile: function (event) {
+                        var image = event.target;
+                        var imageValue = image.value;
+                        if(!imageValue.match(/.jpg|.gif|.png|.bmp/)){  //进行上传文件判断
+                            alert('上传图片不符合要求');
+                            $("#categoryPic").val("");  //图片(值)置空
+                            return;
+                        }
+                        this.singleFile = event.target.files[0];  //  获取文件对象 赋值给vue数据
+                        var windowURL = window.URL || window.webkitURL;  //文件回显需要用到
+                        for(var i = 0;i <image.files.length;i++) {  //createObjectURL创建一个指向该参数对象(图片)的URL
+                            var dataURL = windowURL.createObjectURL(image.files[i]);
+                            this.imageUrlsingle = dataURL;
+                        }
+                    },
+                    getDetailFile: function (event) {
+                        var image = event.target;
+                        var imageValue = image.value;
+                        if(!imageValue.match(/.jpg|.gif|.png|.bmp/)){  //进行上传文件判断
+                            alert('上传图片不符合要求');
+                            $("#categoryPic").val("");  //图片(值)置空
+                            return;
+                        }
+                        this.detailFile = event.target.files[0];  //  获取文件对象 赋值给vue数据
+                        var windowURL = window.URL || window.webkitURL;  //文件回显需要用到
+                        for(var i = 0;i <image.files.length;i++) {  //createObjectURL创建一个指向该参数对象(图片)的URL
+                            var dataURL = windowURL.createObjectURL(image.files[i]);
+                            this.imageUrldetail = dataURL;
+                        }
+                    }
+               }
+           });
+       });
+</script>
+<div id="workingArea" >
+    <ol class="breadcrumb">
+        <li><a href="admin_category_list">所有分类</a></li>
+        <li><a :href="'admin_product_list?cid='+category.id">{{category.name}}</a></li>
+        <li class="active">{{product.name}}</li>
+        <li class="active">产品图片管理</li>
+    </ol>
+    <table class="addPictureTable" align="center">
+        <tr>
+            <td class="addPictureTableTD">
+                <div>
+                    <div class="panel panel-warning addPictureDiv">
+                        <div class="panel-heading">新增产品<b class="text-primary"> 单个 </b>图片</div>
+                        <div class="panel-body">
+                            <table class="addTable">
+                                <tr>
+                                    <img src="" alt=""  :src="imageUrlsingle" height="100px" width="100px">
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input id="singlePic" type="file" @change="getSingleFile($event)" name="image" />
+                                    </td>
+                                </tr>
+                                <tr class="submitTR">
+                                    <td align="center">
+                                        <button type="submit" @click="addSingle" class="btn btn-success">提 交</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!--展示部分-->
+                    <table class="table table-striped table-bordered table-hover  table-condensed">
+                        <thead>
+                        <tr class="success">
+                            <th>产品单个图片缩略图</th>
+                            <th>删除</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--展示添加后的单个图片-->
+                        <tr v-for="pi in singleProductImages">
+                            <td>
+                                <img height="50px" width="50px" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+pi.imageurl">
+                            </td>
+                            <td><a href="#" @click="deleteBean(pi.id)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </td>
+            <td class="addPictureTableTD">
+                <div>
+                    <div class="panel panel-warning addPictureDiv">
+                        <div class="panel-heading">新增产品<b class="text-primary"> 详情 </b>图片</div>
+                        <div class="panel-body">
+                            <table class="addTable">
+                                <tr>
+                                    <img src="" alt=""  :src="imageUrldetail" height="100px" width="100px">
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input id="detailPic" type="file" @change="getDetailFile($event)" name="image" />
+                                    </td>
+                                </tr>
+                                <tr class="submitTR">
+                                    <td align="center">
+                                        <button type="submit" @click="addDetail" class="btn btn-success">提 交</button>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover  table-condensed">
+                        <thead>
+                        <tr class="success">
+                            <th>产品详情图片缩略图</th>
+                            <th>删除</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="pi in detailProductImages">
+                            <td>
+                                <img height="50px" width="50px" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/detail/'+pi.imageurl">
+                            </td>
+                            <td><a href="#" @click="deleteBean(pi.id)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

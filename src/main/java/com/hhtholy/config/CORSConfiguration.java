@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @author hht
  * @create 2019-01-12 17:56
  */
-//@Configuration
+@Configuration
 public class CORSConfiguration extends WebMvcConfigurerAdapter {
 
 

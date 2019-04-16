@@ -3,6 +3,7 @@ package com.hhtholy.config.aliyunConfig;
 /**
  * @author hht
  * @create 2019-04-08 21:05
+ * 阿里云oss 的配置  不需要修改！！！
  */
 public class OSSClientConstants {
 

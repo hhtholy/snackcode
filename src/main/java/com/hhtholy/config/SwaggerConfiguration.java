@@ -54,7 +54,6 @@ public class SwaggerConfiguration {
                 .build();
     }
 
-
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title(swaggerInfo.getTitle())

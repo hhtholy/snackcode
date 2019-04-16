@@ -1,0 +1,49 @@
+<div  th:fragment="editProduct" class="modal" id="editProductModal" tabindex="-1" role="dialog" >
+    <div class="modal-dialog loginDivInProductPageModalDiv">
+        <div class="modal-content">
+            <div class="loginDivInProductPage">
+                <div style="margin-left:250px"><h3>编辑产品</h3></div>
+                <div class="panel addDiv">
+                    <div class="panel-body">
+                        <table class="editTable">
+                            <tr>
+                                <td>产品名称</td>   <!--v-model实现 双向绑定 -->
+                                <td><input @keyup.enter="update" v-model.trim="bean.name" type="text" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td>产品小标题</td>
+                                <td><input @keyup.enter="update" v-model.trim="bean.subTitle" type="text"
+                                           class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td>原价格</td>
+                                <td><input @keyup.enter="update" v-model.trim="bean.originalPrice" type="text"
+                                           class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td>优惠价格</td>
+                                <td><input @keyup.enter="update" v-model.trim="bean.promotePrice" type="text"
+                                           class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td>库存</td>
+                                <td><input @keyup.enter="update" v-model.trim="bean.stock" type="text"
+                                           class="form-control"></td>
+                            </tr>
+                            <tr class="submitTR">
+                                <td colspan="2" align="center">
+                                    <!--隐藏域   为了更新的时候 保留这个id 才能进行更新操作-->
+                                    <input type="hidden" name="id" v-model.trim="bean.id">
+                                    <a href="#nowhere" class="btn btn-success" @click="update">提 交</a>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

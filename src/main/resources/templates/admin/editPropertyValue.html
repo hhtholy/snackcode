@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--th:include 这样还会保留外面的head标签   加入导入界面的内容 不包含最外标签-->
+<!--主要是引入js  一些公共的js函数  比如判空等-->
+<head th:include="include/commonJs::commonJs('后台分类管理')" ></head>
+
+<!--引入分页函数-->
+<div th:include="include/commonFunctionsForPage::pageFunctions" ></div>
+<body>
+<!--th:replace  自己的最外标签不会保留 这里是div  直接放置导入界面的内容 包含导入内容的最外标签-->
+<!--引入导航页-->  <!--这里因为需要添加分类 于是放在这里-->
+<div th:replace="include/admin/adminNavigator::navigator" ></div>
+
+
+
+<!--数据请求-->
+<script>
+    $(function(){
+        var pid = getUrlParms("pid");   //获取  产品id
+        //定义vue的数据域
+        var data4Vue = {
+            uri:"propertyvalues",
+            beans:[],
+            product:{},
+            category:{}
+        };
+
+        //定义vue对象
+        var vue = new Vue({
+            el:"#workingArea",
+            data:data4Vue,
+            mounted:function () {
+                this.list();       //展示属性值列表
+                this.getProduct(); //显示面包屑导航的值
+            },
+            methods:{
+                list:function () {        //展示属性和属性值
+                    var url = "products" + "/" + pid + "/" + this.uri;
+                    axios.get(url).then(function (res) {
+                         vue.beans = res.data;   //返回的属性值列表
+                    });
+                },
+                getProduct:function () {    //获取产品的数据  用于面包屑导航
+                    var url = "products/" + pid;
+                    axios.get(url).then(function (res) {
+                        vue.product = res.data; //产品
+                        vue.category = res.data.category; //产品所属于的分类
+
+                    });
+                },
+                setValue:function (bean) { //设置属性值
+                    var propertyValueId = bean.id; //属性值id
+                    $("#pvid"+bean.id).css("border","2px solid yellow");//改的时候的 边框css修改下
+                    var url = this.uri;
+                    axios.put(url,bean).then(function (res) {
+                        if(bean.id==res.data.id)    //修改正确的话 样式修改下
+                            $("#pvid"+bean.id).css("border","2px solid green");
+                        else
+                            $("#pvid"+bean.id).css("border","2px solid red");
+                    });
+                  }
+            }
+       });
+    });
+</script>
+
+
+
+<div id="workingArea" >
+    <ol class="breadcrumb">
+        <li><a href="admin_category_list">所有分类</a></li>
+        <li><a :href="'admin_product_list?cid='+category.id">{{category.name}}</a></li>
+        <li class="active">{{product.name}}</li>
+        <li class="active">产品属性值管理</li>
+    </ol>
+
+    <!--属性和属性值-->
+
+    <div class="editPVDiv">
+        <div v-for="bean in beans" class="eachPV">
+            <!--属性-->  <!--一个属性有多个属性值  属性值实体有属性的引用-->
+            <span class="pvName" >{{bean.property.name}}</span>
+            <!--属性值-->
+            <span class="pvValue"><input class="pvValue" :id="'pvid'+bean.id" type="text" v-model="bean.value" @blur.prevent="setValue(bean)"></span>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+
+</div>
+<!--站脚-->
+<div th:replace="include/admin/adminFooter::footer" ></div>
+</body>
+</html>

@@ -5,7 +5,6 @@ import com.aliyun.oss.model.Bucket;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
-import com.hhtholy.config.aliyunConfig.AliyunProperties;
 import com.hhtholy.config.aliyunConfig.OSSClientConstants;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +18,10 @@ import java.io.InputStream;
 /**
  * @author hht
  * @create 2019-04-08 20:59
+ *
+ * 阿里云oss文件操作
  */
 public class Ossutil {
-
-    @Autowired
-    private AliyunProperties aliyunProperties;
-
-
     //阿里云API的内或外网域名
     private static String ENDPOINT;
     //阿里云API的密钥Access Key ID

@@ -1,4 +1,4 @@
-<div  th:fragment="editCategory" class="modal" id="editCategoryModal" tabindex="-1" role="dialog" >
+<div  th:fragment="editProperty" class="modal" id="editPropertyModal" tabindex="-1" role="dialog" >
     <div class="modal-dialog loginDivInProductPageModalDiv">
         <div class="modal-content">
             <div class="loginDivInProductPage">
@@ -7,19 +7,8 @@
                     <div class="panel-body">
                         <table class="editTable">
                             <tr>
-                                <td>分类名称</td>   <!--v-model实现 双向绑定 -->
+                                <td>属性名称</td>   <!--v-model实现 双向绑定 -->
                                 <td><input  @keyup.enter="update" v-model.trim="bean.name" type="text" class="form-control"></td>
-                            </tr>
-                            <tr>
-                                <td>分类图片</td>
-                                <td>
-                                    <!--文件   accept 和 file结合使用-->
-                                    <input id="categoryPic" accept="image/*" type="file" name="image" @change="getFile($event)" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <!--图片回显-->
-                                <img src="" alt=""  :src="imageUrl" height="100px" width="100px">
                             </tr>
                             <tr class="submitTR">
                                 <td colspan="2" align="center">

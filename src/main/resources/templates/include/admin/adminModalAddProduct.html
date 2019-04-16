@@ -1,0 +1,49 @@
+<div  th:fragment="addProduct" class="modal " id="addProductModal" tabindex="-1" role="dialog" >
+    <div class="modal-dialog loginDivInProductPageModalDiv">
+        <div class="modal-content">
+            <div class="loginDivInProductPage">
+                <div class="panel addDiv">
+                    <div class="panel-body">
+                            <div class="panel-body">
+                                添加产品
+                                <table class="panel-body" style="border-collapse:separate; border-spacing:5px;">
+                                    <tr>
+                                        <td>产品名称:</td>
+                                        <td><input  @keyup.enter="add" v-model.trim="bean.name" type="text" class="form-control"/></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>产品小标题:</td>
+                                        <td><input  @keyup.enter="add" v-model.trim="bean.subTitle" type="text" class="form-control"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>原价格</td>
+                                        <td><input  @keyup.enter="add" v-model.trim="bean.originalPrice"  type="text"
+                                                    class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>优惠价格</td>
+                                        <td><input  @keyup.enter="add" v-model.trim="bean.promotePrice" type="text"
+                                                    class="form-control"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>库存</td>
+                                        <td><input  @keyup.enter="add" v-model.trim="bean.stock"  type="text"
+                                                    class="form-control"></td>
+                                    </tr>
+                                    <!--提交-->
+                                    <tr class="submitTR">
+                                        <td colspan="2" align="center">
+                                            <a href="#"  @click="add" class="btn btn-success">提交</a>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+</div>

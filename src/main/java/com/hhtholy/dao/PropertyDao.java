@@ -11,6 +11,8 @@ import java.util.List;
 /**
  * @author hht
  * @create 2019-04-06 20:33
+ *
+ * 属性相关的数据层接口
  */
 public interface PropertyDao extends JpaRepository<Property,Integer> {
     Page<Property> findByCategory(Category category, Pageable pageable);  //查询一个分类下的所有属性 分页的方式

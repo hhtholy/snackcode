@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * swagger 配置信息
+ * swagger 配置信息 暂时没用上
  */
 @Component
 @ConfigurationProperties(prefix = "swagger")

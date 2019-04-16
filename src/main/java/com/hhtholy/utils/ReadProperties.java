@@ -7,6 +7,7 @@ import java.util.Properties;
 /**
  * @author hht
  * @create 2019-04-06 10:54
+ * 读取配置文件的信息
  */
 public class ReadProperties {
     public static String getPropertyValue(String key,String path) throws IOException {

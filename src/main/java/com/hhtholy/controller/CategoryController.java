@@ -40,7 +40,7 @@ public class CategoryController {
     @GetMapping("/categories")
     public Page<Category> getCategoryPage(@RequestParam(value = "currentPage", defaultValue="0") Integer currentPage,
                                           @RequestParam(value = "size", defaultValue="4") Integer size) throws IOException {
-        return (Page<Category>) categoryService.getCategoryPage(currentPage,Integer.valueOf(ReadProperties.getPropertyValue("pagesize","application.properties")), Integer.valueOf(ReadProperties.getPropertyValue("navigatenums","application.properties")));
+        return  categoryService.getCategoryPage(currentPage,Integer.valueOf(ReadProperties.getPropertyValue("pagesize","application.properties")), Integer.valueOf(ReadProperties.getPropertyValue("navigatenums","application.properties")));
     }
 
     @ApiOperation(value = "添加分类",notes = "添加分类以及分类图片")
