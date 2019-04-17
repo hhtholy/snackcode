@@ -14,7 +14,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="product")
-@JsonIgnoreProperties(value = {"category"})
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -18,4 +18,5 @@ public interface ProductService { //查询一个分类下的产品信息  分页
     public Product getProduct(Integer id); //根据id 获取产品
     public Product updateProduct(Product product);    //更新产品
     public void setSingleImageForProduct(List<Product> content); //为产品设置单图
+    public List<Product> getProductList(Category category);
 }

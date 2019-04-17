@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author hht
@@ -12,7 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "property")
-@JsonIgnoreProperties(value = {"category"})
+@JsonIgnoreProperties(value = {"propertyValues"})
 public class Property implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -23,7 +24,18 @@ public class Property implements Serializable {
     @ManyToOne
     @JoinColumn(name = "cid")
     private Category category;  //外键  一个分类下拥有多个属性
-    
+
+    @OneToMany(cascade={CascadeType.REMOVE},mappedBy="property",fetch = FetchType.LAZY)
+    private List<PropertyValue>  propertyValues; //一个属性有多个属性
+
+    public List<PropertyValue> getPropertyValues() {
+        return propertyValues;
+    }
+
+    public void setPropertyValues(List<PropertyValue> propertyValues) {
+        this.propertyValues = propertyValues;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -42,5 +54,6 @@ public class Property implements Serializable {
     public void setCategory(Category category) {
         this.category = category;
     }
+
 
 }

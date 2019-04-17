@@ -124,4 +124,15 @@ public class ProductServiceImpl implements ProductService {
             product.setImageUrlSingle(productImages.get(0).getImageurl());
         }
     }
+    /**
+     * 获取一个分类下的所有产品
+     * @param category
+     * @return
+     */
+    @Override
+    public List<Product> getProductList(Category category) {
+        return productDao.findByCategory(category);
+    }
+
+
 }

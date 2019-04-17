@@ -2,7 +2,10 @@ package com.hhtholy.controller;
 
 import com.aliyun.oss.OSSClient;
 import com.hhtholy.entity.Category;
+import com.hhtholy.entity.Product;
 import com.hhtholy.service.CategoryService;
+import com.hhtholy.service.ProductImageService;
+import com.hhtholy.service.ProductService;
 import com.hhtholy.utils.Page;
 import com.hhtholy.utils.ReadProperties;
 import com.hhtholy.utils.aliyunoss.Ossutil;
@@ -17,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static com.hhtholy.config.aliyunConfig.OSSClientConstants.BACKET_NAME;
 import static com.hhtholy.config.aliyunConfig.OSSClientConstants.FOLDER;
@@ -30,6 +34,8 @@ import static com.hhtholy.config.aliyunConfig.OSSClientConstants.FOLDER;
 @RestController
 public class CategoryController {
     @Autowired  private CategoryService categoryService;  //注入CategoryService
+    @Autowired private ProductService productService; //删除图片用上
+    @Autowired private ProductImageService productImageService; //删除图片用上
 
 
     @ApiOperation(value = "获取分类列表(分页)",notes = "获取所有的分类信息")
@@ -101,6 +107,15 @@ public class CategoryController {
     public String deleteLogic(Integer id){
         Category category = categoryService.getCategory(id);//删除前先获取key
         String imageurl = category.getImageurl();
+
+        //删除分类情况下  还得删除分类下对应的产品的图片
+        List<Product> productList = productService.getProductList(category);
+        if(productList != null && productList.size() > 0){
+            for (Product product : productList) {
+             //   productImageService.
+            }
+        }
+
         OSSClient ossClient= Ossutil.getOSSClient();
         Ossutil.deleteFile(ossClient,BACKET_NAME,FOLDER+"category/",imageurl);
         String deleteResult = categoryService.deleteCategory(id);
