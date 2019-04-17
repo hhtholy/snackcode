@@ -1,5 +1,6 @@
 package com.hhtholy.controller;
 
+import com.aliyun.oss.OSSClient;
 import com.hhtholy.entity.Category;
 import com.hhtholy.entity.Product;
 import com.hhtholy.entity.ProductImage;
@@ -9,6 +10,7 @@ import com.hhtholy.service.ProductService;
 import com.hhtholy.utils.Constant;
 import com.hhtholy.utils.Page;
 import com.hhtholy.utils.ReadProperties;
+import com.hhtholy.utils.aliyunoss.Ossutil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+
+import static com.hhtholy.config.aliyunConfig.OSSClientConstants.BACKET_NAME;
+import static com.hhtholy.config.aliyunConfig.OSSClientConstants.FOLDER;
 
 /**
  * @author hht
@@ -43,7 +48,6 @@ public class ProductController {
                                      @RequestParam(defaultValue = "2") Integer size) throws IOException {
         Category category = categoryService.getCategory(cid);//根据cid 分类id 查询出分类
         Page<Product> productPage = productService.getProductPage(category, currentPage, Integer.valueOf(ReadProperties.getPropertyValue("pagesize", "application.properties")), Integer.valueOf(ReadProperties.getPropertyValue("navigatenums", "application.properties")));
-
         productService.setSingleImageForProduct(productPage.getContent()); //设置产品单图
         return productPage;
     }
@@ -101,7 +105,18 @@ public class ProductController {
      * @return
      */
     public String deleteLogic(Integer id){
-        List<ProductImage> imageD = productImageService.getProductImage(productService.getProduct(id), Constant.SINGLEIMAGE.getWord());
+        OSSClient ossClient= Ossutil.getOSSClient(); //删除产品的话 需要删除该产品下的产品图片
+        List<ProductImage> images = productImageService.getProductImage(productService.getProduct(id));
+        for (ProductImage image : images) {
+            String type = image.getType();
+            String imageurl = image.getImageurl();
+            if(type.equals(Constant.SINGLEIMAGE.getWord())){  //上传图片
+                Ossutil.deleteFile(ossClient,BACKET_NAME,FOLDER+"products/single/",imageurl);
+            }
+            if(type.equals(Constant.DETAILIMAGE.getWord())){
+                Ossutil.deleteFile(ossClient,BACKET_NAME,FOLDER+"products/detail/",imageurl);
+            }
+        }
         String deleteResult = productService.deleteProduct(id);
         return deleteResult;
     }

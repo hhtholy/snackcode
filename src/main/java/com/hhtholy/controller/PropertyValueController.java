@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Api(tags = "属性值模块",description = "针对属性值相关的Api")
 @RestController
-public class ProductValueController {
+public class PropertyValueController {
 
     @Autowired private PropertyValueService propertyValueService;
     @Autowired private ProductService productService;

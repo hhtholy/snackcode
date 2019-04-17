@@ -3,9 +3,11 @@ package com.hhtholy.controller;
 import com.aliyun.oss.OSSClient;
 import com.hhtholy.entity.Category;
 import com.hhtholy.entity.Product;
+import com.hhtholy.entity.ProductImage;
 import com.hhtholy.service.CategoryService;
 import com.hhtholy.service.ProductImageService;
 import com.hhtholy.service.ProductService;
+import com.hhtholy.utils.Constant;
 import com.hhtholy.utils.Page;
 import com.hhtholy.utils.ReadProperties;
 import com.hhtholy.utils.aliyunoss.Ossutil;
@@ -105,18 +107,29 @@ public class CategoryController {
      * @return
      */
     public String deleteLogic(Integer id){
+        OSSClient ossClient= Ossutil.getOSSClient();
         Category category = categoryService.getCategory(id);//删除前先获取key
-        String imageurl = category.getImageurl();
+        String imageurl = category.getImageurl();  //分类的图片
 
         //删除分类情况下  还得删除分类下对应的产品的图片
         List<Product> productList = productService.getProductList(category);
         if(productList != null && productList.size() > 0){
             for (Product product : productList) {
-             //   productImageService.
+                List<ProductImage> productImageList = productImageService.getProductImage(product);
+                if(productImageList != null && productList.size() > 0){
+                    for (ProductImage productImage : productImageList) {
+                        String imageUrlE = productImage.getImageurl();
+                        String type = productImage.getType();
+                        if(Constant.SINGLEIMAGE.getWord().equals(type)){
+                            Ossutil.deleteFile(ossClient,BACKET_NAME,FOLDER+"products/single/",imageUrlE);
+                        }
+                        if(Constant.DETAILIMAGE.getWord().equals(type)){
+                            Ossutil.deleteFile(ossClient,BACKET_NAME,FOLDER+"products/detail/",imageUrlE);
+                        }
+                    }
+                }
             }
         }
-
-        OSSClient ossClient= Ossutil.getOSSClient();
         Ossutil.deleteFile(ossClient,BACKET_NAME,FOLDER+"category/",imageurl);
         String deleteResult = categoryService.deleteCategory(id);
         return deleteResult;

@@ -1,5 +1,4 @@
 package com.hhtholy.entity;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -14,6 +13,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="product")
+@JsonIgnoreProperties(value = {"propertyValues"})
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

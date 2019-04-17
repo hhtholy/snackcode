@@ -40,7 +40,7 @@
                          vue.beans = res.data;   //返回的属性值列表
                     });
                 },
-                getProduct:function () {    //获取产品的数据  用于面包屑导航
+                getProduct:function () {       //获取产品的数据 用于面包屑导航 以及初始化产品属性值（加上产品和属性引用）
                     var url = "products/" + pid;
                     axios.get(url).then(function (res) {
                         vue.product = res.data; //产品

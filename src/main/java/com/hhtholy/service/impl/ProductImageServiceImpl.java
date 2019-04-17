@@ -64,6 +64,11 @@ public class ProductImageServiceImpl implements ProductImageService {
         return resultGet;
     }
 
+    /**
+     * 更新产品图片
+     * @param productImage 产品图片实体
+     * @return
+     */
     @Override
     public ProductImage updateProductImage(ProductImage productImage) {
         ProductImage result = null;
@@ -75,8 +80,24 @@ public class ProductImageServiceImpl implements ProductImageService {
         return result;
     }
 
+    /**
+     *  根据产品和类型去查询对应的产品图片
+     * @param product  产品
+     * @param type   类型
+     * @return  返回产品图片列表
+     */
     @Override
     public List<ProductImage> getProductImage(Product product, String type) {
         return productImageDao.findByProductAndTypeOrderByIdDesc(product,type);
+    }
+
+    /**
+     * 根据产品去查询对应的产品图片
+     * @param product 产品
+     * @return  对应的产品列表
+     */
+    @Override
+    public List<ProductImage> getProductImage(Product product) {
+        return productImageDao.findByProductOrderByIdDesc(product);
     }
 }
