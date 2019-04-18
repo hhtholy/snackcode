@@ -24,4 +24,30 @@ public class UserServiceImpl implements UserService {
         org.springframework.data.domain.Page<User> results = userDao.findAll(pageable);
         return new Page<>(results,navigateNum);
     }
+
+    /**
+     * 注册用户
+     * @param user
+     * @return
+     */
+
+    @Override
+    public User addUser(User user) {
+        return userDao.save(user);
+    }
+
+    @Override
+    public User updateUser(User user) {
+        return null;
+    }
+
+    /**
+     * 判断用户是否已经存在
+     * @param user
+     * @return
+     */
+    @Override
+    public boolean isExist(User user) {
+        return userDao.findByName(user.getName()) != null;
+    }
 }

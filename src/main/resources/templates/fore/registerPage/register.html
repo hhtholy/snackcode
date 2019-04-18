@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/ForeCommonJs::html" ></head>  <!--引入js和css等 和一些公关的js函数-->
+<body>
+    <div th:replace="include/fore/top::html" ></div>
+    <div th:replace="include/fore/search::html" ></div>
+    <!--数据请求-->
+    <script>
+        $(function(){
+            var data4Vue = {
+                uri:"register",
+                result:[],
+                user:{name:'', password:'', repeatpassword:''}  //注册用户的实体
+            };
+            var vue = new Vue({
+                el:"#workingArea",
+                data:data4Vue,
+                mounted:function () {
+
+                },
+                methods:{
+                    //用户数据注册
+                    register:function () {
+                        //先进行简单的校验
+                        if(0==this.user.name.length){
+                            $("span.errorMessage").html("请输入用户名");
+                            $("div.registerErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }
+                        if(0==this.user.password.length){
+                            $("span.errorMessage").html("请输入密码");
+                            $("div.registerErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }
+                        if(0==this.user.repeatpassword.length){
+                            $("span.errorMessage").html("请输入重复密码");
+                            $("div.registerErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }
+                        if(this.user.password !=this.user.repeatpassword){
+                            $("span.errorMessage").html("重复密码不一致");
+                            $("div.registerErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }  //校验结束
+                        var url = this.uri;
+                        axios.post(url,this.user).then(function (res) { //注册请求
+                            var result = res.data;
+                            if(result.code == 1){
+                                location.href = "registerSuccess";
+                            }else { //注册失败的情况
+                                //给出提示  改变相应的css
+                                $("span.errorMessage").html(result.message);
+                                $("div.registerErrorMessageDiv").css("visibility","visible");
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+
+    <!--dom区域-->
+    <div id="workingArea">
+        <div class="registerDiv" >
+            <div class="registerErrorMessageDiv">
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                    <span class="errorMessage"></span>
+                </div>
+            </div>
+            <div style="border: 1px solid darkred">
+            <table class="registerTable" align="center">
+                <tr>
+                    <td  class="registerTip registerTableLeftTD">设置会员名</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="registerTableLeftTD">登录名</td>
+                    <td  class="registerTableRightTD"><input v-model="user.name" placeholder="会员名一旦设置成功，无法修改" > </td>
+                </tr>
+                <tr>
+                    <td  class="registerTip registerTableLeftTD">设置登录密码</td>
+                    <td  class="registerTableRightTD">登录时验证，保护账号信息</td>
+                </tr>
+                <tr>
+                    <td class="registerTableLeftTD">登录密码</td>
+                    <td class="registerTableRightTD"><input v-model="user.password"  type="password"  placeholder="设置你的登陆密码" > </td>
+                </tr>
+                <tr>
+                    <td class="registerTableLeftTD">密码确认</td>
+                    <td class="registerTableRightTD"><input v-model="user.repeatpassword" type="password"  placeholder="请再次输入你的密码" > </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" class="registerButtonTD">
+                        <a @click="register"><button>提交</button></a>
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </div>
+    </div> <!--workingArea-->
+    <div th:replace="include/fore/footer::html" ></div>
+</body>
+</html>
