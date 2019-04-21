@@ -17,6 +17,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired private UserDao userDao;
+
+    /**
+     * 返回用户的信息
+     * @param currentPage 当前页
+     * @param size  每页显示的条数
+     * @param navigateNum  导航长度
+     * @return  分页信息
+     */
     @Override
     public Page<User> getUserPage(Integer currentPage, Integer size, int navigateNum) {
         //设置分页信息
@@ -49,5 +57,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isExist(User user) {
         return userDao.findByName(user.getName()) != null;
+    }
+
+    /**
+     * 根据名称去获取用户
+     * @param name
+     * @return
+     */
+    @Override
+    public User getUserByName(String name) {
+        return userDao.findByName(name);
     }
 }

@@ -10,8 +10,8 @@
 		<a href="logout" >退出</a>
 	</span>
     <span th:if="${null==session.user}"> <!--如果用户没有登录的话-->
-		<a href="login">登录</a>
-		<a href="register">注册</a>
+		<a href="toLogin">登录</a>
+		<a href="toRegister">注册</a>
 	</span>
 
     <span class="pull-right">

@@ -1,5 +1,6 @@
 package com.hhtholy.config;
 
+import com.hhtholy.Realm.CustomeRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -26,24 +27,24 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         return shiroFilterFactoryBean;
     }
-   /* @Bean
+   @Bean
     public SecurityManager securityManager(){
         DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
         securityManager.setRealm(getCustomRealm());
         return securityManager;
-    }*/
+    }
 
     /**
-     * 验证   对象
+     * 拿用户信息的域
      * @return
      */
-    /*@Bean
-    public CustomRealm getCustomRealm(){
-        CustomRealm myShiroRealm = new CustomRealm();
+    @Bean
+    public CustomeRealm getCustomRealm(){
+        CustomeRealm myShiroRealm = new CustomeRealm();
         myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return myShiroRealm;
     }
-*/
+
     @Bean
     public HashedCredentialsMatcher hashedCredentialsMatcher(){
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();

@@ -28,7 +28,12 @@ public class Product implements Serializable {
     private Float promotePrice;  //优惠价格
     private Integer stock; //库存
     private Date createDate; //创建时间
-    private String imageUrlSingle;  //单图4
+    private String imageUrlSingle;  //单图
+
+    private Integer saleCount;  //销量
+    private Integer reviewCount;  //评价数量
+
+    private String imageUrlsDetail; //多图
 
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="product",fetch = FetchType.LAZY)
     private List<ProductImage> productImages;
@@ -122,5 +127,29 @@ public class Product implements Serializable {
 
     public void setPropertyValues(List<PropertyValue> propertyValues) {
         this.propertyValues = propertyValues;
+    }
+
+    public Integer getSaleCount() {
+        return saleCount;
+    }
+
+    public void setSaleCount(Integer saleCount) {
+        this.saleCount = saleCount;
+    }
+
+    public Integer getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(Integer reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
+    public String getImageUrlsDetail() {
+        return imageUrlsDetail;
+    }
+
+    public void setImageUrlsDetail(String imageUrlsDetail) {
+        this.imageUrlsDetail = imageUrlsDetail;
     }
 }

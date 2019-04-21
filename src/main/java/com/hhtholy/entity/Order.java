@@ -3,6 +3,7 @@ package com.hhtholy.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author hht
@@ -32,6 +33,12 @@ public class Order implements Serializable {
     private Date deliveryDate; //发货日期
     private Date confirmDate; //确认时间
     private String status; //订单的状态
+
+    private float totalPrice; //订单的总金额
+    private int totalNum; //订单中 产品的总计数量
+
+    @OneToMany(cascade={CascadeType.REMOVE},mappedBy="order",fetch = FetchType.LAZY)
+    private List<OrderItem> orderItems;
 
     public Integer getId() {
         return id;
@@ -135,5 +142,29 @@ public class Order implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getTotalNum() {
+        return totalNum;
+    }
+
+    public void setTotalNum(int totalNum) {
+        this.totalNum = totalNum;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 }

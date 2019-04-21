@@ -1,8 +1,12 @@
 package com.hhtholy.controller.fore;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import springfox.documentation.annotations.ApiIgnore;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author hht
@@ -45,6 +49,7 @@ public class ForePageController {
      * 跳转到注册成功界面
      * @return
      */
+    @GetMapping("/registerSuccess")
     public String toRegisterSuccessPage(){
         return "fore/registerPage/registerSuccess";
     }
@@ -57,5 +62,18 @@ public class ForePageController {
     public String toLoginPage(){
         return "fore/loginPage/login";
     }
+
+    /**
+     * 用户注销 退出
+     * @return
+     */
+    @GetMapping("/logout")
+    public String loginOut(HttpSession session){
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.isAuthenticated())  //用户已经登录的话
+            subject.logout();
+        return "redirect:home";
+    }
+
 
 }

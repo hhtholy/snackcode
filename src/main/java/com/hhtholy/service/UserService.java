@@ -14,4 +14,5 @@ public interface UserService {
     public User addUser(User user);
     public User updateUser(User user);
     public boolean isExist(User user);
+    public  User getUserByName(String name);
 }

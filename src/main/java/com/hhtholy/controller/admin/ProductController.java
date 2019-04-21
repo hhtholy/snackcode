@@ -49,6 +49,7 @@ public class ProductController {
         Category category = categoryService.getCategory(cid);//根据cid 分类id 查询出分类
         Page<Product> productPage = productService.getProductPage(category, currentPage, Integer.valueOf(ReadProperties.getPropertyValue("pagesize", "application.properties")), Integer.valueOf(ReadProperties.getPropertyValue("navigatenums", "application.properties")));
         productService.setSingleImageForProduct(productPage.getContent()); //设置产品单图
+        productService.setDetailImageForProduct(productPage.getContent()); //设置产品详情图
         return productPage;
     }
 

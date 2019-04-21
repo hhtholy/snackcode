@@ -1,12 +1,11 @@
 package com.hhtholy.service.impl;
 
 import com.hhtholy.dao.ProductDao;
-import com.hhtholy.entity.Category;
-import com.hhtholy.entity.Product;
-import com.hhtholy.entity.ProductImage;
-import com.hhtholy.entity.Property;
+import com.hhtholy.entity.*;
+import com.hhtholy.service.OrderItemService;
 import com.hhtholy.service.ProductImageService;
 import com.hhtholy.service.ProductService;
+import com.hhtholy.service.ReviewService;
 import com.hhtholy.utils.Constant;
 import com.hhtholy.utils.Page;
 import oracle.jrockit.jfr.jdkevents.throwabletransform.ConstructorTracerWriter;
@@ -29,6 +28,8 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
     @Autowired private ProductDao productDao;
     @Autowired private ProductImageService productImageService;
+    @Autowired private OrderItemService orderItemService;
+    @Autowired private ReviewService reviewService;
     /**
      *   查询产品数据 分页
      * @param category 分类
@@ -117,13 +118,50 @@ public class ProductServiceImpl implements ProductService {
                 setSingleImageLogic(p);
             }
     }
+
     public void setSingleImageLogic(Product product) {
         //根据产品的去获取 单图 获取的是一个列表
         List<ProductImage> productImages = productImageService.getProductImage(product, Constant.SINGLEIMAGE.getWord());
         if(productImages != null && productImages.size() > 0){
             product.setImageUrlSingle(productImages.get(0).getImageurl());
+        }else{
+            product.setImageUrlSingle(null); //如果没有单图的话 置空
+        }
+        updateProduct(product); //更新数据
+    }
+
+    /**
+     * 为产品设置详情图
+     * @param content 当前页 下的 产品列表
+     */
+    @Override
+    public void setDetailImageForProduct(List<Product> content) {
+        for (Product p: content){
+            setDetailImageLogic(p);
         }
     }
+
+    public void setDetailImageLogic(Product product) {
+        int count = 0;
+        StringBuffer str = new StringBuffer();
+        //根据产品的去获取 详情图 获取的是一个列表
+        List<ProductImage> productImages = productImageService.getProductImage(product, Constant.DETAILIMAGE.getWord());
+        if(productImages != null && productImages.size() > 0){
+            for (ProductImage productImageDetail : productImages) { //遍历每一个详情图
+                if(count == (productImages.size() - 1)){
+                    str.append(productImageDetail.getImageurl());
+                }else {
+                    str.append(productImageDetail.getImageurl()).append(",");
+                }
+                count ++;
+            }
+            product.setImageUrlsDetail(str.toString());
+        }else{
+            product.setImageUrlsDetail(null); //如果没有详情图的话 置空
+        }
+        updateProduct(product); //更新数据
+    }
+
     /**
      * 获取一个分类下的所有产品
      * @param category
@@ -132,6 +170,47 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getProductList(Category category) {
         return productDao.findByCategory(category);
+    }
+
+    /**
+     * 获取产品的销量
+     * @param product 产品
+     * @return
+     */
+    @Override
+    public Integer getSaleCountForProduct(Product product) {
+        List<OrderItem> results = orderItemService.getOrderItemByProduct(product);   //获取 订单项中 拥有该产品的所有订单项
+        int count = 0;
+        for (OrderItem item:results){  //遍历每一个订单项
+            if(item.getOrder() != null && item.getOrder().getPayDate() != null){   //首先确定是创建了订单的  同时是已经付款的
+                count += item.getNumber();
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 为产品设置 评价数量（review） 和 销量(saleCount)
+     * @param product
+     */
+    @Override
+    public void setReviewsAndSaleCountForProduct(Product product) {
+        Integer saleCount = getSaleCountForProduct(product);
+        //根据产品获取 评价数量
+        int reviewCount = reviewService.getReviewCount(product);
+        product.setReviewCount(reviewCount);
+        product.setSaleCount(saleCount);
+    }
+
+    /**
+     * 为产品设置 评价数量和销量
+     * @param products
+     */
+    @Override
+    public void setReviewsAndSaleCountForProduct(List<Product> products) {
+        for (Product product : products) {
+            setReviewsAndSaleCountForProduct(product);
+        }
     }
 
 
