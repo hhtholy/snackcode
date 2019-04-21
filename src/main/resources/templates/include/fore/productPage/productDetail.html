@@ -1,0 +1,23 @@
+<!--商品的详情图的展示-->
+<div th:fragment="html">
+	<div class="productDetailDiv" v-show="showDetail" >
+		<div class="productDetailTopPart">
+			<a href="#" class="productDetailTopPartSelectedLink selected">商品详情</a>
+			<a href="#" class="productDetailTopReviewLink" @click="toggle2Review">累计评价 <span class="productDetailTopReviewLinkNumber">{{product.reviewCount}}</span> </a>
+		</div>
+
+		<div class="productParamterPart">
+			<div class="productParamter">产品参数：</div>
+			<div class="productParamterList">
+				<!--遍历属性值-->
+				<span v-for="pv in propertyvalues" >{{pv.property.name}}: {{pv.value | subStringFilter(0,10)}} </span>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+		
+		<div class="productDetailImagesPart">
+			<img v-for="pi in product.productImages" v-if="'detail' === pi.type" :src= "'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/detail/' + pi.imageurl">
+		</div>
+	</div>
+</div>
+

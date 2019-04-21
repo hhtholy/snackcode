@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/ForeCommonJs::html" ></head>  <!--引入js和css等 和一些公关的js函数-->
 <body>
-$END$
+<div id="workingArea">
+    <!--top-->
+    <div th:replace="include/fore/top::html" ></div>
+    <!--search-->
+    <div th:replace="include/fore/search::html" ></div>
+
+      <!--产品页-->
+    <div th:replace="include/fore/productPage/productPage::html" ></div>
+
+
+    <!--modalLogin-->
+
+    <!--footer-->
+    <div th:replace="include/fore/footer::html" ></div>
+</div>
 </body>
 </html>

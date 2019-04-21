@@ -75,5 +75,14 @@ public class ForePageController {
         return "redirect:home";
     }
 
+    /**
+     * 跳转到产品的详情信息信息展示界面
+     */
+    @GetMapping("/toforeProduct")
+    public String toProductShow(){
+        return "fore/productPage/product";
+    }
+
+
 
 }

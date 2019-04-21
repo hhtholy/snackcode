@@ -1,10 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div th:fragment="html">
+    <script>
+        $(function(){
+            var pid = getUrlParms("pid");    //获取url上的pid 产品id
+            var data4Vue = {
+                uri:"foreproduct",
+                product:{category:{},name:''},
+                propertyvalues:[],  //属性值
+                reviews:[],   //评价
+                category:{},//分类
+                productImageId:'', //图片展示的id
+                showReview:false,
+                showDetail:true,  //是否展示详情图
+                user:{name:'',password:''}
+            };
+            var vue = new Vue({
+                el:"#workingArea",
+                data:data4Vue,
+                mounted:function () {
+                    this.load();
+                },
+                methods:{
+                    toggle2Review:function () { //隐藏商品详情 展示评价信息
+                        this.showReview = true;
+                        this.showDetail = false;
+                    },
+                    toggle2Detail:function () {  //隐藏评价详情 展示商品详情信息
+                        this.showReview = false;
+                        this.showDetail = true;
+                    },
+                    load:function () {                    //展示产品的详情数据
+                        var url = this.uri +"/" +pid;
+                        axios.get(url).then(function (res) {
+                            /*
+                             //把数据放在map中
+                             HashMap<String, Object> map = new HashMap<>();
+                             map.put("product",product);  //产品
+                             map.put("pvalues",propertys);  //产品的属性值
+                             map.put("reviews",reviews); //产品的评价
+                               private int code;  //状态吗
+                                 private String message; //提示信息
+                                 private Object data;  //数据
+
+
+                              //无参数
+                              public static Result success(){
+
+                                  return new Result(SUCCESS_CODE,null,null);
+                              }
+                              //有参数
+                              public static Result success(Object data){
+                                  return new Result(SUCCESS_CODE,null,data);
+                              }
+                             */
+                            //控制层返回的是 Result  result.data 是个map
+                            var result = res.data;
+                            vue.product = result.data.product;
+                            vue.propertyvalues = result.data.pvalues;
+                            vue.reviews=result.data.reviews;
+                            //分类信息
+                            vue.category = vue.product.category;
+                            //显示图片 信息（imageid  单图显示）
+                            vue.productImageId = vue.product.productImageId;
+                            vue.$nextTick(function () {
+                                imgAndInfoPageRegisterListeners(vue);
+                            });
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+
+    <title>零食小站产品->{{product.name}}信息</title>
+    <div class="categoryPictureInProductPageDiv">
+        <img v-if="category!=null" class="categoryPictureInProductPage" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/category/'+category.imageurl">
+    </div>
+    <div class="productPageDiv">
+        <!--购物车那块-->
+        <div th:replace="include/fore/productPage/imgAndInfo::html" ></div>
+        <!--评价内容-->
+        <div th:replace="include/fore/productPage/productReview::html" ></div>
+        <div th:replace="include/fore/productPage/productDetail::html" ></div>
+    </div>
+</div>

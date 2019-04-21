@@ -28,12 +28,15 @@ public class Product implements Serializable {
     private Float promotePrice;  //优惠价格
     private Integer stock; //库存
     private Date createDate; //创建时间
-    private String imageUrlSingle;  //单图
+    private String imageUrlSingle;  //单图   存储到数据库
 
     private Integer saleCount;  //销量
     private Integer reviewCount;  //评价数量
+    private String imageUrlsDetail; //多图  存储到数据库
 
-    private String imageUrlsDetail; //多图
+    @Transient
+    private String singleImageUrlForJson; //后台展产品的时候 需要的图片url
+
 
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="product",fetch = FetchType.LAZY)
     private List<ProductImage> productImages;
@@ -41,13 +44,6 @@ public class Product implements Serializable {
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="product",fetch = FetchType.LAZY)
     private List<PropertyValue> propertyValues;
 
-    public String getImageUrlSingle() {
-        return imageUrlSingle;
-    }
-
-    public void setImageUrlSingle(String imageUrlSingle) {
-        this.imageUrlSingle = imageUrlSingle;
-    }
 
     public Integer getId() {
         return id;
@@ -113,20 +109,12 @@ public class Product implements Serializable {
         this.createDate = createDate;
     }
 
-    public List<ProductImage> getProductImages() {
-        return productImages;
+    public String getImageUrlSingle() {
+        return imageUrlSingle;
     }
 
-    public void setProductImages(List<ProductImage> productImages) {
-        this.productImages = productImages;
-    }
-
-    public List<PropertyValue> getPropertyValues() {
-        return propertyValues;
-    }
-
-    public void setPropertyValues(List<PropertyValue> propertyValues) {
-        this.propertyValues = propertyValues;
+    public void setImageUrlSingle(String imageUrlSingle) {
+        this.imageUrlSingle = imageUrlSingle;
     }
 
     public Integer getSaleCount() {
@@ -151,5 +139,29 @@ public class Product implements Serializable {
 
     public void setImageUrlsDetail(String imageUrlsDetail) {
         this.imageUrlsDetail = imageUrlsDetail;
+    }
+
+    public List<ProductImage> getProductImages() {
+        return productImages;
+    }
+
+    public void setProductImages(List<ProductImage> productImages) {
+        this.productImages = productImages;
+    }
+
+    public List<PropertyValue> getPropertyValues() {
+        return propertyValues;
+    }
+
+    public void setPropertyValues(List<PropertyValue> propertyValues) {
+        this.propertyValues = propertyValues;
+    }
+
+    public String getSingleImageUrlForJson() {
+        return singleImageUrlForJson;
+    }
+
+    public void setSingleImageUrlForJson(String singleImageUrlForJson) {
+        this.singleImageUrlForJson = singleImageUrlForJson;
     }
 }

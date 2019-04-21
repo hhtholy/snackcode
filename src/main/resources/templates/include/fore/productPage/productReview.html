@@ -1,0 +1,30 @@
+<!--产品的评价展示界面 包括评价内容-->
+<div th:fragment="html">
+	<div class="productReviewDiv" v-show="showReview" >
+		<div class="productReviewTopPart">
+			<a  href="#" class="productReviewTopPartSelectedLink" @click="toggle2Detail">商品详情</a>
+			<!--这是评价数量-->
+			<a  href="#" class="selected">累计评价 <span class="productReviewTopReviewLinkNumber">{{product.reviewCount}}</span> </a>
+		</div>
+		<!--具体的评价内容-->
+		<div class="productReviewContentPart">
+			<!--遍历评价内容-->
+			<div class="productReviewItem" v-for="review in reviews">
+				<div class="productReviewItemDesc">
+					<div class="productReviewItemContent">
+						{{review.content }}
+					</div>
+					<!--评价的创建时间-->
+					<div class="productReviewItemDate">
+						{{review.createDate|formatDateFilter('YYYY-MM-DD')}}
+					</div>
+				</div>
+				<!--评价人的账号 隐藏-->
+				<div class="productReviewItemUserInfo">
+					<!--{{review.user.anonymousName}}<span class="userInfoGrayPart">（匿名）</span>-->
+				</div>
+				<div style="clear:both"></div>			
+			</div>
+		</div>
+	</div>
+</div>

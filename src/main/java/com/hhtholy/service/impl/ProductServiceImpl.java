@@ -122,23 +122,22 @@ public class ProductServiceImpl implements ProductService {
     public void setSingleImageLogic(Product product) {
         //根据产品的去获取 单图 获取的是一个列表
         List<ProductImage> productImages = productImageService.getProductImage(product, Constant.SINGLEIMAGE.getWord());
+        int count = 0;
+        StringBuffer str = new StringBuffer();
         if(productImages != null && productImages.size() > 0){
-            product.setImageUrlSingle(productImages.get(0).getImageurl());
+            for (ProductImage productImageSingle : productImages) { //遍历每一个单图
+                if(count == (productImages.size() - 1)){
+                    str.append(productImageSingle.getImageurl());
+                }else {
+                    str.append(productImageSingle.getImageurl()).append(",");
+                }
+                count ++;
+            }
+            product.setImageUrlSingle(str.toString());
         }else{
-            product.setImageUrlSingle(null); //如果没有单图的话 置空
+            product.setImageUrlSingle(null); //如果没有详情图的话 置空
         }
         updateProduct(product); //更新数据
-    }
-
-    /**
-     * 为产品设置详情图
-     * @param content 当前页 下的 产品列表
-     */
-    @Override
-    public void setDetailImageForProduct(List<Product> content) {
-        for (Product p: content){
-            setDetailImageLogic(p);
-        }
     }
 
     public void setDetailImageLogic(Product product) {
@@ -160,6 +159,38 @@ public class ProductServiceImpl implements ProductService {
             product.setImageUrlsDetail(null); //如果没有详情图的话 置空
         }
         updateProduct(product); //更新数据
+    }
+
+    /**
+     * 为产品设置详情图
+     * @param content 当前页 下的 产品列表
+     */
+    @Override
+    public void setDetailImageForProduct(List<Product> content) {
+        for (Product p: content){
+            setDetailImageLogic(p);
+        }
+    }
+
+    /**
+     * 为产品设置一个单图
+     * @param product
+     */
+    @Override
+    public void setSingleImageUrlFoJson(Product product) {
+        List<ProductImage> productImages = productImageService.getProductImage(product, Constant.SINGLEIMAGE.getWord());
+        if(productImages != null && productImages.size() > 0){
+            product.setSingleImageUrlForJson(productImages.get(0).getImageurl());
+        }else {
+            product.setSingleImageUrlForJson(null);
+        }
+    }
+
+    @Override
+    public void setSingleImageUrlFoJson(List<Product> content) {
+        for (Product product : content) {
+            setSingleImageUrlFoJson(product);
+        }
     }
 
     /**
@@ -196,10 +227,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void setReviewsAndSaleCountForProduct(Product product) {
         Integer saleCount = getSaleCountForProduct(product);
-        //根据产品获取 评价数量
-        int reviewCount = reviewService.getReviewCount(product);
+        int reviewCount = reviewService.getReviewCount(product);        //根据产品获取 评价数量
         product.setReviewCount(reviewCount);
         product.setSaleCount(saleCount);
+        updateProduct(product);  //更新数据
     }
 
     /**

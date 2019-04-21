@@ -50,6 +50,7 @@ public class ProductController {
         Page<Product> productPage = productService.getProductPage(category, currentPage, Integer.valueOf(ReadProperties.getPropertyValue("pagesize", "application.properties")), Integer.valueOf(ReadProperties.getPropertyValue("navigatenums", "application.properties")));
         productService.setSingleImageForProduct(productPage.getContent()); //设置产品单图
         productService.setDetailImageForProduct(productPage.getContent()); //设置产品详情图
+        productService.setSingleImageUrlFoJson(productPage.getContent()); //设置单图（第一个）不存入数据库
         return productPage;
     }
 

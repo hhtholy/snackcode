@@ -19,6 +19,8 @@ public interface ProductService { //查询一个分类下的产品信息  分页
     public Product updateProduct(Product product);    //更新产品
     public void setSingleImageForProduct(List<Product> content); //为产品设置单图
     public void setDetailImageForProduct(List<Product> content); //为产品设置详情图
+    public void setSingleImageUrlFoJson(Product product); //一个单图 不存在数据库中
+    public void setSingleImageUrlFoJson(List<Product> content);
     public List<Product> getProductList(Category category);
     public Integer getSaleCountForProduct(Product product);//获取产品的销量
     public void setReviewsAndSaleCountForProduct(Product product);     //为产品设置销量 和 评价数量
