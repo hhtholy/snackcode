@@ -1,30 +1,29 @@
+<!--根据关键字 查询后的结果-->
 <div class th:fragment="html">
 	<div class="searchProducts">
 		<!--遍历查询结果-->
-		<div class="productUnit" price="${p.promotePrice}" v-for="p in products" >
-			<a :href="'foreproduct?pid='+p.id">
-				<img class="productImage" :src="'img/productSingle/'+p.productImageId+'.jpg'">
+		<div v-for="p in products" class="productUnit" price="${p.promotePrice}">
+			<a :href="'toforeProduct?pid='+p.id"> <!--产品图片（单图）-->
+				<img class="productImage" v-if="null != p.singleImageUrlForJson" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+p.singleImageUrlForJson">
 			</a>
 			<span class="productPrice">
 				{{p.promotePrice|formatMoneyFilter}}
 			</span>
 			<!--点击的话  会到产品的详情-->
-			<a class="productLink" :href="'foreproduct?pid='+p.id">
+			<a class="productLink" :href="'toforeProduct?pid='+p.id">
 				{{p.name|subStringFilter(0,50)}}
 			</a>
 
-			<a  class="tmallLink" :href="'foreproduct?pid='+p.id">天猫专卖</a>
+			<a  class="tmallLink" :href="'toforeProduct?pid='+p.id">小店专卖</a>
 
 			<div class="show1 productInfo">
 				<span class="monthDeal ">月成交 <span class="productDealNumber">{{p.saleCount}}笔</span></span>
 				<span class="productReview">评价<span class="productReviewNumber">{{p.reviewCount}}</span></span>
-				<span class="wangwang"><img src="img/site/wangwang.png"></span>
+				<!--<span class="wangwang"><img src="img/site/wangwang.png"></span>-->
 			</div>
 
 		</div>
-
 		<div v-if="0 == products.length" class="noMatch">没有满足条件的产品</div>
-
 		<div style="clear:both"></div>
 	</div>
 </div>

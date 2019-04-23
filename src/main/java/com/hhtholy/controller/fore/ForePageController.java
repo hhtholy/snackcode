@@ -97,9 +97,18 @@ public class ForePageController {
      * 跳转到 搜索结果 界面
      * @return
      */
-    @GetMapping("/toForesearch")
+    @GetMapping("/toForeSearch")
     public String search(){
         return "fore/searchResultPage/resultSearch";
     }
+
+    /**
+     * 点击立即购买 后生成    结算页
+     */
+    @GetMapping("/toOrderSetAccount")
+    public String buy(){
+        return "fore/orderSetAccountPage/orderSetAccount";
+    }
+
 
 }

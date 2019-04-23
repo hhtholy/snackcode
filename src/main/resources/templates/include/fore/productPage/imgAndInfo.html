@@ -64,7 +64,7 @@
 						var url = "buyitNow?pid="+pid+"&num="+num;
 						axios.get(url).then(function(response) { //立即购买
 							var oiid = response.data;//返回的是订单项的id
-							location.href="buy?oiids="+oiid; 	//地址重定向  这里只是页面跳转
+							location.href="toOrderSetAccount?oiids="+oiid; 	//地址重定向  这里只是页面跳转
 						});
 					}
 					else{ //没有登录的话 就弹出登录框

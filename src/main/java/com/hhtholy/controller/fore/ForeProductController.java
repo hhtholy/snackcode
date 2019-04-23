@@ -1,9 +1,7 @@
 package com.hhtholy.controller.fore;
 
-import com.hhtholy.entity.Product;
-import com.hhtholy.entity.PropertyValue;
-import com.hhtholy.entity.Review;
-import com.hhtholy.entity.User;
+import com.hhtholy.entity.*;
+import com.hhtholy.service.OrderItemService;
 import com.hhtholy.service.ProductService;
 import com.hhtholy.service.PropertyValueService;
 import com.hhtholy.service.ReviewService;
@@ -14,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.elasticsearch.rest.action.admin.cluster.RestDeleteRepositoryAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,6 +34,7 @@ public class ForeProductController {
      @Autowired private ProductService productService;
      @Autowired private PropertyValueService propertyValueService;
      @Autowired private ReviewService reviewService;
+     @Autowired private OrderItemService orderItemService;
 
 
     @ApiOperation(value = "产品展示",notes = "对应产品的展示")
@@ -88,16 +89,27 @@ public class ForeProductController {
     })
     @GetMapping("/searchProduct")
     public  Object search(@RequestParam("keyword") String keyword){
-        Page<Product> searchResult = productService.searchProductByKey(keyword, 0, 20);     //查询结果
-        List<Product> content = searchResult.getContent();
-        //设置产品的图片  单图显示
-       // productService.setFirstImagesForProduct(content);
-
-        //设置 产品的 销量和评价数量
-      //  productService.setReviewsAndSaleCount(content);
-
-
+        Page<Product> searchResult = productService.searchProductByKey(keyword, 0,20); //这里仅仅是查询全20条数据
+        productService.setSingleImageUrlFoJson(searchResult.getContent()); //设置单图（第一个）不存入数据库
+        productService.setReviewsAndSaleCountForProduct(searchResult.getContent());     //设置 产品的 销量和评价数量
         return searchResult;
+    }
+
+    @GetMapping("forebuy") //点击立即购买成功后  返回订单项id  然后请求到这
+    public Object buy(String[] oiids,HttpSession session){
+        List<OrderItem> orderItems = new ArrayList<>();
+        float total = 0; //订单项的总金额
+        for (String oiid : oiids) {  //遍历订单项id
+            OrderItem orderItem = orderItemService.getOrderItem(Integer.parseInt(oiid));//根据订单项id查询出订单项
+            total += orderItem.getProduct().getPromotePrice() * orderItem.getNumber(); //每一项的价格
+            orderItems.add(orderItem);
+            productService.setSingleImageUrlFoJson(orderItem.getProduct()); //为产品设置单图
+        }
+        session.setAttribute("orderItems",orderItems); //订单项 放入session中
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("orderItems",orderItems);
+        map.put("total",total);
+        return Result.success(map);
     }
 
 

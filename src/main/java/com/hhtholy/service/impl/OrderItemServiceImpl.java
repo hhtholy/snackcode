@@ -103,8 +103,14 @@ public class OrderItemServiceImpl implements OrderItemService {
         return orderItemDao.findByProductOrderById(product);
     }
 
+    /**
+     * 根据用户去查询订单
+     * @param user  用户
+     * @return
+     */
+
     @Override
     public List<OrderItem> getOrderItemByUser(User user) {
-        return null;
+        return orderItemDao.findByUserOrderById(user);
     }
 }
