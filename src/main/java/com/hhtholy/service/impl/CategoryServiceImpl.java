@@ -2,7 +2,9 @@ package com.hhtholy.service.impl;
 
 import com.hhtholy.dao.CategoryDao;
 import com.hhtholy.entity.Category;
+import com.hhtholy.entity.Product;
 import com.hhtholy.service.CategoryService;
+import com.hhtholy.service.ProductService;
 import com.hhtholy.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
       @Autowired
       private CategoryDao categoryDao;  //注入CategoryDao
+      @Autowired private ProductService productService;
 
     /**
      * 查询分类数据  同时分页
@@ -95,6 +99,20 @@ public class CategoryServiceImpl implements CategoryService {
             result = categoryOptional.get();
         }
         return result;
+    }
+
+    /**
+     * 为分类加 产品值（界面转换json）
+     * @param category
+     */
+    @Override
+    public void setProductsForJsonOfCategory(Category category) {
+        List<Product> productList = productService.getProductList(category);
+        for (Product p:productList){
+            p.setCategory(null);       //消除引用  但是不会影响其他业务使用
+        }
+        productService.setSingleImageUrlFoJson(productList); // 设置单图（不持久化数据库中）
+        category.setProductsForJson(productList);
     }
 
 

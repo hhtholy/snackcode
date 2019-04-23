@@ -3,6 +3,8 @@ package com.hhtholy.service;
 import com.hhtholy.entity.Category;
 import com.hhtholy.utils.Page;
 
+import java.util.List;
+
 /**
  * @author hht
  * @create 2019-04-04 16:56
@@ -14,4 +16,5 @@ public interface CategoryService {
     public String deleteCategory(Integer id);  //删除分类
     public Category updateCategory(Category category);     //更新分类
     public Category getCategory(Integer id);    //根据id去查询一个分类实体
+    public void setProductsForJsonOfCategory(Category category); //为分类 加上产品值（页面需要json转换）
 }

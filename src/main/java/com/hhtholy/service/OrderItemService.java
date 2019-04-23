@@ -3,6 +3,7 @@ package com.hhtholy.service;
 import com.hhtholy.entity.Order;
 import com.hhtholy.entity.OrderItem;
 import com.hhtholy.entity.Product;
+import com.hhtholy.entity.User;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public interface OrderItemService {
     public List<OrderItem> getOrderItemsByOrder(Order order); //根据订单获取订单项
 
     public List<OrderItem> getOrderItemByProduct(Product product); //根据产品获取订单项
+    public List<OrderItem> getOrderItemByUser(User user); //根据用户获取订单项
 
     
 }

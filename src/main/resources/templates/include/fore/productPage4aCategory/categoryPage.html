@@ -1,0 +1,38 @@
+<!--数据请求-->
+<div th:fragment="html">
+	<script>
+		$(function(){
+			var cid = getUrlParms("cid");
+			var sort = getUrlParms("sort");
+			var data4Vue = { //定义vue的数据域
+				uri:"forecategory",
+				category:{},
+				sort:''
+			};
+			var vue = new Vue({ //定义vue对象
+				el:"#workingArea",
+				data:data4Vue,
+				mounted:function () {
+					this.load();
+				},
+				methods:{
+                    load:function () {
+                    	var url = this.uri + "/" + cid +"?sort=" + sort;
+                    	debugger
+                    	axios.get(url).then(function (res) {
+                    		vue.category = res.data;
+						});
+					}
+				}
+			});
+		})
+	</script>
+		<title>零食小站---{{category.name}}</title>
+		<div id="category">
+		<div class="categoryPageDiv">
+		<img v-if="category!=null" class="categoryPictureInProductPage" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/category/'+category.imageurl">
+			<div th:replace="include/fore/productPage4aCategory/sortBar::html" ></div>
+			<div th:replace="include/fore/productPage4aCategory/productsByCategory::html" ></div>
+		</div>
+	</div>
+</div>

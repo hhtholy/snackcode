@@ -1,0 +1,32 @@
+<!--展示一个分类下的产品-->
+<div th:fragment="html">
+	<div class="categoryProducts">
+			<div v-for="p in category.productsForJson"  class="productUnit" :price="p.promotePrice">
+				<!--起始-->
+				<div class="productUnitFrame">
+					<a :href="'toforeProduct?pid='+p.id">
+						<img class="productImage" v-if="null != p.singleImageUrlForJson" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+p.singleImageUrlForJson">
+					</a>
+					<span class="productPrice">{{p.promotePrice|formatMoneyFilter}} </span>
+					
+					<a class="productLink" :href="'foreproduct?pid='+p.id">
+						 {{p.name|subStringFilter(0,50)}}
+					</a>
+					
+					<a  class="tmallLink" :href="'foreproduct?pid='+p.id">本店专卖</a>
+		
+					<div class="show1 productInfo">
+						<span class="monthDeal ">月成交 <span class="productDealNumber">{{p.saleCount}}笔</span></span>
+						<span class="productReview">评价<span class="productReviewNumber">{{p.reviewCount}}</span></span>
+						<span class="wangwang">
+						<a class="wangwanglink" href="#">
+							<!--<img src="img/site/wangwang.png">-->
+						</a>
+						</span>
+					</div>
+				</div>
+				<!--结束-->
+			</div>
+			<div style="clear:both"></div>
+	</div>
+</div>

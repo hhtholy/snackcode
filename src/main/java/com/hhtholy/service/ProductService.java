@@ -2,6 +2,7 @@ package com.hhtholy.service;
 
 import com.hhtholy.entity.Category;
 import com.hhtholy.entity.Product;
+import com.hhtholy.entity.User;
 import com.hhtholy.utils.Page;
 
 import java.util.List;
@@ -25,4 +26,8 @@ public interface ProductService { //查询一个分类下的产品信息  分页
     public Integer getSaleCountForProduct(Product product);//获取产品的销量
     public void setReviewsAndSaleCountForProduct(Product product);     //为产品设置销量 和 评价数量
     public void setReviewsAndSaleCountForProduct(List<Product> products);
+    public int buyitNow(Integer pid, Integer buyNum, User user);  //立即购买产品
+    public Page<Product> searchProductByKey(String keyword,int currentPage, int size);   //根据关键词去查询出 产品结果
+
+
 }

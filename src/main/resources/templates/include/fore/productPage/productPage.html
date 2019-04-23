@@ -61,7 +61,7 @@
                             vue.category = vue.product.category;
                             //显示图片 信息（imageid  单图显示）
                             vue.productImageId = vue.product.productImageId;
-                            vue.$nextTick(function () {
+                            vue.$nextTick(function () {  //页面全部渲染成功后  监听事件
                                 imgAndInfoPageRegisterListeners(vue);
                             });
                         });

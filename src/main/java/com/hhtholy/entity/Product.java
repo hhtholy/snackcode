@@ -1,10 +1,13 @@
 package com.hhtholy.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 
 /**
  * @author hht
@@ -37,13 +40,11 @@ public class Product implements Serializable {
     @Transient
     private String singleImageUrlForJson; //后台展产品的时候 需要的图片url
 
-
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="product",fetch = FetchType.LAZY)
     private List<ProductImage> productImages;
 
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="product",fetch = FetchType.LAZY)
     private List<PropertyValue> propertyValues;
-
 
     public Integer getId() {
         return id;

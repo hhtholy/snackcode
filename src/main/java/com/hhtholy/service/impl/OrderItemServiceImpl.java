@@ -1,10 +1,8 @@
 package com.hhtholy.service.impl;
 
 import com.hhtholy.dao.OrderItemDao;
-import com.hhtholy.entity.Order;
+import com.hhtholy.entity.*;
 import com.hhtholy.entity.OrderItem;
-import com.hhtholy.entity.OrderItem;
-import com.hhtholy.entity.Product;
 import com.hhtholy.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -103,5 +101,10 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public List<OrderItem> getOrderItemByProduct(Product product) {
         return orderItemDao.findByProductOrderById(product);
+    }
+
+    @Override
+    public List<OrderItem> getOrderItemByUser(User user) {
+        return null;
     }
 }

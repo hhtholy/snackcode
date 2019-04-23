@@ -14,6 +14,7 @@ import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,6 +71,15 @@ public class ForeUserController {
         }
     }
 
+    /**
+     * 检测用户有没有登录
+     * @return
+     */
+    @GetMapping("/foreCheckLogin")
+    public Object checkUserIsLongin(){
+        Subject subject = SecurityUtils.getSubject();
+        return subject.isAuthenticated() == false?Result.fail("用户没有登录"):Result.success();
+    }
 
 
 

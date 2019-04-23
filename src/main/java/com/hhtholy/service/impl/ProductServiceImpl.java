@@ -14,8 +14,14 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired private ProductImageService productImageService;
     @Autowired private OrderItemService orderItemService;
     @Autowired private ReviewService reviewService;
+    @Autowired private ProductService productService;
     /**
      *   查询产品数据 分页
      * @param category 分类
@@ -222,7 +229,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 为产品设置 评价数量（review） 和 销量(saleCount)
-     * @param product
+     * @param product 产品
      */
     @Override
     public void setReviewsAndSaleCountForProduct(Product product) {
@@ -235,7 +242,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 为产品设置 评价数量和销量
-     * @param products
+     * @param products 产品列表
      */
     @Override
     public void setReviewsAndSaleCountForProduct(List<Product> products) {
@@ -244,5 +251,64 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * 立即购买
+     * @param pid 产品id
+     * @param buyNum  购买的数量
+     * @param user  当前用户
+     * @return  返回订单项id
+     */
+    @Override
+    public int buyitNow(Integer pid, Integer buyNum, User user) {
+        int resultOrderItemId = 0;
+        boolean flag = false;
+        Product product = getProduct(pid); //根据产品id获取产品
+        List<OrderItem> orderItemByUser = orderItemService.getOrderItemByUser(user); //获取用户所在的订单项
+        if(orderItemByUser != null && orderItemByUser.size() > 0){
+            for (OrderItem orderItem : orderItemByUser) {
+                  if(orderItem.getProduct().getId().equals(pid)){ //如果说已经点击过立即购买或者添加到购物车了 那么订单项的数量加1即可
+                      Integer number = orderItem.getNumber();
+                      number+=buyNum;
+                      orderItem.setNumber(number);
+                      orderItemService.updateOrderItem(orderItem); //更新订单项数据（也就是数量）
+                      flag = true;
+                      resultOrderItemId = orderItem.getId();
+                  }
+            }
+        } ///if
+        if(!flag){  //如果是之前也没有添加过的话  创建新的订单项
+            OrderItem orderItem = new OrderItem();
+            orderItem.setNumber(buyNum);
+            orderItem.setUser(user);
+            orderItem.setProduct(product);
+            orderItemService.addOrderItem(orderItem); //存取进数据库
+            resultOrderItemId = orderItem.getId();
+        }
+        return resultOrderItemId;
+    }
+
+    /**
+     * 根据产品关键字去查询产品
+     * @param keyword  关键字
+     * @param currentPage 当前页
+     * @param size  每页显示的条数
+     * @return
+     */
+    @Override
+    public Page<Product> searchProductByKey(final String keyword, int currentPage, int size) {
+            Pageable pageable = new  PageRequest(currentPage, size, Sort.Direction.ASC, "id");    //分页条件
+            org.springframework.data.domain.Page<Product> resultGet = productDao.findAll(new Specification<Product>() {
+             @Override
+            public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                ArrayList<Predicate> arrayList = new ArrayList<Predicate>();
+                if (keyword != null) {
+                    arrayList.add(criteriaBuilder.like(root.get("name").as(String.class), "%" + keyword + "%"));
+                }
+                Predicate[] p = new Predicate[arrayList.size()];
+                return criteriaBuilder.and(arrayList.toArray(p));
+            }
+        }, pageable);
+        return new Page<>(resultGet,5);
+    }
 
 }

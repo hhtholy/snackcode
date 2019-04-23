@@ -1,6 +1,7 @@
 package com.hhtholy.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,6 +29,9 @@ public class Category implements Serializable {
 
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="category",fetch = FetchType.LAZY)
     private List<Product> products;
+
+    @Transient
+    private List<Product> productsForJson;
 
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="category",fetch = FetchType.LAZY)
     private List<Property> properties;
@@ -72,5 +76,13 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Product> getProductsForJson() {
+        return productsForJson;
+    }
+
+    public void setProductsForJson(List<Product> productsForJson) {
+        this.productsForJson = productsForJson;
     }
 }

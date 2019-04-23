@@ -83,6 +83,23 @@ public class ForePageController {
         return "fore/productPage/product";
     }
 
+    /**
+     * 跳转到 分类下对应产品的展示
+     * @return
+     */
+    @GetMapping("/toforeCategory")
+    public String categoryShow(){
+        return "fore/proudctPage4aCategory/product4Category";
+    }
 
+
+    /**
+     * 跳转到 搜索结果 界面
+     * @return
+     */
+    @GetMapping("/toForesearch")
+    public String search(){
+        return "fore/searchResultPage/resultSearch";
+    }
 
 }

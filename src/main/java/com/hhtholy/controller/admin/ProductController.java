@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import static com.hhtholy.config.aliyunConfig.OSSClientConstants.BACKET_NAME;
@@ -60,6 +61,9 @@ public class ProductController {
     })
     @PostMapping("/products")
     public Product addProduct(@RequestBody Product product){
+
+        Date date = new Date();
+        product.setCreateDate(date); //设置创建时间
         productService.addProduct(product);
         return product;
     }

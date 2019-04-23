@@ -1,4 +1,6 @@
 package com.hhtholy.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -24,6 +26,7 @@ public class PropertyValue implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "pid")
+    @JsonBackReference
     private Product product;  //产品
 
     public Integer getId() {
