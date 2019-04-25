@@ -1,7 +1,7 @@
 package com.hhtholy.service.impl;
 
 import com.hhtholy.dao.OrderDao;
-import com.hhtholy.entity.Order;
+import com.hhtholy.entity.Order_;
 import com.hhtholy.entity.OrderItem;
 import com.hhtholy.entity.Product;
 import com.hhtholy.service.OrderItemService;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,10 +34,10 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public Page<Order> getOrdersPage(Integer currentpage, Integer size, Integer navigateNum) {
+    public Page<Order_> getOrdersPage(Integer currentpage, Integer size, Integer navigateNum) {
         //设置分页信息
         Pageable pageable = new PageRequest(currentpage,size, Sort.Direction.DESC,"id");
-        org.springframework.data.domain.Page<Order> results = orderDao.findAll(pageable);
+        org.springframework.data.domain.Page<Order_> results = orderDao.findAll(pageable);
         return new Page<>(results,navigateNum);
     }
 
@@ -45,8 +46,8 @@ public class OrderServiceImpl implements OrderService {
      * @param list
      */
     @Override
-    public void addTotalPriceAndTotalNum(List<Order> list) {
-        for (Order order : list) {
+    public void addTotalPriceAndTotalNum(List<Order_> list) {
+        for (Order_ order : list) {
             addTotalPriceAndTotalNum(order);
         }
     }
@@ -56,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
      * @param order  订单
      */
     @Override
-    public void addTotalPriceAndTotalNum(Order order) {
+    public void addTotalPriceAndTotalNum(Order_ order) {
         List<OrderItem> orderItems = orderItemService.getOrderItemsByOrder(order);//获取一个订单下的所有订单项
         Product result = null;
         float totalPrice = 0; //总共的价格
@@ -78,23 +79,37 @@ public class OrderServiceImpl implements OrderService {
      * @return  订单的总金额
      */
     @Override
-    public float addOrder(Order order, List<OrderItem> orderItems) {
-        float total = 0;
+    public  List<Object> addOrder(Order_ order, List<OrderItem> orderItems) {
+
+        ArrayList<Object> totalNumsAndPrice = new ArrayList<>();
+        Float totalPrice = 0f;
+        Integer totalNum = 0;
         orderDao.save(order);
         for (OrderItem item : orderItems){     //更新 订单项
             item.setOrder(order); //订单项和订单关联起来
             orderItemService.updateOrderItem(item);
-            total += item.getProduct().getPromotePrice() * item.getNumber();
+            totalPrice += item.getProduct().getPromotePrice() * item.getNumber();
+            totalNum += item.getNumber();
         }
-        return total;
+        totalNumsAndPrice.add(totalPrice);
+        totalNumsAndPrice.add(totalNum);
+        return totalNumsAndPrice;
     }
 
     /**
-     *
-     * @param order
+     * 更新订单
+     * @param order_ 订单实体
+     * @return
      */
     @Override
-    public void addOrderTest(Order order) {
-         orderDao.save(order);
+    public Order_ updateOrder(Order_ order_) {
+        Order_ result = null;
+        try {
+            result = orderDao.save(order_);
+        }catch (Exception e){
+            result = null;
+        }
+        return result;
     }
+
 }

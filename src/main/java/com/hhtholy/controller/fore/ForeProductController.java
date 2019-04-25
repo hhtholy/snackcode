@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.math.RandomUtils;
-import org.elasticsearch.rest.action.admin.cluster.RestDeleteRepositoryAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -130,30 +129,30 @@ public class ForeProductController {
             @ApiImplicitParam(name="order",value="订单项id(数组)",required=true,paramType="query",dataType = "string"),
     })
     @PostMapping("/foreCreateOrder")
-    public Object createOrder(@RequestBody Order order,HttpSession session){
+    public Object createOrder(@RequestBody Order_ order, HttpSession session){
         User user =(User)  session.getAttribute("user");
         if(null==user)
             return Result.fail("未登录");
         String code = new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()) + RandomUtils.nextInt(1000);        //生成随机的订单码
         order.setOrderCode(code);
         order.setUser(user);
-        //order.setCreateDate(new Date());
+        order.setCreateDate(new Date());
         order.setStatus(Constant.ORDER_WAITPAY.getWord()); //订单状态 待付款
         List<OrderItem> orderItems = (List<OrderItem>)session.getAttribute("orderItems"); //拿到session中的订单项
         //创建订单
-        float total = orderService.addOrder(order, orderItems);
+        List<Object> totals = orderService.addOrder(order, orderItems);
+        Float  price = (Float) totals.get(0);
+        Integer nums = (Integer) totals.get(1);
+        order.setTotalPrice(price);
+        order.setTotalNum(nums);
+        orderService.updateOrder(order);
         //返回数据 一个是订单id  一个是订单总额
         HashMap<String, Object> map = new HashMap<>();
-        map.put("total",total); //订单总额
+        map.put("total",price); //订单总额
         map.put("oid",order.getId()); //订单id
         return Result.success(map);
     }
 
-    @ApiOperation(value = "测试提交订单",notes = "测试提交订单")
-    @PostMapping("/createOrder")
-    public void demo(@RequestBody Order order){
-       orderService.addOrderTest(order);
-    }
 
 
 

@@ -98,17 +98,17 @@
             <version>8.5.23</version>
         </dependency>
         <!-- mysql-->
-      <!--  <dependency>
+     <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.12</version>
-        </dependency>-->
+        </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.21</version>
-        </dependency>
+        </dependency>-->
 
         <!-- junit -->
         <dependency>

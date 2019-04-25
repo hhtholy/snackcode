@@ -89,7 +89,7 @@ public class OrderItemServiceImpl implements OrderItemService {
      * @return
      */
     @Override
-    public List<OrderItem> getOrderItemsByOrder(Order order) {
+    public List<OrderItem> getOrderItemsByOrder(Order_ order) {
         return orderItemDao.findByOrderOrderById(order);
     }
 

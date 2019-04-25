@@ -11,8 +11,8 @@ import java.util.List;
  * 订单表
  */
 @Entity
-@Table(name = "order")
-public class Order implements Serializable {
+@Table(name = "order_")
+public class Order_ implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

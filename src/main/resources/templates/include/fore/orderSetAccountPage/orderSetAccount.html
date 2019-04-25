@@ -32,6 +32,7 @@
                         var url = "foreCreateOrder";
                         //提交订单信息
                         axios.post(url,this.order).then(function (res) {
+                            debugger
                             //返回的数据 是个map集合
                             var result = res.data;
                             var oid = result.data.oid;
