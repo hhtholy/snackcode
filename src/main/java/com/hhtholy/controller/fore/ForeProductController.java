@@ -1,10 +1,7 @@
 package com.hhtholy.controller.fore;
 
 import com.hhtholy.entity.*;
-import com.hhtholy.service.OrderItemService;
-import com.hhtholy.service.ProductService;
-import com.hhtholy.service.PropertyValueService;
-import com.hhtholy.service.ReviewService;
+import com.hhtholy.service.*;
 import com.hhtholy.utils.Constant;
 import com.hhtholy.utils.Page;
 import com.hhtholy.utils.Result;
@@ -12,15 +9,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.math.RandomUtils;
 import org.elasticsearch.rest.action.admin.cluster.RestDeleteRepositoryAction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,6 +32,7 @@ public class ForeProductController {
      @Autowired private PropertyValueService propertyValueService;
      @Autowired private ReviewService reviewService;
      @Autowired private OrderItemService orderItemService;
+    @Autowired private OrderService orderService;
 
 
     @ApiOperation(value = "产品展示",notes = "对应产品的展示")
@@ -95,7 +93,11 @@ public class ForeProductController {
         return searchResult;
     }
 
-    @GetMapping("forebuy") //点击立即购买成功后  返回订单项id  然后请求到这
+    @ApiOperation(value = "结算页数据填充",notes = "返回订单项对应产品和金额等数据到结算页")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="oiids",value="订单项id(数组)",required=true,paramType="query",dataType = "string"),
+    })
+    @GetMapping("forebuy") //点击立即购买成功后  返回订单项id  然后请求到这（携带订单项id）
     public Object buy(String[] oiids,HttpSession session){
         List<OrderItem> orderItems = new ArrayList<>();
         float total = 0; //订单项的总金额
@@ -111,6 +113,48 @@ public class ForeProductController {
         map.put("total",total);
         return Result.success(map);
     }
+    @ApiOperation(value = "购物车信息展示",notes = "展示购物车中的产品和金额等数据")
+    @GetMapping("/forecart")
+    public Object showCart(HttpSession session){
+        User user =(User) session.getAttribute("user");
+        List<OrderItem> orderItems = orderItemService.getOrderItemByUser(user);//根据用户获取订单项
+        for (OrderItem orderItem : orderItems) {  //为订单项对应产品 设置单图
+            productService.setSingleImageUrlFoJson(orderItem.getProduct());
+        }
+        return orderItems;
+    }
+
+
+    @ApiOperation(value = "提交订单",notes = "填写好订单信息，将订单项信息和订单绑定")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="order",value="订单项id(数组)",required=true,paramType="query",dataType = "string"),
+    })
+    @PostMapping("/foreCreateOrder")
+    public Object createOrder(@RequestBody Order order,HttpSession session){
+        User user =(User)  session.getAttribute("user");
+        if(null==user)
+            return Result.fail("未登录");
+        String code = new SimpleDateFormat("yyyyMMddHHmmssSS").format(new Date()) + RandomUtils.nextInt(1000);        //生成随机的订单码
+        order.setOrderCode(code);
+        order.setUser(user);
+        //order.setCreateDate(new Date());
+        order.setStatus(Constant.ORDER_WAITPAY.getWord()); //订单状态 待付款
+        List<OrderItem> orderItems = (List<OrderItem>)session.getAttribute("orderItems"); //拿到session中的订单项
+        //创建订单
+        float total = orderService.addOrder(order, orderItems);
+        //返回数据 一个是订单id  一个是订单总额
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("total",total); //订单总额
+        map.put("oid",order.getId()); //订单id
+        return Result.success(map);
+    }
+
+    @ApiOperation(value = "测试提交订单",notes = "测试提交订单")
+    @PostMapping("/createOrder")
+    public void demo(@RequestBody Order order){
+       orderService.addOrderTest(order);
+    }
+
 
 
 

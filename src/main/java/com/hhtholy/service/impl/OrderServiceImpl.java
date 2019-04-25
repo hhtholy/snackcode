@@ -70,4 +70,31 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalPrice(totalPrice);
         order.setOrderItems(orderItems);
     }
+
+    /**
+     *   添加订单
+     * @param order 订单
+     * @param orderItems 订单项
+     * @return  订单的总金额
+     */
+    @Override
+    public float addOrder(Order order, List<OrderItem> orderItems) {
+        float total = 0;
+        orderDao.save(order);
+        for (OrderItem item : orderItems){     //更新 订单项
+            item.setOrder(order); //订单项和订单关联起来
+            orderItemService.updateOrderItem(item);
+            total += item.getProduct().getPromotePrice() * item.getNumber();
+        }
+        return total;
+    }
+
+    /**
+     *
+     * @param order
+     */
+    @Override
+    public void addOrderTest(Order order) {
+         orderDao.save(order);
+    }
 }

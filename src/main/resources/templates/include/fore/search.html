@@ -1,11 +1,11 @@
 <!--搜索页-->
 <div class th:fragment="html">
     <a th:href="${application.contextPath}">  <!--logo-->
-        <img id="logo" src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/logo.jpg" class="logo">
+        <img id="logo" width="130px" height="60px" src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/logo.jpg" class="logo">
     </a>
 
-    <!--搜索框-->
-    <form action="search" method="get" >
+    <!--搜索框  Get请求 -->
+    <form action="toForeSearch" method="get" >
         <div class="searchDiv">
             <input name="keyword" type="text" placeholder="辣条 卫龙 薯片">
             <button  type="submit" class="searchButton">搜索</button>

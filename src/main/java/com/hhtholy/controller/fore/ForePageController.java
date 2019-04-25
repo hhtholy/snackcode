@@ -110,5 +110,13 @@ public class ForePageController {
         return "fore/orderSetAccountPage/orderSetAccount";
     }
 
+    /**
+     * 跳转到购物车页
+     * @return
+     */
+    @GetMapping("/toCart")
+    public  String cart(){
+        return "fore/cartPage/cart";
+    }
 
 }

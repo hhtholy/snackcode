@@ -5,11 +5,10 @@
                 uri:'forecart',
                 orderItems:[]
             };
-            //ViewModel
             var vue = new Vue({
                 el: '#workingArea',
                 data: data4Vue,
-                mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+                mounted:function(){
                     this.load();
                 },
                 methods: {
@@ -28,6 +27,7 @@
             });
 
         });
+
         //定义一些函数  界面商品数量的添加以及删除
         var deleteOrderItemid = 0; //需要删除的 订单项id
         var deleteFlag = false;  //点击了删除确认的标记
@@ -76,12 +76,12 @@
             $("img.cartProductItemIfSelected").click(function(){
                 var selectit = $(this).attr("selectit")
                 if("selectit"==selectit){
-                    $(this).attr("src","img/site/cartNotSelected.png");
+                    $(this).attr("src","http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartNotSelected.png");
                     $(this).attr("selectit","false")
                     $(this).parents("tr.cartProductItemTR").css("background-color","#fff");
                 }
                 else{
-                    $(this).attr("src","img/site/cartSelected.png");
+                    $(this).attr("src","http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartSelected.png");
                     $(this).attr("selectit","selectit")
                     $(this).parents("tr.cartProductItemTR").css("background-color","#FFF8E1");
                 }
@@ -93,19 +93,19 @@
             $("img.selectAllItem").click(function(){
                 var selectit = $(this).attr("selectit")
                 if("selectit"==selectit){
-                    $("img.selectAllItem").attr("src","img/site/cartNotSelected.png");
+                    $("img.selectAllItem").attr("src","http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartNotSelected.png");
                     $("img.selectAllItem").attr("selectit","false")
                     $(".cartProductItemIfSelected").each(function(){
-                        $(this).attr("src","img/site/cartNotSelected.png");
+                        $(this).attr("src","http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartNotSelected.png");
                         $(this).attr("selectit","false");
                         $(this).parents("tr.cartProductItemTR").css("background-color","#fff");
                     });
                 }
                 else{
-                    $("img.selectAllItem").attr("src","img/site/cartSelected.png");
+                    $("img.selectAllItem").attr("src","http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartSelected.png");
                     $("img.selectAllItem").attr("selectit","selectit")
                     $(".cartProductItemIfSelected").each(function(){
-                        $(this).attr("src","img/site/cartSelected.png");
+                        $(this).attr("src","http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartSelected.png");
                         $(this).attr("selectit","selectit");
                         $(this).parents("tr.cartProductItemTR").css("background-color","#FFF8E1");
                     });
@@ -169,7 +169,7 @@
                     }
                 });
                 params = params.substring(1);
-                location.href="buy?"+params;
+                location.href="toOrderSetAccount?"+params; // 跳转到结算页
             });
 
         }
@@ -201,9 +201,9 @@
             });
 
             if(selectAll)
-                $("img.selectAllItem").attr("src","img/site/cartSelected.png");
+                $("img.selectAllItem").attr("src","http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartSelected.png");
             else
-                $("img.selectAllItem").attr("src","img/site/cartNotSelected.png");
+                $("img.selectAllItem").attr("src","http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartNotSelected.png");
         }
         function calcCartSumPriceAndNumber(){
             var sum = 0;
@@ -253,7 +253,7 @@
                 <thead>
                 <tr>
                     <th class="selectAndImage">
-                        <img selectit="false" class="selectAllItem" src="img/site/cartNotSelected.png">
+                        <img selectit="false" class="selectAllItem" src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartNotSelected.png">
                         全选
 
                     </th>
@@ -268,17 +268,18 @@
                 <!--数据遍历-->
                 <tr :oiid="oi.id" class="cartProductItemTR" v-for="oi in orderItems">
                     <td>
-                        <img selectit="false" :oiid="oi.id" class="cartProductItemIfSelected" src="img/site/cartNotSelected.png">
-                        <a style="display:none" href="#nowhere"><img src="img/site/cartSelected.png"></a>
-                        <img class="cartProductImg"  :src="'img/productSingle_middle/'+oi.product.productImageId+'.jpg'">
+                        <img selectit="false" :oiid="oi.id" class="cartProductItemIfSelected" src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartNotSelected.png">
+                        <a style="display:none" href="#"><img src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartSelected.png"></a>
+                       <!--产品单图-->
+                        <img class="cartProductImg"  v-if="null != oi.product.singleImageUrlForJson" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+oi.product.singleImageUrlForJson">
                     </td>
                     <td>
                         <div class="cartProductLinkOutDiv">
-                            <a :href="'foreproduct?pid='+oi.product.id" class="cartProductLink">{{oi.product.name}}</a>
+                            <a :href="'toforeProduct?pid='+oi.product.id" class="cartProductLink">{{oi.product.name}}</a>
                             <div class="cartProductLinkInnerDiv">
-                                <img src="img/site/creditcard.png" title="支持信用卡支付">
-                                <img src="img/site/7day.png" title="消费者保障服务,承诺7天退货">
-                                <img src="img/site/promise.png" title="消费者保障服务,承诺如实描述">
+                                <!--几张银行卡图片展示 和 承诺-->
+                                <img src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/7day.png" title="支持信用卡支付">
+                                <img src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/promise.png" title="消费者保障服务,承诺如实描述">
                             </div>
                         </div>
 
@@ -294,9 +295,9 @@
                         <div class="cartProductChangeNumberDiv">
                             <span class="hidden orderItemStock " :pid="oi.product.id">{{oi.product.stock}}</span>
                             <span class="hidden orderItemPromotePrice " :pid="oi.product.id">{{oi.product.promotePrice}}</span>
-                            <a  :pid="oi.product.id" class="numberMinus" href="#nowhere">-</a>
+                            <a  :pid="oi.product.id" class="numberMinus" href="#">-</a>
                             <input :pid="oi.product.id" :oiid="oi.id" class="orderItemNumberSetting" autocomplete="off" :value="oi.number">
-                            <a  :stock="oi.product.stock" :pid="oi.product.id" class="numberPlus" href="#nowhere">+</a>
+                            <a  :stock="oi.product.stock" :pid="oi.product.id" class="numberPlus" href="#">+</a>
                         </div>
 
                     </td>
@@ -307,7 +308,7 @@
 
                     </td>
                     <td>
-                        <a class="deleteOrderItem" :oiid="oi.id"  href="#nowhere">删除</a>
+                        <a class="deleteOrderItem" :oiid="oi.id"  href="#">删除</a>
                     </td>
                 </tr>
                 </tbody>
@@ -316,7 +317,7 @@
         </div>
 
         <div class="cartFoot">
-            <img selectit="false" class="selectAllItem" src="img/site/cartNotSelected.png">
+            <img selectit="false" class="selectAllItem" src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/cartNotSelected.png">
             <span>全选</span>
             <!-- 		<a href="#">删除</a> -->
 
