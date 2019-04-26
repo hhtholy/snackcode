@@ -7,7 +7,8 @@
                 uri:"forebuy",
                 total:0,
                 orderItems:[],
-                order:{}
+                order:{},
+                pay:{}
             };
             var vue = new Vue({
                 el: '#workingArea',
@@ -32,13 +33,13 @@
                         var url = "foreCreateOrder";
                         //提交订单信息
                         axios.post(url,this.order).then(function (res) {
-                            debugger
                             //返回的数据 是个map集合
                             var result = res.data;
                             var oid = result.data.oid;
                             var total = result.data.total;
+                            var pay = result.data.pay;
                             //阿里付款  回调回来的数据  此时订单id 和 金额都有了
-                            location.href="alipay?oid="+oid+"&total="+total;
+                            location.href="alipay?oid="+oid+"&total_fee="+total+"&out_trade_no="+pay.out_trade_no+"&subject="+pay.subject+"&body="+pay.body;
                         });
 
                     }

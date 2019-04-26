@@ -246,7 +246,15 @@
             <scope>compile</scope>
         </dependency>
         <!-- 阿里结束-->
-   </dependencies>
+
+        <!--aalipay-->
+        <dependency>
+            <groupId>com.alipay</groupId>
+            <artifactId>sdk-java</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <finalName>snacktrade</finalName>

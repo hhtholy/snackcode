@@ -1,5 +1,7 @@
 package com.hhtholy.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -12,6 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "order_")
+@JsonIgnoreProperties(value = {"orderItems"})
 public class Order_ implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

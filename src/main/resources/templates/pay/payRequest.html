@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/ForeCommonJs::html" ></head>  <!--引入js和css等 和一些公关的js函数-->
+<body>
+<script>
+    $(function () {
+
+        var out_trade_no = getUrlParms("out_trade_no"); //
+        var total = getUrlParms("total_fee");
+        var subject = getUrlParms("subject");
+        var body = getUrlParms("body");
+        var data4Vue ={
+            uri:"pay",
+            pay_:{}
+        };
+        var vue = new  Vue({
+            el:"#demo",
+            data:data4Vue,
+            mounted:function () {
+                this.pay();
+            },
+            methods:{
+                pay:function () {
+                    var url = this.uri;
+                    this.pay_.out_trade_no = out_trade_no;
+                    this.pay_.total_fee = total;
+                    this.pay_.subject = subject;
+                    this.pay_.body = body;
+                    axios.post(url,this.pay_).then(function (res) {
+
+                    });
+                }
+            }
+        });
+
+    });
+</script>
+
+<div id="demo">
+
+
+
+</div>
+</body>
+</html>

@@ -5,6 +5,7 @@ import com.hhtholy.service.*;
 import com.hhtholy.utils.Constant;
 import com.hhtholy.utils.Page;
 import com.hhtholy.utils.Result;
+import com.hhtholy.utils.aliPay.Pay;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -148,8 +149,14 @@ public class ForeProductController {
         orderService.updateOrder(order);
         //返回数据 一个是订单id  一个是订单总额
         HashMap<String, Object> map = new HashMap<>();
+        Pay pay = new Pay(); //支付宝支付会用到的数据
+        pay.setOut_trade_no(code); //商户订单号
+        pay.setSubject("商品购买"); //订单名称
+        pay.setBody("商品购买"); //订单描述
+
         map.put("total",price); //订单总额
         map.put("oid",order.getId()); //订单id
+        map.put("pay",pay); //支付实体
         return Result.success(map);
     }
 

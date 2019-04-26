@@ -119,4 +119,17 @@ public class ForePageController {
         return "fore/cartPage/cart";
     }
 
+
+    /**
+     * 阿里支付
+     * @param oid
+     * @param total
+     * @return
+     */
+    @GetMapping("/alipay")
+    public String alipay(String oid,String total_fee,String out_trade_no,String subject,String body){
+
+        return "pay/payRequest";
+    }
+
 }
