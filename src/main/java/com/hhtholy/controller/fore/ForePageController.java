@@ -123,7 +123,7 @@ public class ForePageController {
     /**
      * 阿里支付
      * @param oid
-     * @param total
+     * @param
      * @return
      */
     @GetMapping("/alipay")

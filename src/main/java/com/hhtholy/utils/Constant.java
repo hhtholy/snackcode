@@ -10,7 +10,7 @@ public enum Constant {
     SINGLEIMAGE("single","单图"),
     DETAILIMAGE("detail","细节图"),
     ORDER_WAITPAY("waitPay","订单待支付"),
-    ORDER_WAITDELIVERY("waitDelivery","待发货"),
+    ORDER_WAITDELIVERY("waitDelivery","已付款待发货"),
     ORDER_WAITCONFIRM("waitConfirm","待收货"),
     ORDER_WAITREVIEW("waitReview","待评价"),
     ORDER_FINISH("finish","订单完成"),

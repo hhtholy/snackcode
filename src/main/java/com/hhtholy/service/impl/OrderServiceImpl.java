@@ -112,4 +112,14 @@ public class OrderServiceImpl implements OrderService {
         return result;
     }
 
+    /**
+     * 根据订单号去查询 订单
+     * @param orderCode
+     * @return
+     */
+    @Override
+    public Order_ getOrderByOrderCode(String orderCode) {
+        return orderDao.findByOrderCode(orderCode);
+    }
+
 }

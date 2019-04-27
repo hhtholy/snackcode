@@ -20,4 +20,6 @@ public interface OrderService {
     public void addTotalPriceAndTotalNum(Order_ order);
     List<Object> addOrder(Order_ order, List<OrderItem> orderItems);  //添加订单 订单和订单项关联起来
     Order_ updateOrder(Order_ order_); //更新实体
+
+    public Order_ getOrderByOrderCode(String orderCode);
 }
