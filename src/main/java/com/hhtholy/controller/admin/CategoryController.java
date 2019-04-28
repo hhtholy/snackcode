@@ -15,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +39,6 @@ public class CategoryController {
     @Autowired  private CategoryService categoryService;  //注入CategoryService
     @Autowired private ProductService productService; //删除图片用上
     @Autowired private ProductImageService productImageService; //删除图片用上
-
 
     @ApiOperation(value = "获取分类列表(分页)",notes = "获取所有的分类信息")
     @ApiImplicitParams({

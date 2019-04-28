@@ -1,6 +1,6 @@
 <!--搜索页-->
 <div class th:fragment="html">
-    <a th:href="${application.contextPath}">  <!--logo-->
+    <a th:href="${application.contextPath}">  <!--logo-->  <!-- 主页-->
         <img id="logo" width="130px" height="60px" src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/logo.jpg" class="logo">
     </a>
 
@@ -9,9 +9,10 @@
         <div class="searchDiv">
             <input name="keyword" type="text" placeholder="辣条 卫龙 薯片">
             <button  type="submit" class="searchButton">搜索</button>
-            <div class="searchBelow">
+            <div class="searchBelow">  <!--搜索框  下面推荐的分类-->
+                <!--categories_below_search 已经放在context域中-->
 				<span th:each="c,status: ${application.categories_below_search}" th:if="${status.index>=5 && status.index<=8}">
-					<a th:href="@{'category?cid='+${c.id}}" th:text="${c.name}" ></a>
+					<a th:href="@{'toforeCategory?cid='+${c.id}}" th:text="${c.name}" ></a> <!--点击超链接的话 跳转到该分类下的产品-->
 					<span th:if="${status.index!=8}">|</span>
 	            </span>
 

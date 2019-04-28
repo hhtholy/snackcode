@@ -4,6 +4,7 @@ import com.hhtholy.entity.Category;
 import com.hhtholy.entity.Pay_;
 import com.hhtholy.entity.Product;
 import com.hhtholy.utils.Page;
+import com.hhtholy.utils.aliPay.Pay;
 
 /**
  * @author hht
@@ -15,4 +16,6 @@ public interface PayService {
     public Pay_ addPay(Pay_ pay);    //添加交易记录
     public String deletePay(Integer id);   //删除交易记录
     public Pay_ getPay(Integer id); //根据id 获取交易记录
+
+    public Pay_ getPayByOutTradeNo(String out_trade_no);
 }

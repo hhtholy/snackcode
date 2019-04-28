@@ -17,8 +17,6 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <!--<tomcat.version>7.0.52</tomcat.version>-->
-
     </properties>
 
 
@@ -253,6 +251,15 @@
             <artifactId>sdk-java</artifactId>
             <version>3.3.2</version>
         </dependency>
+
+<!--log-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
 
     </dependencies>
 

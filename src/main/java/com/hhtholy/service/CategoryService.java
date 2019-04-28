@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface CategoryService {
     public Page getCategoryPage(Integer currentPage, Integer size, int navigatePages);    //分类分页
+    public List<Category> getCategoryList();    //分类全部 不分页
     public void addCategory(Category category);    //添加分类
     public String deleteCategory(Integer id);  //删除分类
     public Category updateCategory(Category category);     //更新分类

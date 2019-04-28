@@ -82,4 +82,13 @@ public class PayServiceImpl implements PayService {
         }
         return result;
     }
+    /**
+     *  根据订单号查询 交易实体
+     * @param out_trade_no
+     * @return
+     */
+    @Override
+    public Pay_ getPayByOutTradeNo(String out_trade_no) {
+        return payDao.getPay_WithOutTradeNo(out_trade_no);
+    }
 }

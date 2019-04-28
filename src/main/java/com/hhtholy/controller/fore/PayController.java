@@ -37,7 +37,6 @@ public class PayController {
         // 订单名称，必填
         String subject = pay.getSubject();
         String body = pay.getBody();
-
         alipayRequest.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\","
                 + "\"total_amount\":\""+ total_amount +"\","
                 + "\"subject\":\""+ subject +"\","
@@ -45,8 +44,6 @@ public class PayController {
                 + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
         response.setContentType("text/html;charset=utf-8");
         String result = alipayClient.pageExecute(alipayRequest).getBody();
-        System.out.println(result);
-
         return Result.success(result);
 
     }

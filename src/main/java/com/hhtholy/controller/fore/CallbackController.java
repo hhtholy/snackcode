@@ -8,15 +8,14 @@ import com.hhtholy.entity.Pay_;
 import com.hhtholy.service.OrderService;
 import com.hhtholy.service.PayService;
 import com.hhtholy.utils.Constant;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.print.PrinterAbortException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,12 +25,14 @@ import java.util.*;
  * @create 2019-04-27 10:48
  */
 @Controller
+@Slf4j
 public class CallbackController {
     @Autowired private PayService payService;
     @Autowired private OrderService orderService;
 
     @RequestMapping("/returnUrl")
     public String synCallBack(HttpServletRequest request, HttpServletResponse response) throws IOException, AlipayApiException, ParseException {
+       log.info("同步界面");
         response.setContentType("text/html;charset=utf-8");
         Map<String, String> params = new HashMap<String, String>();
         Map<String, String[]> requestParams = request.getParameterMap();
@@ -48,7 +49,7 @@ public class CallbackController {
         }
         boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type); //调用SDK验证签名
         if(signVerified) {
-          /*  //商户订单号
+           //商户订单号
             String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
             //支付宝交易号
             String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
@@ -68,16 +69,18 @@ public class CallbackController {
             Order_ orderResult = orderService.getOrderByOrderCode(out_trade_no);
             orderResult.setStatus(Constant.ORDER_WAITDELIVERY.getWord());
             orderService.updateOrder(orderResult); //更新订单
-          */
+          log.info("验证进来了");
+            return "redirect:/home";
 
         }else {
             System.out.println("验签失败");
         }
-        return "redirect:home";
+         return null;
     }
 
     @RequestMapping("/notifyUrl")
     public void asynCallBack(HttpServletRequest request, HttpServletResponse response) throws IOException, AlipayApiException, ParseException {
+        log.info("进入异步通知~~");
         response.setContentType("text/html;charset=utf-8");
         Map<String, String> params = new HashMap<String, String>();
         Map<String, String[]> requestParams = request.getParameterMap();
@@ -103,15 +106,23 @@ public class CallbackController {
 
             //创建交易记录
             SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Pay_ pay = new Pay_();
-            pay.setOut_trade_no(out_trade_no);
-            pay.setTrade_no(trade_no);
-            pay.setTotal_fee(Float.parseFloat(total_amount));
-            pay.setPay_date(f.parse(datePay));
-            payService.addPay(pay); //存入交易记录
+
+            Pay_ payResult = payService.getPayByOutTradeNo(out_trade_no);
+            if(payResult == null){
+                Pay_ pay = new Pay_();
+                pay.setOut_trade_no(out_trade_no);
+                pay.setTrade_no(trade_no);
+                pay.setTotal_fee(Float.parseFloat(total_amount));
+                pay.setPay_date(f.parse(datePay));
+                payService.addPay(pay); //存入交易记录
+            }
+
             Order_ orderResult = orderService.getOrderByOrderCode(out_trade_no);
             orderResult.setStatus(Constant.ORDER_WAITDELIVERY.getWord());
+            orderResult.setPayDate(f.parse(datePay)); //付款时间存入订单
             orderService.updateOrder(orderResult); //更新订单
+
+            log.info("进入异步通知~~");
         } else {
             System.out.println("验签失败");
         }

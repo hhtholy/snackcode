@@ -44,6 +44,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     /**
+     * 获取所有的分类
+     * @return
+     */
+    @Override
+    public List<Category> getCategoryList() {
+        return categoryDao.findAll();
+    }
+
+    /**
      * 添加分类
      * @param category 分类（实体）
      */
