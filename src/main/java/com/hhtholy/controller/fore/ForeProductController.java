@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -130,6 +132,7 @@ public class ForeProductController {
             @ApiImplicitParam(name="order",value="订单项id(数组)",required=true,paramType="query",dataType = "string"),
     })
     @PostMapping("/foreCreateOrder")
+    @Transactional(propagation= Propagation.REQUIRED,rollbackForClassName="Exception")
     public Object createOrder(@RequestBody Order_ order, HttpSession session){
         User user =(User)  session.getAttribute("user");
         if(null==user)

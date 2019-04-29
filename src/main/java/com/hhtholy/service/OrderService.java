@@ -22,4 +22,6 @@ public interface OrderService {
     Order_ updateOrder(Order_ order_); //更新实体
 
     public Order_ getOrderByOrderCode(String orderCode);
+
+    public Order_ getOrder(Integer id);
 }

@@ -71,6 +71,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/img/**", "anon");
+        filterChainDefinitionMap.put("http://62.234.17.235:8080/snacktrade/notifyUrl", "anon");
         //放开登录等url的过滤
         filterChainDefinitionMap.put("/toLogin", "anon");
         filterChainDefinitionMap.put("/register", "anon");

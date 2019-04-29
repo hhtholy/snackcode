@@ -8,6 +8,7 @@ import com.hhtholy.service.OrderItemService;
 import com.hhtholy.service.OrderService;
 import com.hhtholy.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author hht
@@ -120,6 +122,24 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order_ getOrderByOrderCode(String orderCode) {
         return orderDao.findByOrderCode(orderCode);
+    }
+
+    /**
+     * 根据订单id 获取订单
+     * @param id
+     * @return
+     */
+    @Override
+    public Order_ getOrder(Integer id) {
+        Order_ order = new Order_();
+        order.setId(id);
+        Example<Order_> example = Example.of(order);
+        Optional<Order_> optional = orderDao.findOne(example);
+        Order_ result = null;
+        if(optional.isPresent()){
+            result = optional.get();
+        }
+        return result;
     }
 
 }

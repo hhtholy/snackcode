@@ -121,7 +121,7 @@ public class ForePageController {
 
 
     /**
-     * 阿里支付
+     * 阿里支付  跳转到支付请求发起的界面  携带金额等数据过去
      * @param oid
      * @param
      * @return
@@ -131,5 +131,12 @@ public class ForePageController {
 
         return "pay/payRequest";
     }
+
+
+    @GetMapping("/paySuccess")
+    public String paySuccess(String oid){
+        return "pay/paySuccess";
+    }
+
 
 }

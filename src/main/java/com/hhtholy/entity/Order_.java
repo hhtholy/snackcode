@@ -37,8 +37,8 @@ public class Order_ implements Serializable {
     private Date confirmDate; //确认时间
     private String status; //订单的状态
 
-    private float totalPrice; //订单的总金额
-    private int totalNum; //订单中 产品的总计数量
+    private Float totalPrice; //订单的总金额
+    private Integer totalNum; //订单中 产品的总计数量
 
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="order",fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
@@ -147,24 +147,24 @@ public class Order_ implements Serializable {
         this.status = status;
     }
 
-    public float getTotalPrice() {
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public Float getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(float totalPrice) {
+    public void setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public int getTotalNum() {
+    public Integer getTotalNum() {
         return totalNum;
     }
 
-    public void setTotalNum(int totalNum) {
+    public void setTotalNum(Integer totalNum) {
         this.totalNum = totalNum;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
     }
 
     public void setOrderItems(List<OrderItem> orderItems) {

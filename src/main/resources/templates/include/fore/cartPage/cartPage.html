@@ -52,15 +52,11 @@
             //当模态框完全对用户隐藏时触发函数
             $("#deleteConfirmModal").on('hidden.bs.modal',function () {
                 if(deleteFlag){
-
-                    var url = "foredeleteOrderItem?oiid="+deleteOrderItemid;
-                    //删除请求
-                    axios.get(url).then(function (res) {
-                        var result = res.data;
-                        if(result == 0){
-                            location.href = "login";
-                        }else{
-                            location.href = "forecart";
+                    var url = "foreDeleteOrderItem?oiid="+deleteOrderItemid;
+                    axios.get(url).then(function (res) { //删除订单项
+                        var result = res.data.code;
+                        if(result == 1){
+                            location.href = "toCart";
                         }
                     });
                 }
@@ -106,7 +102,6 @@
                 }
                 syncCreateOrderButton();
                 calcCartSumPriceAndNumber();
-
             });
 
             //设置数量
@@ -210,7 +205,6 @@
                 sum += new Number(price);
                 var num =$(".orderItemNumberSetting[oiid="+oiid+"]").val();
                 totalNumber += new Number(num);
-
             });
 
             $("span.cartSumPrice").html("￥"+formatMoney(sum));
@@ -218,16 +212,21 @@
             $("span.cartSumNumber").html(totalNumber);
         }  //calcCartSumPriceAndNumber 函数结束
 
+        /**
+         *
+         * @param pid  产品id
+         * @param num  产品数量
+         * @param price  价格
+         */
         function syncPrice(pid,num,price){
             $(".orderItemNumberSetting[pid="+pid+"]").val(num); //更新数量框中订单项的数量
-            var cartProductItemSmallSumPrice = formatMoney(num*price);
+            var cartProductItemSmallSumPrice = formatMoney(num*price); //计算总共的价格
             $(".cartProductItemSmallSumPrice[pid="+pid+"]").html("￥"+cartProductItemSmallSumPrice); //总共的价格
             calcCartSumPriceAndNumber();
-
             var url = "foreChangeOrderItemProductNums?pid="+pid+"&num="+num; //更新订单项中产品的数量(数据库)
             axios.get(url).then(function(response){ //更新 订单项中的数量
                 if(2 == response.data.code){ //如果更新数量错误的话
-                    location.href="login";
+                    location.href="toLogin";
                 }
             });
         } // syncPrice 结束

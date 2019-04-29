@@ -11,11 +11,14 @@ import com.hhtholy.utils.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -30,7 +33,17 @@ public class CallbackController {
     @Autowired private PayService payService;
     @Autowired private OrderService orderService;
 
-    @RequestMapping("/returnUrl")
+
+    /****
+     *   支付宝的同步回调  请求到这
+     * @param request  请求参数获取对象
+     * @param response
+     * @return
+     * @throws IOException
+     * @throws AlipayApiException
+     * @throws ParseException
+     */
+    @GetMapping("/returnUrl")
     public String synCallBack(HttpServletRequest request, HttpServletResponse response) throws IOException, AlipayApiException, ParseException {
        log.info("同步界面");
         response.setContentType("text/html;charset=utf-8");
@@ -70,7 +83,7 @@ public class CallbackController {
             orderResult.setStatus(Constant.ORDER_WAITDELIVERY.getWord());
             orderService.updateOrder(orderResult); //更新订单
           log.info("验证进来了");
-            return "redirect:/home";
+            return "redirect:/paySuccess?oid="+orderResult.getId();
 
         }else {
             System.out.println("验签失败");
@@ -78,10 +91,19 @@ public class CallbackController {
          return null;
     }
 
-    @RequestMapping("/notifyUrl")
+    /**
+     * 支付宝异步回调
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws AlipayApiException
+     * @throws ParseException
+     */
+    @PostMapping("/notifyUrl")
     public void asynCallBack(HttpServletRequest request, HttpServletResponse response) throws IOException, AlipayApiException, ParseException {
         log.info("进入异步通知~~");
         response.setContentType("text/html;charset=utf-8");
+        PrintWriter writer = response.getWriter();
         Map<String, String> params = new HashMap<String, String>();
         Map<String, String[]> requestParams = request.getParameterMap();
         for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
@@ -122,8 +144,10 @@ public class CallbackController {
             orderResult.setPayDate(f.parse(datePay)); //付款时间存入订单
             orderService.updateOrder(orderResult); //更新订单
 
+            writer.write("success");
             log.info("进入异步通知~~");
         } else {
+            writer.write("fail");
             System.out.println("验签失败");
         }
     }
