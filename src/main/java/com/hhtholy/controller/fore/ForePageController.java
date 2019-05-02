@@ -1,5 +1,6 @@
 package com.hhtholy.controller.fore;
 
+import com.hhtholy.utils.Result;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
@@ -132,11 +133,35 @@ public class ForePageController {
         return "pay/payRequest";
     }
 
-
+    /**
+     *   跳转到支付成功界面
+     * @param oid  订单id
+     * @return
+     */
     @GetMapping("/paySuccess")
     public String paySuccess(String oid){
         return "pay/paySuccess";
     }
 
+
+    /**
+     * 跳转到我的订单页
+     * @param oid
+     * @return
+     */
+    @GetMapping("/bought")
+    public String toMyOrders(String oid){
+        return "fore/MyOrderPage/myOrderPage";
+    }
+
+    /**
+     * 未付款
+     * @param oid
+     * @return
+     */
+    @GetMapping("/waitPay")
+    public String toMywaitPayOrders(String oid){
+        return "fore/MyOrderPage/waitPayOrderPage";
+    }
 
 }

@@ -4,6 +4,7 @@ import com.hhtholy.dao.OrderDao;
 import com.hhtholy.entity.Order_;
 import com.hhtholy.entity.OrderItem;
 import com.hhtholy.entity.Product;
+import com.hhtholy.entity.User;
 import com.hhtholy.service.OrderItemService;
 import com.hhtholy.service.OrderService;
 import com.hhtholy.utils.Page;
@@ -140,6 +141,27 @@ public class OrderServiceImpl implements OrderService {
             result = optional.get();
         }
         return result;
+    }
+
+    /**
+     *  查询用户的全部订单
+     * @param user
+     * @return
+     */
+
+    @Override
+    public List<Order_> getOrdersByUserAndStatus(User user,String status) {
+        return orderDao.findByUserAndStatus(user,status);
+    }
+
+    /**
+     *  根据    用户去查询订单
+     * @param user
+     * @return
+     */
+    @Override
+    public List<Order_> getOrdersByUser(User user) {
+        return orderDao.findByUser(user);
     }
 
 }

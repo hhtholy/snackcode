@@ -17,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name="category")
 @JsonIgnoreProperties(value = {"products","properties"})
+@Data
 public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,53 +38,4 @@ public class Category implements Serializable {
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="category",fetch = FetchType.LAZY)
     private List<Property> properties;
 
-    /*Gettter and Setter*/
-
-    public List<Property> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(List<Property> properties) {
-        this.properties = properties;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getImageurl() {
-        return imageurl;
-    }
-
-    public void setImageurl(String imageurl) {
-        this.imageurl = imageurl;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Product> getProductsForJson() {
-        return productsForJson;
-    }
-
-    public void setProductsForJson(List<Product> productsForJson) {
-        this.productsForJson = productsForJson;
-    }
 }

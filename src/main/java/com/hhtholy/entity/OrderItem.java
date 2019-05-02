@@ -1,5 +1,7 @@
 package com.hhtholy.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 /**
@@ -9,6 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "orderitem")
+@Data
 public class OrderItem {
     /**
      * 一个产品在多个订单项里
@@ -31,47 +34,6 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "uid")
     private User user;
-
     private Integer number; //数量 (购买对应产品的数量)
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Order_ getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order_ order) {
-        this.order = order;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
 
 }

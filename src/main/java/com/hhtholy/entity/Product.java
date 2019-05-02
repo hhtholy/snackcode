@@ -2,6 +2,7 @@ package com.hhtholy.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name="product")
 @JsonIgnoreProperties(value = {"propertyValues"})
+@Data
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,123 +49,4 @@ public class Product implements Serializable {
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="product",fetch = FetchType.LAZY)
     private List<PropertyValue> propertyValues;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSubTitle() {
-        return subTitle;
-    }
-
-    public void setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
-    }
-
-    public Float getOriginalPrice() {
-        return originalPrice;
-    }
-
-    public void setOriginalPrice(Float originalPrice) {
-        this.originalPrice = originalPrice;
-    }
-
-    public Float getPromotePrice() {
-        return promotePrice;
-    }
-
-    public void setPromotePrice(Float promotePrice) {
-        this.promotePrice = promotePrice;
-    }
-
-    public Integer getStock() {
-        return stock;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getImageUrlSingle() {
-        return imageUrlSingle;
-    }
-
-    public void setImageUrlSingle(String imageUrlSingle) {
-        this.imageUrlSingle = imageUrlSingle;
-    }
-
-    public Integer getSaleCount() {
-        return saleCount;
-    }
-
-    public void setSaleCount(Integer saleCount) {
-        this.saleCount = saleCount;
-    }
-
-    public Integer getReviewCount() {
-        return reviewCount;
-    }
-
-    public void setReviewCount(Integer reviewCount) {
-        this.reviewCount = reviewCount;
-    }
-
-    public String getImageUrlsDetail() {
-        return imageUrlsDetail;
-    }
-
-    public void setImageUrlsDetail(String imageUrlsDetail) {
-        this.imageUrlsDetail = imageUrlsDetail;
-    }
-
-    public List<ProductImage> getProductImages() {
-        return productImages;
-    }
-
-    public void setProductImages(List<ProductImage> productImages) {
-        this.productImages = productImages;
-    }
-
-    public List<PropertyValue> getPropertyValues() {
-        return propertyValues;
-    }
-
-    public void setPropertyValues(List<PropertyValue> propertyValues) {
-        this.propertyValues = propertyValues;
-    }
-
-    public String getSingleImageUrlForJson() {
-        return singleImageUrlForJson;
-    }
-
-    public void setSingleImageUrlForJson(String singleImageUrlForJson) {
-        this.singleImageUrlForJson = singleImageUrlForJson;
-    }
 }

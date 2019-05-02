@@ -279,8 +279,8 @@ public class ProductServiceImpl implements ProductService {
         if(!flag){  //如果是之前也没有添加过的话  创建新的订单项
             OrderItem orderItem = new OrderItem();
             orderItem.setNumber(buyNum);
-            orderItem.setUser(user);
-            orderItem.setProduct(product);
+            orderItem.setUser(user); //关联用户
+            orderItem.setProduct(product); //关联产品
             orderItemService.addOrderItem(orderItem); //存取进数据库
             resultOrderItemId = orderItem.getId();
         }

@@ -145,7 +145,7 @@ public class ForeProductController {
         List<OrderItem> orderItems = (List<OrderItem>)session.getAttribute("orderItems"); //拿到session中的订单项
         //创建订单
         List<Object> totals = orderService.addOrder(order, orderItems);
-        Float  price = (Float) totals.get(0);
+        Float  price = (Float) totals.get(0); // 价格等信息放在 集合中
         Integer nums = (Integer) totals.get(1);
         order.setTotalPrice(price);
         order.setTotalNum(nums);
@@ -164,7 +164,36 @@ public class ForeProductController {
     }
 
 
-
-
-
+    /**
+     * 查看我的订单页
+     * @param session
+     * @return
+     */
+    @GetMapping("foreBought")
+    public Object bought(HttpSession session,@RequestParam("type") String type) {
+        User user =(User)  session.getAttribute("user");
+        if(null==user)
+            return Result.fail("未登录");
+        List<Order_> orderList = null;
+        if(type.equals(Constant.ORDER_WAITPAY.getWord())){ //订单待支付
+            orderList= orderService.getOrdersByUserAndStatus(user,Constant.ORDER_WAITPAY.getWord());
+        }else if(type.equals(Constant.ORDER_WAITDELIVERY.getWord())){ //订单已经支付待发货
+            orderList= orderService.getOrdersByUserAndStatus(user,Constant.ORDER_WAITDELIVERY.getWord());
+        }else if(type.equals(Constant.ORDER_WAITCONFIRM.getWord())){ //订单已经发货待收货
+            orderList= orderService.getOrdersByUserAndStatus(user,Constant.ORDER_WAITCONFIRM.getWord());
+        }else if(type.equals(Constant.ORDER_WAITREVIEW.getWord())){ //订单已经收货 待评价
+            orderList= orderService.getOrdersByUserAndStatus(user,Constant.ORDER_WAITREVIEW.getWord());
+        }else{
+            orderList= orderService.getOrdersByUser(user);  //根据用户查询订单
+        }
+        for (Order_ order : orderList) { // 遍历sql
+            List<OrderItem> orderItems = order.getOrderItems(); //获取订单下的订单项
+            for (OrderItem orderItem : orderItems) {
+                orderItem.setOrder(null);
+                productService.setSingleImageUrlFoJson(orderItem.getProduct()); //设置产品单图
+            }
+            order.setOrderItemsForJson(orderItems);
+        }
+        return Result.success(orderList);
+    }
 }

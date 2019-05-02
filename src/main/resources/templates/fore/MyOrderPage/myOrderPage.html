@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/ForeCommonJs::html" ></head>  <!--引入js和css等 和一些公关的js函数-->
+<body>
+<div id="workingArea">
+    <!--top-->
+    <div th:replace="include/fore/top::html" ></div>
+    <!--search-->
+    <div th:replace="include/fore/search::html" ></div>
+
+    <!--我的订单页-->
+    <div th:replace="include/fore/MyOrderPage/myOrder::html" ></div>
+    <div th:replace="include/fore/modal4deleteConfirm::html" ></div>
+    <!--footer-->
+    <div th:replace="include/fore/footer::html" ></div>
+
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.hhtholy.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "order_")
 @JsonIgnoreProperties(value = {"orderItems"})
+@Data
 public class Order_ implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,138 +38,13 @@ public class Order_ implements Serializable {
     private Date deliveryDate; //发货日期
     private Date confirmDate; //确认时间
     private String status; //订单的状态
-
     private Float totalPrice; //订单的总金额
     private Integer totalNum; //订单中 产品的总计数量
 
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="order",fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
-    public Integer getId() {
-        return id;
-    }
+    @Transient
+    private List<OrderItem> orderItemsForJson;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getOrderCode() {
-        return orderCode;
-    }
-
-    public void setOrderCode(String orderCode) {
-        this.orderCode = orderCode;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPost() {
-        return post;
-    }
-
-    public void setPost(String post) {
-        this.post = post;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getUserMessage() {
-        return userMessage;
-    }
-
-    public void setUserMessage(String userMessage) {
-        this.userMessage = userMessage;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getPayDate() {
-        return payDate;
-    }
-
-    public void setPayDate(Date payDate) {
-        this.payDate = payDate;
-    }
-
-    public Date getDeliveryDate() {
-        return deliveryDate;
-    }
-
-    public void setDeliveryDate(Date deliveryDate) {
-        this.deliveryDate = deliveryDate;
-    }
-
-    public Date getConfirmDate() {
-        return confirmDate;
-    }
-
-    public void setConfirmDate(Date confirmDate) {
-        this.confirmDate = confirmDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public Float getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Float totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public Integer getTotalNum() {
-        return totalNum;
-    }
-
-    public void setTotalNum(Integer totalNum) {
-        this.totalNum = totalNum;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
 }

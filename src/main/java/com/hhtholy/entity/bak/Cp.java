@@ -1,5 +1,7 @@
 package com.hhtholy.entity.bak;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 /**
@@ -8,6 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="cp")
+@Data
 public class Cp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,27 +25,4 @@ public class Cp {
     @JoinColumn(name="pid")
     private Propertybak propertybak;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Categorybak getCategorybak() {
-        return categorybak;
-    }
-
-    public void setCategorybak(Categorybak categorybak) {
-        this.categorybak = categorybak;
-    }
-
-    public Propertybak getPropertybak() {
-        return propertybak;
-    }
-
-    public void setPropertybak(Propertybak propertybak) {
-        this.propertybak = propertybak;
-    }
 }

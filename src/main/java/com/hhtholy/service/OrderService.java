@@ -2,6 +2,7 @@ package com.hhtholy.service;
 
 import com.hhtholy.entity.Order_;
 import com.hhtholy.entity.OrderItem;
+import com.hhtholy.entity.User;
 import com.hhtholy.utils.Page;
 
 import java.util.List;
@@ -19,9 +20,13 @@ public interface OrderService {
     public void addTotalPriceAndTotalNum(List<Order_> list);
     public void addTotalPriceAndTotalNum(Order_ order);
     List<Object> addOrder(Order_ order, List<OrderItem> orderItems);  //添加订单 订单和订单项关联起来
-    Order_ updateOrder(Order_ order_); //更新实体
+    public Order_ updateOrder(Order_ order_); //更新实体
 
     public Order_ getOrderByOrderCode(String orderCode);
 
     public Order_ getOrder(Integer id);
+
+    public List<Order_> getOrdersByUserAndStatus(User user,String status); //去查用户的订单
+
+    public List<Order_> getOrdersByUser(User user);
 }

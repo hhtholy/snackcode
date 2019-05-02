@@ -1,5 +1,7 @@
 package com.hhtholy.entity.bak;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 /**
@@ -8,6 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="categorybak")
+@Data
 public class Categorybak {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,30 +21,4 @@ public class Categorybak {
     private String name;  //分类的名称
     @Column(name = "imageurl")
     private String imageurl;  //分类图片的url
-
-    /*Gettter and Setter*/
-    public Integer getId() {
-        return id;
-    }
-
-    public String getImageurl() {
-        return imageurl;
-    }
-
-    public void setImageurl(String imageurl) {
-        this.imageurl = imageurl;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }

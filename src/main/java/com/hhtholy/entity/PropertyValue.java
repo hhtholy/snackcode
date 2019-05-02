@@ -1,5 +1,6 @@
 package com.hhtholy.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "propertyvalue")
+@Data
 public class PropertyValue implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,36 +30,4 @@ public class PropertyValue implements Serializable {
     @JoinColumn(name = "pid")
     @JsonBackReference
     private Product product;  //产品
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public Property getProperty() {
-        return property;
-    }
-
-    public void setProperty(Property property) {
-        this.property = property;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
 }

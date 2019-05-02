@@ -1,5 +1,7 @@
 package com.hhtholy.entity.bak;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 /**
@@ -8,6 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="propertybak")
+@Data
 public class Propertybak {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -15,20 +18,4 @@ public class Propertybak {
     private Integer id;
     @Column(name = "name")
     private String name;  //属性名称
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
