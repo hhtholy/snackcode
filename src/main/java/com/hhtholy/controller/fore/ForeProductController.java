@@ -169,7 +169,7 @@ public class ForeProductController {
      * @param session
      * @return
      */
-    @GetMapping("foreBought")
+    @GetMapping("/foreBought")
     public Object bought(HttpSession session,@RequestParam("type") String type) {
         User user =(User)  session.getAttribute("user");
         if(null==user)

@@ -5,12 +5,16 @@ import com.hhtholy.service.CategoryService;
 import com.hhtholy.service.ProductService;
 import com.hhtholy.utils.comparator.*;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author hht
@@ -22,6 +26,19 @@ import java.util.Collections;
 public class ForeCategoryController {
     @Autowired private CategoryService categoryService;
     @Autowired private ProductService productService;
+
+
+
+    @ApiOperation(value = "获取分类",notes = "前台获取分类")
+    @GetMapping("/forehome")
+    public Object home() {
+        List<Category> cs= categoryService.getCategoryList(); //获取所有的分类
+
+     /*   productService.fill(cs);
+        productService.fillByRow(cs);
+        categoryService.removeCategoryFromProduct(cs);*/
+        return cs;
+    }
 
 
     @GetMapping("/forecategory/{cid}")

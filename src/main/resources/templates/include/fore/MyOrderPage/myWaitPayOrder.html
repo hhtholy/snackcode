@@ -31,7 +31,7 @@
         var deleteOrderid = 0;
 
         function orderPageRegisterListeners(){
-            $("a[orderStatus]").click(function(){
+          /*  $("a[orderStatus]").click(function(){
                 var orderStatus = $(this).attr("orderStatus");
                 if('all'==orderStatus){
                     $("table[orderStatus]").show();
@@ -44,8 +44,15 @@
                 $("div.orderType div").removeClass("selectedOrderType");
                 $(this).parent("div").addClass("selectedOrderType");
             });
+*/
 
+            $("a[orderStatus]").click(function(){
+                var orderStatus = $(this).attr("orderStatus");
+                $("table[orderStatus="+orderStatus+"]").show();
 
+                //  $("div.orderType div").removeClass("selectedOrderType");
+                $(this).parent("div").addClass("selectedOrderType");
+            });
             /**
              * 删除订单操作  点击以后 跳出模态框
              */
@@ -77,11 +84,11 @@
     </script>
     <div class="boughtDiv">
         <div class="orderType">
-            <div class="selectedOrderType"><a orderStatus="all" href="#">所有订单</a></div>
-            <div><a  orderStatus="waitPay" href="waitPay">待付款</a></div>
-            <div><a  orderStatus="waitDelivery" href="waitDelivery">待发货</a></div>
-            <div><a  orderStatus="waitConfirm" href="waitConfirm">待收货</a></div>
-            <div><a  orderStatus="waitReview" href="waitReview" class="noRightborder">待评价</a></div>
+            <div class="selectedOrderType"><a orderStatus="all" href="all">所有订单</a></div>
+            <div class="selectedOrderType"><a orderStatus="waitPay" href="waitPay">待付款</a></div>
+            <div class="selectedOrderType"><a   orderStatus="waitDelivery" href="waitDelivery">待发货</a></div>
+            <div class="selectedOrderType"><a   orderStatus="waitConfirm" href="waitConfirm">待收货</a></div>
+            <div class="selectedOrderType"><a   orderStatus="waitReview" href="waitReview" class="noRightborder">待评价</a></div>
             <div class="orderTypeLastOne"><a class="noRightborder">&nbsp;</a></div>
         </div>
         <div style="clear:both"></div>

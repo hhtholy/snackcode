@@ -13,8 +13,10 @@
                 },
                 methods: {
                     load:function(){
-                        var url =  this.uri +"?type=all";
-                        axios.get(url).then(function(response) {
+                        var url =  this.uri;
+                        var type = "waitConfirm";
+                        var  requestUrl = url + "?type="+type;
+                        axios.get(requestUrl).then(function(response) {
                             vue.orders = response.data.data;
                             vue.$nextTick(function(){
                                 linkDefaultActions();
@@ -29,14 +31,28 @@
         var deleteOrderid = 0;
 
         function orderPageRegisterListeners(){
+          /*  $("a[orderStatus]").click(function(){
+                var orderStatus = $(this).attr("orderStatus");
+                if('all'==orderStatus){
+                    $("table[orderStatus]").show();
+                }
+                else{
+                    $("table[orderStatus]").hide();
+                    $("table[orderStatus="+orderStatus+"]").show();
+                }
+
+                $("div.orderType div").removeClass("selectedOrderType");
+                $(this).parent("div").addClass("selectedOrderType");
+            });
+*/
+
             $("a[orderStatus]").click(function(){
                 var orderStatus = $(this).attr("orderStatus");
                 $("table[orderStatus="+orderStatus+"]").show();
 
-              //  $("div.orderType div").removeClass("selectedOrderType");
+                //  $("div.orderType div").removeClass("selectedOrderType");
                 $(this).parent("div").addClass("selectedOrderType");
             });
-
 
             /**
              * 删除订单操作  点击以后 跳出模态框
@@ -144,7 +160,8 @@
                                 <button class="orderListItemConfirm">确认收货</button>
 
                             </a>
-                            <a v-if="o.status=='waitPay'" :href="'alipay?oid='+o.id+'&total_fee='+o.totalPrice+'&out_trade_no='+o.orderCode+'&subject=商品支付'">
+
+                            <a v-if="o.status=='waitPay'" :href="'alipay?oid='+o.id+'&total='+o.total">
                                 <button class="orderListItemConfirm">付款</button>
                             </a>
 

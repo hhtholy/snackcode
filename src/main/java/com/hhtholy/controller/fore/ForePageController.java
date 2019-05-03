@@ -145,7 +145,7 @@ public class ForePageController {
 
 
     /**
-     * 跳转到我的订单页
+     * 跳转到我的订单页 全部订单
      * @param oid
      * @return
      */
@@ -155,6 +155,17 @@ public class ForePageController {
     }
 
     /**
+     *  跳转到我的订单页  全部订单
+     * @param oid
+     * @return
+     */
+    @GetMapping("/all")
+    public String toAllMyOrders(String oid){
+        return "fore/MyOrderPage/myOrderPage";
+    }
+
+
+    /**
      * 未付款
      * @param oid
      * @return
@@ -162,6 +173,32 @@ public class ForePageController {
     @GetMapping("/waitPay")
     public String toMywaitPayOrders(String oid){
         return "fore/MyOrderPage/waitPayOrderPage";
+    }
+
+    /**
+     * 待发货
+     * @param oid
+     * @return
+     */
+    @GetMapping("/waitDelivery")
+    public String toMywaitDeliveryOrders(String oid){
+        return "fore/MyOrderPage/waitDeliveryOrderPage";
+    }
+
+    /**
+     * 待收货
+     * @param oid
+     * @return
+     */
+    @GetMapping("/waitConfirm")
+    public String toMywaitConfirmOrders(String oid){
+        return "fore/MyOrderPage/waitConfirmOrderPage";
+    }
+
+
+    @GetMapping("/waitReview")
+    public String toMywaitReviewOrders(String oid){
+        return "fore/MyOrderPage/waitReviewOrderPage";
     }
 
 }
