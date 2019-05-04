@@ -1,12 +1,15 @@
 <div th:fragment="html">
     <div class="homepageCategoryProducts">
+        <!--遍历分类-->
         <div class="eachHomepageCategoryProducts" v-for="c in categories">
             <div class="left-mark"></div>
-            <span class="categoryTitle">{{c.name}}</span>
+            <span class="categoryTitle">{{c.name}}</span> <!--分类名称-->
             <br>
-            <div class="productItem"  v-for="p,index in c.products" v-if="index<5" >
-                <a :href="'product?pid='+p.id">
-                    <img width="100px" :src="'img/productSingle_middle/'+p.firstProductImage.id+'.jpg'">
+            <!--遍历分类下的产品-->
+            <div class="productItem"  v-for="p,index in c.productsForJson" v-if="index<5" >
+             <!--显示产品的单图-->
+                <a :href="'toforeProduct?pid='+p.id">
+                    <img  v-if="null != p.singleImageUrlForJson"  width="100px" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+p.singleImageUrlForJson">
                 </a>
 
                 <a class="productItemDescLink" href="'product?pid='+p.id">

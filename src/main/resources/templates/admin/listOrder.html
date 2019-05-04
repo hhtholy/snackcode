@@ -45,20 +45,13 @@
                   //发货
                   deliveryOrder:function (order,e) {
                       var url = "deliveryOrder/" + order.id;
-
                       axios.put(url).then(function (res) {
                           //成功后 把这个发货按钮隐藏
                           $(e.target).hide();
-
                       });
                   }
 
-
-
               }
-
-
-
           });
 
     });
@@ -90,13 +83,13 @@
             <template v-for="bean in beans ">
                 <tr >
                     <td>
-                        {{bean.statusDesc}}
+                        {{bean.status}}
                     </td>
                     <td>
-                        {{bean.total}}
+                        {{bean.totalPrice}}
                     </td>
                     <td>
-                        {{bean.totalNumber}}
+                        {{bean.totalNum}}
                     </td>
                     <td>
                         {{bean.user.name}}

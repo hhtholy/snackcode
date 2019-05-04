@@ -311,4 +311,25 @@ public class ProductServiceImpl implements ProductService {
         return new Page<>(resultGet,5);
     }
 
+
+    /**
+     *
+     * @param categories
+     */
+    @Override
+    public void fillCategoryData(List<Category> categories) {
+        int step = 8;
+        for (Category category : categories) {  //遍历每一个分类
+            List<List<Product>> productsByRow =  new ArrayList<>(); //建立集合
+            List<Product> products = category.getProducts();//获取分类下的产品
+            for (int i = 0; i < products.size(); i+=step) {
+                 int size = i + step;
+                 size = size > products.size()?products.size():size;
+                List<Product> littleList = products.subList(i, size);//截取子集合
+                productsByRow.add(littleList);
+            }//遍历产品
+             category.setProductsByRow(productsByRow);
+        }
+    }
+
 }

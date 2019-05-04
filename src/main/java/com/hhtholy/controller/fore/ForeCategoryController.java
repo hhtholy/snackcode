@@ -32,11 +32,11 @@ public class ForeCategoryController {
     @ApiOperation(value = "获取分类",notes = "前台获取分类")
     @GetMapping("/forehome")
     public Object home() {
-        List<Category> cs= categoryService.getCategoryList(); //获取所有的分类
-
-     /*   productService.fill(cs);
-        productService.fillByRow(cs);
-        categoryService.removeCategoryFromProduct(cs);*/
+         List<Category> cs= categoryService.getCategoryList(); //获取所有的分类
+         productService.fillCategoryData(cs); // 分类产品标题 按行显示
+         for (Category c : cs) {
+            categoryService.setProductsForJsonOfCategory(c); //为分类设置产品值
+         }
         return cs;
     }
 

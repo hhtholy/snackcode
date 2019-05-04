@@ -35,6 +35,10 @@ public class Category implements Serializable {
     @Transient
     private List<Product> productsForJson;
 
+
+    @Transient
+    List<List<Product>> productsByRow; //主页上
+
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="category",fetch = FetchType.LAZY)
     private List<Property> properties;
 

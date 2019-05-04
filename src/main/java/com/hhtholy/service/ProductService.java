@@ -30,4 +30,5 @@ public interface ProductService { //查询一个分类下的产品信息  分页
     public Page<Product> searchProductByKey(String keyword,int currentPage, int size);   //根据关键词去查询出 产品结果
 
 
+    public void fillCategoryData(List<Category> cs);
 }
