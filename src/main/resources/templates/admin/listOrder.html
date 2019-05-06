@@ -2,64 +2,75 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <!--th:include 这样还会保留外面的head标签   加入导入界面的内容 不包含最外标签-->
 <!--主要是引入js  一些公共的js函数  比如判空等-->
-<head th:include="include/commonJs::commonJs('后台订单管理')" ></head>
+<head th:include="include/commonJs::commonJs('后台订单管理')"></head>
 
 <!--引入分页函数-->
-<div th:include="include/commonFunctionsForPage::pageFunctions" ></div>
+<div th:include="include/commonFunctionsForPage::pageFunctions"></div>
 
 
 <body>
 <!--th:replace  自己的最外标签不会保留 这里是div  直接放置导入界面的内容 包含导入内容的最外标签-->
 <!--引入导航页-->  <!--这里因为需要添加分类 于是放在这里-->
-<div th:replace="include/admin/adminNavigator::navigator" ></div>
+<div th:replace="include/admin/adminNavigator::navigator"></div>
 <script>
-    $(function(){
+    $(function () {
 
-          var data4Vue = {
-              uri:"orders",
-              beans:[],
-              pagination:{}
-          };
-          //定义vue对象
-          var vue = new Vue({
-              el:"#workingArea",
-              data:data4Vue,
-              mounted:function () {
-                  this.list(0);
-              },
-              methods:{
-                  list:function (currentPage) {
-                      var url = this.uri + "?currentPage="+currentPage;
+        var flag = 0;
+        var data4Vue = {
+            uri: "orders",
+            beans: [],
+            pagination: {}
+        };
+        //定义vue对象
+        var vue = new Vue({
+            el: "#workingArea",
+            data: data4Vue,
+            mounted: function () {
+                this.list(0);
+            },
+            methods: {
+                jump: function(page){
+                    jumpPage(page,vue);  //定义在commonFunctionsForPage.html中  这里定义了翻页和跳转指定页码的逻辑
+                },
+                jumpByNumber: function(currentPage){
+                    jumpPageByNumber(currentPage,vue);
+                },   //分页跳转页码
+                list: function (currentPage) {
+                    var url = this.uri + "?currentPage=" + currentPage;
 
-                      axios.get(url).then(function (res) {
-                          vue.pagination = res.data;
-                          vue.beans = res.data.content;
-                      });
-                  },
-                  //展示订单项的信息
-                 showOrderItems:function (order) {
-                      var id = order.id;
-                      $("#orderItemsTR"+id).show();
+                    axios.get(url).then(function (res) {
+                        vue.pagination = res.data;
+                        vue.beans = res.data.content;
+                    });
+                },
+                //展示订单项的信息
+                showOrderItems: function (order) {
+                    var id = order.id;
+                    if (flag % 2 == 0) {
+                        $("#orderItemsTR" + id).show();
+                    } else {
+                        $("#orderItemsTR" + id).hide();
+                    }
+                    flag++;
+                },
+                //发货
+                deliveryOrder: function (order, e) {
+                    var url = "deliveryOrder/" + order.id;
+                    axios.put(url).then(function (res) {
+                        //成功后 把这个发货按钮隐藏
+                        $(e.target).hide();
+                    });
+                }
 
-                  },
-                  //发货
-                  deliveryOrder:function (order,e) {
-                      var url = "deliveryOrder/" + order.id;
-                      axios.put(url).then(function (res) {
-                          //成功后 把这个发货按钮隐藏
-                          $(e.target).hide();
-                      });
-                  }
-
-              }
-          });
+            }
+        });
 
     });
 
 </script>
 
-<div id="workingArea" >
-    <h1 class="label label-info" >订单管理</h1>
+<div id="workingArea">
+    <h1 class="label label-info">订单管理</h1>
     <br>
     <br>
 
@@ -81,9 +92,13 @@
             <tbody>
             <!-- 在业务上需要一个订单数据产生两行 tr, 此时就不能在 tr上进行 v-for, 而需要用 template 标签 -->
             <template v-for="bean in beans ">
-                <tr >
+                <tr>
                     <td>
-                        {{bean.status}}
+                        <span v-if="bean.status=='waitDelivery'">已付款待发货</span>
+                        <span v-if="bean.status=='waitConfirm'">待收货</span>
+                        <span v-if="bean.status=='waitReview'">待评价</span>
+                        <span v-if="bean.status=='finish'">订单完成</span>
+                        <span v-if="bean.status=='delete'">订单删除</span>
                     </td>
                     <td>
                         {{bean.totalPrice}}
@@ -107,24 +122,31 @@
                         {{bean.confirmDate | formatDateFilter}}
                     </td>
                     <td>
-                        <button @click="showOrderItems(bean)" class="orderPageCheckOrderItems btn btn-primary btn-xs">查看详情</button>
+                        <button @click="showOrderItems(bean)" class="orderPageCheckOrderItems btn btn-primary btn-xs">
+                            查看详情
+                        </button>
 
-                        <button v-if="bean.status=='waitDelivery'" @click="deliveryOrder(bean,$event)" class="btn btn-primary btn-xs">发货</button>
+                        <button v-if="bean.status=='waitDelivery'" @click="deliveryOrder(bean,$event)"
+                                class="btn btn-primary btn-xs">发货
+                        </button>
                     </td>
                 </tr>
-                <tr class="orderPageOrderItemTR"  :id="'orderItemsTR'+bean.id">
+                <tr class="orderPageOrderItemTR" :id="'orderItemsTR'+bean.id">
                     <td colspan="10" align="center">
 
-                        <div  class="orderPageOrderItem">
+                        <div class="orderPageOrderItem">
                             <table width="800px" align="center" class="orderPageOrderItemTable">
                                 <!--遍历订单下的 所有订单项-->
-                                <tr v-for="orderItem in bean.orderItems">
-                                   <td align="left">
-                                        <img width="40px" height="40px" :src="'img/productSingle/'+orderItem.product.productImageId+'.jpg'">
+                                <tr v-for="orderItem in bean.orderItemsForJson">
+                                    <td align="left">
+                                        <img width="40px" height="40px"
+                                             v-if="null != orderItem.product.singleImageUrlForJson"
+                                             :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+orderItem.product.singleImageUrlForJson">
+                                    </td>
                                     </td>
 
                                     <td>
-                                        <a :href="'product?product.id='+orderItem.product.id">
+                                        <a :href="'toforeProduct?pid='+orderItem.product.id">
                                             <span>{{orderItem.product.name}}</span>
                                         </a>
                                     </td>
@@ -151,6 +173,6 @@
     <div th:replace="include/admin/adminPage::page"></div>
 </div>
 <!--站脚-->
-<div th:replace="include/admin/adminFooter::footer" ></div>
+<div th:replace="include/admin/adminFooter::footer"></div>
 </body>
 </html>

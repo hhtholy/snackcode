@@ -114,11 +114,9 @@
                         <span>订单号: {{o.orderCode}}
 						</span>
                     </td>
-                    <td  colspan="2"><img width="30px" height="40px" src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/logo_.jpg">零食小站</td>
+                    <td  colspan="2"> <span class="glyphicon glyphicon-map-marker"><a href="home">零食小站</a></span></td>
                     <td colspan="1">
-                        <a class="wangwanglink" href="#">
-                            <div class="orderItemWangWangGif"></div>  <!--  和我联系 （这里显示微信图片） -->
-                        </a>
+                        <span class="glyphicon glyphicon-user">eatAndcode</span>
                     </td>
                     <td class="orderItemDeleteTD"><!--删除-->
                         <a class="deleteOrderLink" :oid="o.id" href="#">

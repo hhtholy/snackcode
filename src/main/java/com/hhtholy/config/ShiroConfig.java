@@ -73,17 +73,32 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/img/**", "anon");
         filterChainDefinitionMap.put("http://62.234.17.235:8080/snacktrade/notifyUrl", "anon");
         //放开登录等url的过滤
-        filterChainDefinitionMap.put("/toLogin", "anon");
+      /*  filterChainDefinitionMap.put("/toLogin", "anon");
+        filterChainDefinitionMap.put("/home", "anon");
+        filterChainDefinitionMap.put("/forehome", "anon"); //主页不需要拦截
+        filterChainDefinitionMap.put("/", "anon"); //主页不需要拦截
+        filterChainDefinitionMap.put("/home", "anon");
         filterChainDefinitionMap.put("/register", "anon");
         filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/toforeProduct", "anon");
+        filterChainDefinitionMap.put("/toforeCategory", "anon");
+        filterChainDefinitionMap.put("/toForeSearch", "anon");
+        filterChainDefinitionMap.put("/foreproduct/*", "anon");
+        filterChainDefinitionMap.put("/foreproduct/*", "anon");*/
+
+
         //对于指定的url，可以使用自定义filter进行验证
       //  filterChainDefinitionMap.put("/targetUrl", "myFilter");
         // 可以配置多个filter，用逗号分隔，按顺序过滤，下方表示先通过自定义filter的验证，再通过shiro默认过滤器的验证
         // filterChainDefinitionMap.put("/targetUrl", "myFilter,authc");
         // 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边
         //  url从上向下匹配，当条件匹配成功时，就会进入指定filter并return(不会判断后续的条件)，因此这句需要在最下边
-         filterChainDefinitionMap.put("/**", "authc");
-
+         filterChainDefinitionMap.put("/toCart", "authc");
+         filterChainDefinitionMap.put("/foreBought", "authc");
+         filterChainDefinitionMap.put("/forecart", "authc");
+         filterChainDefinitionMap.put("/toOrderSetAccount", "authc");
+         filterChainDefinitionMap.put("/bought", "authc");
+         filterChainDefinitionMap.put("/**", "anon");
         //如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilterFactoryBean.setLoginUrl("/toLogin");
         // 登录成功后要跳转的链接

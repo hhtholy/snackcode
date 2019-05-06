@@ -12,4 +12,6 @@ import java.util.List;
 public interface ReviewService {
     List<Review> getReviewsByProduct(Product product);  //获取一个产品的评价
     int getReviewCount(Product product); //获取一个产品下的评价数量
+
+    void addReview(Review review); //添加评价
 }

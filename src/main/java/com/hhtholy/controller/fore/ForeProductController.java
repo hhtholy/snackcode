@@ -186,7 +186,7 @@ public class ForeProductController {
         }else{
             orderList= orderService.getOrdersByUser(user);  //根据用户查询订单
         }
-        for (Order_ order : orderList) { // 遍历sql
+        for (Order_ order : orderList) { // 遍历订单列表
             List<OrderItem> orderItems = order.getOrderItems(); //获取订单下的订单项
             for (OrderItem orderItem : orderItems) {
                 orderItem.setOrder(null);

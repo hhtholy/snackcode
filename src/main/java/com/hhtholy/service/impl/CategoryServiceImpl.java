@@ -7,11 +7,14 @@ import com.hhtholy.service.CategoryService;
 import com.hhtholy.service.ProductService;
 import com.hhtholy.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import sun.net.www.http.KeepAliveCache;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +26,7 @@ import java.util.Optional;
  * Category操作相关的业务实现类
  */
 @Service
+@CacheConfig(cacheNames = "categories")
 public class CategoryServiceImpl implements CategoryService {
       @Autowired
       private CategoryDao categoryDao;  //注入CategoryDao
@@ -36,6 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return Page<Category> 自定义的分页对象
      */
     @Override
+    @Cacheable(key="'categories-page-'+#p0+ '-' + #p1")
     public Page<Category> getCategoryPage(Integer currentPage, Integer size, int navigatePages) {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(currentPage, size, sort);

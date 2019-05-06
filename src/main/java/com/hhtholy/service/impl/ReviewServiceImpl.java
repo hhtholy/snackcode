@@ -40,4 +40,14 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
 
+    /**
+     * 添加评价
+     * @param review
+     */
+    @Override
+    public void addReview(Review review) {
+         reviewDao.save(review);
+    }
+
+
 }

@@ -1,7 +1,7 @@
 <!--前台顶端页面-->
 <nav class="top" th:fragment="html">
     <a th:href="${application.contextPath}">
-        <span style="color:#C40000;margin:0px" class="glyphicon glyphicon-home redColor"></span>
+        <span style="color:#06c482;margin:0px" class="glyphicon glyphicon-home redColor"></span>
         零食小站首页
     </a>
     <span>你好，欢迎来到零食站~</span>
@@ -17,7 +17,7 @@
     <span class="pull-right">
 			<a href="bought">我的订单</a>
 			<a href="toCart">
-			<span style="color:#C40000;margin:0px" class=" glyphicon glyphicon-shopping-cart redColor"></span>
+			<span style="color:#3ac49b;margin:0px" class=" glyphicon glyphicon-shopping-cart redColor"></span>
 			购物车<strong th:text="${session.cartTotalItemNumber}"></strong>件</a>
 	</span>
 </nav>

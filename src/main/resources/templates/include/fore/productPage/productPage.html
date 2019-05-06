@@ -72,9 +72,9 @@
     </script>
 
     <title>零食小站产品->{{product.name}}信息</title>
-    <div class="categoryPictureInProductPageDiv">
+   <!-- <div class="categoryPictureInProductPageDiv">
         <img v-if="category!=null" class="categoryPictureInProductPage" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/category/'+category.imageurl">
-    </div>
+    </div>-->
     <div class="productPageDiv">
         <!--购物车那块-->
         <div th:replace="include/fore/productPage/imgAndInfo::html" ></div>

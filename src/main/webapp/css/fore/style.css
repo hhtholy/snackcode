@@ -15,7 +15,7 @@ a {
 
 a:hover {
 	text-decoration: none;
-	color: #C40000;
+	color: #3ac49b;
 }
 
 nav.top {
@@ -27,7 +27,7 @@ nav.top {
 }
 
 .redColor {
-	color: #C40000;
+	color: #06c482;
 }
 
 .boldWord {
@@ -44,7 +44,7 @@ nav.top span, nav.top a {
 }
 
 nav.top a:hover {
-	color: #C40000;
+	color: #3ac49b;
 }
 
 nav.top {
@@ -62,7 +62,7 @@ nav.top div.row div {
 }
 
 div.searchDiv {
-	background-color: #C40000;
+	background-color: #3ac49b;
 	width: 400px;
 	margin: 50px auto;
 	padding: 1px;
@@ -81,7 +81,7 @@ div.searchDiv input {
 div.searchDiv button {
 	width: 110px;
 	border: 1px solid transparent;
-	background-color: #C40000;
+	background-color: #3ac49b;
 	color: white;
 	font-size: 20px;
 	font-weight: bold;
@@ -104,7 +104,7 @@ div.carouselBackgroundDiv{
 }
 
 div.categoryWithCarousel div.headbar {
-	background-color: #DD2727;
+	background-color: #3ac49b;
 }
 
 div.carousel-of-product {
@@ -177,7 +177,7 @@ div.categoryWithCarousel div.rightMenu a {
 
 div.categoryWithCarousel div.head {
 	width: 200px;
-	background-color: #C60A0A;
+	background-color: #3ac49b;
 	height: 36px;
 	line-height: 36px;
 	font-size: 16px;
@@ -194,7 +194,7 @@ div.productsAsideCategorys a {
 }
 
 div.productsAsideCategorys a:hover {
-	color: #C40000;
+	color: #3ac49b;
 	text-decoration: none;
 }
 
@@ -288,7 +288,7 @@ a.productItemDescLink {
 }
 
 div.productItem:hover {
-	border: 1px solid #C40000;
+	border: 1px solid #3ac49b;
 }
 
 div.productItem span.productItemDesc {
@@ -384,7 +384,7 @@ div.copyright {
 	border-top-style: solid;
 	border-top-width: 2px;
 	border-top-color: solid;
-	border-top-color: #C40000;
+	border-top-color: #3ac49b;
 	margin-top:20px;
 
 
@@ -539,7 +539,7 @@ table.categorySortBarTable td a {
 }
 
 table.categorySortBarTable td a:hover {
-	color: #C40000;
+	color: #3ac49b;
 }
 
 table.categorySortBarTable td.grayColumn {
@@ -583,7 +583,7 @@ div.productUnit {
 
 div.productUnit:hover {
 	width: 225px;
-	border: 3px solid #C40000;
+	border: 3px solid #3ac49b;
 	padding: 0px;
 }
 
@@ -599,7 +599,7 @@ div.productUnitFrame{
 	border:1px solid #eee;
 }
 div.productUnitFrame:hover{
-	border:1px solid #C40000;
+	border:1px solid #3ac49b;
 }
 
 div.productUnit span.productPrice {
@@ -627,7 +627,7 @@ div.productUnit a.productLink {
 
 div.productUnit a.productLink:hover {
 	text-decoration: underline;
-	color: #C40000;
+	color: #3ac49b;
 }
 
 div.productUnit a.tmallLink {
@@ -640,7 +640,7 @@ div.productUnit a.tmallLink {
 
 div.productUnit a.tmallLink:hover {
 	text-decoration: underline;
-	color: #C40000;
+	color: #3ac49b;
 }
 
 div.productUnit div.productInfo {
@@ -688,7 +688,7 @@ img.simpleLogo {
 }
 
 div.simpleSearchDiv {
-	background-color: #C40000;
+	background-color: #3ac49b;
 	width: 300px;
 	margin: 10px 20px 40px;
 	padding: 1px;
@@ -707,7 +707,7 @@ div.simpleSearchDiv input {
 div.simpleSearchDiv button {
 	width: 60px;
 	border: 1px solid transparent;
-	background-color: #C40000;
+	background-color: #3ac49b;
 	color: white;
 	font-size: 14px;
 	/* 	font-weight:bold; */
@@ -832,12 +832,12 @@ div.infoInimgAndInfo span.originalPrice {
 div.infoInimgAndInfo span.promotionPriceYuan {
 	font-family: Arial;
 	font-size: 18px;
-	color: #C40000;
+	color: #3ac49b;
 	/*     vertical-align: top; */
 }
 
 div.infoInimgAndInfo span.promotionPrice {
-	color: #c40000;
+	color: #3ac49b;
 	font-family: Arial;
 	font-size: 30px;
 	font-weight: bold;
@@ -1100,19 +1100,19 @@ div.buyDiv button {
 }
 
 button.buyButton {
-	border: 1px solid #C40000;
+	border: 1px solid #3ac49b;
 	background-color: #FFEDED;
 	text-align: center;
 	line-height: 40px;
 	font-size: 16px;
 	/* 	font-weight:700; */
-	color: #C40000;
+	color: #3ac49b;
 	font-family: arial;
 }
 
 button.addCartButton {
-	border: 1px solid #C40000;
-	background-color: #C40000;
+	border: 1px solid #3ac49b;
+	background-color: #3ac49b;
 	text-align: center;
 	line-height: 40px;
 	font-size: 16px;
@@ -1339,7 +1339,7 @@ div.orderItemTotalSumDiv span {
 }
 
 span.orderItemTotalSumSpan {
-	color: #C40000 !important;
+	color: #3ac49b !important;
 	font-size: 22px;
 	font-weight: bold;
 	border-bottom: 1px dotted #F2F6FF;
@@ -1351,8 +1351,8 @@ div.submitOrderDiv {
 }
 
 button.submitOrderButton {
-	border: 1px solid #C40000;
-	background-color: #C40000;
+	border: 1px solid #3ac49b;
+	background-color: #3ac49b;
 	text-align: center;
 	line-height: 40px;
 	font-size: 14px;
@@ -1477,7 +1477,7 @@ div.cartDiv {
 }
 
 span.cartTitlePrice {
-	color: #C40000;
+	color: #3ac49b;
 	font-size: 14px;
 	font-weight: bold;
 	margin-left: 5px;
@@ -1516,7 +1516,7 @@ a.cartProductLink {
 }
 
 a.cartProductLink:hover {
-	color: #C40000;
+	color: #3ac49b;
 	text-decoration: underline;
 }
 
@@ -1551,14 +1551,14 @@ span.cartProductItemPromotionPrice {
 	font-family: Arial;
 	font-size: 14px;
 	font-weight: bold;
-	color: #C40000;
+	color: #3ac49b;
 }
 
 span.cartProductItemSmallSumPrice {
 	font-family: Arial;
 	font-size: 14px;
 	font-weight: bold;
-	color: #C40000;
+	color: #3ac49b;
 }
 
 div.cartProductChangeNumberDiv {
@@ -1597,13 +1597,13 @@ div.cartFoot {
 }
 
 span.cartSumNumber {
-	color: #C40000;
+	color: #3ac49b;
 	font-weight: bold;
 	font-size: 16px;
 }
 
 span.cartSumPrice {
-	color: #C40000;
+	color: #3ac49b;
 	font-weight: bold;
 	font-size: 20px;
 }
@@ -1625,7 +1625,7 @@ div.boughtDiv {
 }
 
 /*div.orderType div.selectedOrderType {
-	border-bottom: 2px solid #C40000;
+	border-bottom: 2px solid #3ac49b;
 }*/
 
 div.orderType div {
@@ -1776,8 +1776,8 @@ button.orderListItemReview {
 }
 
 button.orderListItemReview:hover {
-	border-color: #C40000;
-	color: #C40000;
+	border-color: #3ac49b;
+	color: #3ac49b;
 }
 
 td.orderItemDeleteTD {
@@ -1887,7 +1887,7 @@ div.confirmPayOrderItemText {
 }
 
 span.confirmPayOrderItemSumPrice {
-	color: #C40000;
+	color: #3ac49b;
 }
 
 table.confirmPayOrderDetailTable {
@@ -1985,13 +1985,13 @@ div.reviewProductInfoRightText {
 }
 
 span.reviewProductInfoTablePrice {
-	color: #C40000;
+	color: #3ac49b;
 	font-size: 20px;
 	font-weight: bold;
 }
 
 span.reviewProductInfoTableSellNumber {
-	color: #C40000;
+	color: #3ac49b;
 	font-size: 14px;
 	font-weight: bold;
 }
@@ -2042,7 +2042,7 @@ div.reviewStasticsLeft {
 }
 
 div.reviewStasticsLeftTop {
-	background-color: #C40000;
+	background-color: #3ac49b;
 	height: 6px;
 }
 
@@ -2127,7 +2127,7 @@ div.makeReviewButtonDiv button {
 	width: 72px;
 	height: 26px;
 	border-radius: 2px;
-	background-color: #C40000;
+	background-color: #3ac49b;
 	color: white;
 	border-width: 0px;
 	font-weight: bold;
@@ -2180,7 +2180,7 @@ table.registerTable button {
 	height: 36px;
 	border-radius: 2px;
 	color: white;
-	background-color: #C40000;
+	background-color: #3ac49b;
 	border-width: 0px;
 }
 

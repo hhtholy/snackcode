@@ -1,12 +1,13 @@
 package com.hhtholy.utils;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author hht
  * @create 2019-04-04 16:59
  */
-public class Page<T> {
+public class Page<T> implements Serializable {
     private org.springframework.data.domain.Page<T> page; //SpringdataJpa 的分页对象
     // 分页导航  [8,9,10,11,12]  形如这种  也就是 随着页面的添加 页码跟着变 保持几个页码
     //  举例的 navigatePages =5

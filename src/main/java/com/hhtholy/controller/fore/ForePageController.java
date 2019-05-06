@@ -196,9 +196,33 @@ public class ForePageController {
     }
 
 
+    /**
+     * 待评价
+     * @param oid
+     * @return
+     */
     @GetMapping("/waitReview")
     public String toMywaitReviewOrders(String oid){
         return "fore/MyOrderPage/waitReviewOrderPage";
     }
 
+
+    /**
+     * 确认收货
+     * @return
+     */
+    @GetMapping(value="/confirmPay")
+    public String confirmPay(){
+        return "fore/confirmPayPage/confirmPay";
+    }
+
+
+    /**
+     * 跳转到评价界面
+     * @return
+     */
+    @GetMapping(value="/review")
+    public String review(){
+        return "fore/reviewPage/review";
+    }
 }
