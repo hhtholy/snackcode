@@ -3,8 +3,10 @@ package com.hhtholy.controller.fore;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.hhtholy.config.aliPayConfig.AlipayConfig;
+import com.hhtholy.entity.OrderItem;
 import com.hhtholy.entity.Order_;
 import com.hhtholy.entity.Pay_;
+import com.hhtholy.service.OrderItemService;
 import com.hhtholy.service.OrderService;
 import com.hhtholy.service.PayService;
 import com.hhtholy.utils.Constant;
@@ -31,6 +33,7 @@ import java.util.*;
 public class CallbackController {
     @Autowired private PayService payService;
     @Autowired private OrderService orderService;
+    @Autowired private OrderItemService orderItemService;
 
 
     /****
@@ -69,19 +72,7 @@ public class CallbackController {
             String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
             //付款时间
             String datePay = new String(request.getParameter("timestamp").getBytes("ISO-8859-1"),"UTF-8");
-
-            //创建交易记录
-            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Pay_ pay = new Pay_();
-            pay.setOut_trade_no(out_trade_no);
-            pay.setTrade_no(trade_no);
-            pay.setTotal_fee(Float.parseFloat(total_amount));
-            pay.setPay_date(f.parse(datePay));
-            payService.addPay(pay); //存入交易记录
             Order_ orderResult = orderService.getOrderByOrderCode(out_trade_no);
-            orderResult.setStatus(Constant.ORDER_WAITDELIVERY.getWord());
-            orderService.updateOrder(orderResult); //更新订单
-          log.info("验证进来了");
             return "redirect:/paySuccess?oid="+orderResult.getId();
 
         }else {
@@ -123,24 +114,24 @@ public class CallbackController {
             //付款金额
             String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
            //付款时间
-            String datePay = new String(request.getParameter("timestamp").getBytes("ISO-8859-1"),"UTF-8");
+            //String datePay = new String(request.getParameter("timestamp").getBytes("ISO-8859-1"),"UTF-8");
 
             //创建交易记录
-            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //    SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-            Pay_ payResult = payService.getPayByOutTradeNo(out_trade_no);
-            if(payResult == null){
-                Pay_ pay = new Pay_();
-                pay.setOut_trade_no(out_trade_no);
-                pay.setTrade_no(trade_no);
-                pay.setTotal_fee(Float.parseFloat(total_amount));
-                pay.setPay_date(f.parse(datePay));
-                payService.addPay(pay); //存入交易记录
-            }
-
+            Pay_ pay = new Pay_();
+            pay.setOut_trade_no(out_trade_no);
+            pay.setTrade_no(trade_no);
+            pay.setTotal_fee(Float.parseFloat(total_amount));
+             pay.setPay_date(new Date());
+            payService.addPay(pay); //存入交易记录
             Order_ orderResult = orderService.getOrderByOrderCode(out_trade_no);
+            List<OrderItem> orderItems = orderResult.getOrderItems();
+            for (OrderItem orderItem : orderItems) {
+                orderItem.setIncart(0); //不在购物车中 也代表已经支付过了
+                orderItemService.updateOrderItem(orderItem);
+            }
             orderResult.setStatus(Constant.ORDER_WAITDELIVERY.getWord());
-            orderResult.setPayDate(f.parse(datePay)); //付款时间存入订单
             orderService.updateOrder(orderResult); //更新订单
 
             writer.write("success");

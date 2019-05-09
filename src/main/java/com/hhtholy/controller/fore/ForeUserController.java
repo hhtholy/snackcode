@@ -1,8 +1,11 @@
 package com.hhtholy.controller.fore;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.hhtholy.entity.User;
+import com.hhtholy.entity.UserVo;
 import com.hhtholy.service.UserService;
 import com.hhtholy.utils.Result;
+import com.hhtholy.utils.aliSendMs.SendMs;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.Random;
 
 /**
  * @author hht
@@ -83,6 +87,30 @@ public class ForeUserController {
 
 
 
+    @GetMapping("/sendMs")
+    public Object sendMs(String phone) throws ClientException {
+         int min = 10000;
+         int max = 99999;
+         int code = new Random().nextInt(max - min + 1) + min;
+         String codeRe  = SendMs.sendMs(phone, String.valueOf(code)); //发送短信
+          return Result.success(codeRe);
+    }
+    @PostMapping("/userfindpass")
+    public Object findPass(@RequestBody UserVo userVo) throws ClientException {
+        String name = userVo.getName();
+        User userByName = userService.getUserByName(name);
+        if(userByName == null){
+            return Result.fail("不存在该用户~~  请核对~~");
+        }
+        String password = userVo.getPassword();
+        String salt = new SecureRandomNumberGenerator().nextBytes().toString();  //需要进行  加盐的操作  使用shiro的方式进行登录
+        int times = 2;        //加密次数
+        String algorithmName = "md5";        //加密策略
+        String encodePassword = new SimpleHash(algorithmName, password, salt, times).toString();        //密码加密
+        userByName.setPassword(encodePassword);
+        userService.updateUser(userByName);
+        return  Result.success();
 
+    }
 
 }

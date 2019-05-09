@@ -164,4 +164,13 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.findByUser(user);
     }
 
+    /**
+     * 查询全部的订单
+     * @return
+     */
+    @Override
+    public List<Order_> getOrders() {
+        return orderDao.findAll();
+    }
+
 }

@@ -251,6 +251,12 @@
             <artifactId>sdk-java</artifactId>
             <version>3.3.2</version>
         </dependency>
+<!--短信ali-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>4.0.3</version>
+        </dependency>
 
 <!--log-->
         <dependency>

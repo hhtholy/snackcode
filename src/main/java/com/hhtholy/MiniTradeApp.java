@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @create 2019-04-04 15:44
  */
 @SpringBootApplication
-@EnableCaching
+//@EnableCaching
 public class MiniTradeApp  extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {

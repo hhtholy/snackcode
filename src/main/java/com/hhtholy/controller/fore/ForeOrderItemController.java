@@ -32,7 +32,7 @@ public class ForeOrderItemController {
         User user =(User)  session.getAttribute("user");
         if(null==user)
             return Result.fail("未登录");
-        List<OrderItem> ois = orderItemService.getOrderItemByUser(user);//获取该用户的所有订单项
+        List<OrderItem> ois = orderItemService.getOrderItemByUserAndIncart(user,1);//获取该用户的所有订单项
        try {
            for (OrderItem oi : ois) {
                if(oi.getProduct().getId().equals(pid)){ //查询出 当前产品的订单项

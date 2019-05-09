@@ -119,7 +119,7 @@ public class ForeProductController {
     @GetMapping("/forecart")
     public Object showCart(HttpSession session){
         User user =(User) session.getAttribute("user");
-        List<OrderItem> orderItems = orderItemService.getOrderItemByUser(user);//根据用户获取订单项
+        List<OrderItem> orderItems = orderItemService.getOrderItemByUserAndIncart(user,1);//根据用户获取订单项 在购物车中的
         for (OrderItem orderItem : orderItems) {  //为订单项对应产品 设置单图
             productService.setSingleImageUrlFoJson(orderItem.getProduct());
         }

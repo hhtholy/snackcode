@@ -1,5 +1,6 @@
 package com.hhtholy.controller.admin;
 
+import org.apache.jasper.tagplugins.jstl.core.If;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import springfox.documentation.annotations.ApiIgnore;
@@ -20,7 +21,7 @@ public class AdminPageController {
      */
        @GetMapping(value = "/admin")
       public String toAdmin(){
-          return "redirect:admin_category_list";
+           return "redirect:admin_category_list";
        }
 
     /**

@@ -5,6 +5,7 @@ import com.hhtholy.entity.OrderItem;
 import com.hhtholy.entity.Product;
 import com.hhtholy.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ import java.util.List;
 public interface OrderItemDao extends JpaRepository<OrderItem,Integer> {
     public List<OrderItem> findByOrderOrderById(Order_ order);//根据订单查订单项
     public List<OrderItem> findByProductOrderById(Product product); //根据产品去查订单项
-    public List<OrderItem> findByUserOrderById(User user); //根据用户去查订单项
+    public List<OrderItem> findByUserAndIncartOrderById(User user,int incart); //根据用户去查订单项
 
 }

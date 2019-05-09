@@ -29,4 +29,6 @@ public interface OrderService {
     public List<Order_> getOrdersByUserAndStatus(User user,String status); //去查用户的订单
 
     public List<Order_> getOrdersByUser(User user);
+
+    public List<Order_> getOrders();
 }

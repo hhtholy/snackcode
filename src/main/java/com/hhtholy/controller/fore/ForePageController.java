@@ -225,4 +225,12 @@ public class ForePageController {
     public String review(){
         return "fore/reviewPage/review";
     }
+
+
+    @GetMapping(value="/recommend")
+    public String recommend(){
+        return "fore/recommendPage/recommend";
+    }
+
+
 }

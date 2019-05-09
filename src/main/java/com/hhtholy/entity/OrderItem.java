@@ -36,4 +36,6 @@ public class OrderItem {
     private User user;
     private Integer number; //数量 (购买对应产品的数量)
 
+    private Integer incart; // 1代表是 0代表不是
+
 }

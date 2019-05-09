@@ -110,7 +110,7 @@ public class OrderItemServiceImpl implements OrderItemService {
      */
 
     @Override
-    public List<OrderItem> getOrderItemByUser(User user) {
-        return orderItemDao.findByUserOrderById(user);
+    public List<OrderItem> getOrderItemByUserAndIncart(User user,int flag) {
+        return orderItemDao.findByUserAndIncartOrderById(user,flag);
     }
 }

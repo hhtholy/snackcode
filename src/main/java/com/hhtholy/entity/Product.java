@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import java.util.List;
 @Table(name="product")
 @JsonIgnoreProperties(value = {"propertyValues"})
 @Data
+@ToString(exclude = {"productImages","propertyValues"})
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,5 +50,7 @@ public class Product implements Serializable {
 
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="product",fetch = FetchType.LAZY)
     private List<PropertyValue> propertyValues;
+
+
 
 }

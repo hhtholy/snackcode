@@ -1,0 +1,54 @@
+<div  th:fragment="html" class="modal " id="findPass" tabindex="-1" role="dialog" >
+    <div class="modal-dialog loginDivInProductPageModalDiv">
+        <div class="modal-content">
+            <div class="loginDivInProductPage">
+                <div class="panel addDiv">
+                    <div class="panel-body">
+                        <div class="panel-body">
+                            <h3>设置密码</h3>
+                            <div class="alert alert-danger" >
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                                <span class="errorMessage"></span>
+                            </div>
+                            <table class="panel-body" style="border-collapse:separate; border-spacing:5px;padding: 0px">
+
+                                <tr>
+                                    <td>用户名称:</td>
+                                    <td><input v-model="userfindpass.name"  placeholder="需要找回密码的用户"></td>
+                                </tr>
+                                <tr>
+                                    <td>用于接受验证码的手机:</td>
+                                    <td><input v-model="userfindpass.phone"  placeholder="手机号"></td>
+                                </tr>
+                                <tr>
+                                    <td>登录密码</td>
+                                    <td><input v-model="userfindpass.password"  type="password"  placeholder="新密码" > </td>
+                                </tr>
+                                <tr>
+                                    <td>密码确认</td>
+                                    <td><input v-model="userfindpass.repeatpassword" type="password"  placeholder="新密码确认" > </td>
+                                </tr>
+                                <tr>
+                                    <td>验证码</td>
+                                    <td><input type="text" v-model="userfindpass.code" /> </td>
+                                </tr>
+                                <!--提交-->
+                                <tr class="submitTR">
+                                    <input type="hidden" :value="code"/>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" @click="send"><span v-if="code != null">已发送</span><span v-if="code == null">发送验证码</span></button>
+                                    </td>
+                                    <td>
+                                        <a href="#"  @click="find" class="btn btn-success">提交</a>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

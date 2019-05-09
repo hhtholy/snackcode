@@ -26,7 +26,7 @@ import java.util.Optional;
  * Category操作相关的业务实现类
  */
 @Service
-@CacheConfig(cacheNames = "categories")
+//@CacheConfig(cacheNames = "categories")
 public class CategoryServiceImpl implements CategoryService {
       @Autowired
       private CategoryDao categoryDao;  //注入CategoryDao
@@ -40,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return Page<Category> 自定义的分页对象
      */
     @Override
-    @Cacheable(key="'categories-page-'+#p0+ '-' + #p1")
+    //@Cacheable(key="'categories-page-'+#p0+ '-' + #p1")
     public Page<Category> getCategoryPage(Integer currentPage, Integer size, int navigatePages) {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(currentPage, size, sort);
@@ -127,6 +127,17 @@ public class CategoryServiceImpl implements CategoryService {
         }
         productService.setSingleImageUrlFoJson(productList); // 设置单图（不持久化数据库中）
         category.setProductsForJson(productList);
+    }
+
+    /**
+     * 根据分类名称进行查询
+     * @param name
+     * @return
+     */
+
+    @Override
+    public List<Category> getCategoryByName(String name) {
+        return categoryDao.findByName(name);
     }
 
 

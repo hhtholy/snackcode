@@ -441,10 +441,10 @@ div.deleteConfirmModalDiv {
 }
 
 div.loginDivInProductPage {
-	background-color: white;
-	width: 350px;
-	height: 400px;
-	padding: 60px 25px 80px 25px;
+	background-color: #f0f0f0;
+	width: 500px;
+	height: 500px;
+	padding: 70px 35px 90px 65px;
 }
 
 div.loginSmallDiv {

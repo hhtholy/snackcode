@@ -6,7 +6,10 @@
     $(function(){
         var data4Vue = {
             user:{name:'',password:''},
-            uri:"login"
+            uri:"login",
+            userfindpass:{name:'',phone:'',password: '',code:''},
+            message:{},
+            code:null
         };
         var vue = new Vue({
             el:"#workingArea",
@@ -14,6 +17,69 @@
             mounted:function () {
             },
             methods:{
+                modalFindPass:function(){
+                    $("#findPass").modal('show'); //展示找回密码的模态框
+                },
+                send:function(){ //发送验证码
+                    this.message.phone = this.userfindpass.phone;
+                    if(0==this.userfindpass.phone.length){
+                        $("span.errorMessage").html("请输入接受验证码的手机");
+                        return;
+                    }
+                    var phone = this.userfindpass.phone;
+                    if(!(/^1[34578]\d{9}$/.test(phone))){
+                        $("span.errorMessage").html("手机号码格式错误");
+                        return;
+                    }
+                    var url = "sendMs?phone="+ this.message.phone;
+                    axios.get(url).then(function (res) {
+                       var code = res.data.data;
+                       vue.code = hex_md5(code);
+                    });
+                },
+                find:function(){  //找回密码
+                    if(0==this.userfindpass.name.length){
+                        $("span.errorMessage").html("请输入用户名");
+                        return;
+                    }
+                    if(0==this.userfindpass.phone.length){
+                        $("span.errorMessage").html("请输入接受验证码的手机");
+                        return;
+                    }
+                    var phone = this.userfindpass.phone;
+                    if(!(/^1[34578]\d{9}$/.test(phone))){
+                        $("span.errorMessage").html("手机号码格式错误");
+                        return;
+                    }
+                    if(0==this.userfindpass.password.length){
+                        $("span.errorMessage").html("请输入新密码");
+                        return;
+                    }
+
+                    if(this.userfindpass.password !=this.userfindpass.repeatpassword){
+                        $("span.errorMessage").html("密码不一致");
+                        return;
+                    }
+
+                    if(hex_md5(this.userfindpass.code) !=this.code){
+                        $("span.errorMessage").html("验证码不一致");
+                        return;
+                    }
+                    var url = "userfindpass";
+                    axios.post(url,this.userfindpass).then(function (res) {
+                        var result = res.data.code;
+
+                        if(result == 1){
+                            alert("hey 修改密码成功~~~");
+                            location.href="toLogin";
+                        }else{
+                            $("span.errorMessage").html(res.data.message);
+                            vue.code =null;
+                        }
+                    });
+
+
+                },
                 login:function () { //登录
                     if(0==this.user.name.length){
                         $("span.errorMessage").html("请输入用户名");
@@ -72,14 +138,15 @@
                 <input v-model="user.password" type="password" placeholder="密码" @keyup.enter="login">
             </div>
             <div>
-                <!--<a class="notImplementLink" href="#">忘记登录密码</a>-->
-                <a href="register" class="pull-right">注册</a>
+                <a class="notImplementLink" href="#" @click="modalFindPass">忘记登录密码</a>
+                <a href="toRegister" class="pull-right">注册</a>
             </div>
             <div style="margin-top:20px">
                 <button class="btn btn-block redButton" type="button" @click="login">登录</button>
             </div>
         </div>
     </div>
+    <div th:replace="fore/modalPageForFindPass/findPass::html"></div><!--找回密码模态框-->
 </div> <!--workingArea-->
 <div th:replace="include/fore/footer::html" ></div>
 </body>

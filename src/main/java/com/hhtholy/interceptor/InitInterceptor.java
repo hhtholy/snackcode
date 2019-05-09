@@ -6,6 +6,8 @@ import com.hhtholy.entity.OrderItem;
 import com.hhtholy.entity.User;
 import com.hhtholy.service.CategoryService;
 import com.hhtholy.service.OrderItemService;
+import com.hhtholy.service.OrderService;
+import com.hhtholy.service.impl.RecommendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,6 +49,10 @@ public class InitInterceptor implements HandlerInterceptor {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired private  RecommendService recommendService;
+
+    @Autowired private OrderService orderService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         return true;
@@ -58,15 +64,16 @@ public class InitInterceptor implements HandlerInterceptor {
           User user =(User)request.getSession().getAttribute("user");  //先获取 session中的user如果有的话 展示购物车中数量  没有的话 数量就是0
           int totalnum = 0;          //定义购物车中 商品的总数量
           if(user != null){
-              List<OrderItem> orderItemsByUser = orderItemService.getOrderItemByUser(user);
+              List<OrderItem> orderItemsByUser = orderItemService.getOrderItemByUserAndIncart(user,1);
               for(OrderItem item:orderItemsByUser){
                   totalnum += item.getNumber(); //一个订单项指的是 一种商品的购买
               }
           }
           //获取所有的分类   智能推荐应该写的
-        List<Category> categories = categoryService.getCategoryList();
+        //List<Category> categories = recommendService.recommedCategories(user,orderService.getOrders());
+
         String contextPath= request.getServletContext().getContextPath();
-        request.getServletContext().setAttribute("categories_below_search", categories);
+        //request.getServletContext().setAttribute("categories_below_search", categories);
         session.setAttribute("cartTotalItemNumber", totalnum);
         request.getServletContext().setAttribute("contextPath", contextPath);
     }

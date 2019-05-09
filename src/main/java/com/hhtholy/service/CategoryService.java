@@ -18,4 +18,6 @@ public interface CategoryService {
     public Category updateCategory(Category category);     //更新分类
     public Category getCategory(Integer id);    //根据id去查询一个分类实体
     public void setProductsForJsonOfCategory(Category category); //为分类 加上产品值（页面需要json转换）
+
+    public List<Category> getCategoryByName(String name);
 }

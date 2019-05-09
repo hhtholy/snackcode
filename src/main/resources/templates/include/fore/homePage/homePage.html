@@ -3,7 +3,9 @@
         $(function(){
             var data4Vue = {
                 uri:'forehome',
-                categories: []
+                categories: [],
+                productsRecommend:[],
+                productRecommend:{}
             };
             var vue = new Vue({
                 el: '#workingArea',
@@ -16,7 +18,9 @@
                     load:function(){
                         var url =  this.uri;
                         axios.get(url).then(function(response) {
-                            vue.categories = response.data;
+                            vue.categories = response.data.cs;//分类信息
+                            vue.productsRecommend = response.data.recommend;//推荐产品信息
+                            vue.productRecommend = response.data.active;
                             vue.$nextTick(function(){
                                 homePageRegisterListeners();      //要等渲染结束之后，才来进行监听
                             })

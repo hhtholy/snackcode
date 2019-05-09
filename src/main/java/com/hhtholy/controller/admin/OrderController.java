@@ -100,6 +100,17 @@ public class OrderController {
         Order_ order = orderService.getOrder(oid);
         //更新订单的状态
         order.setStatus(Constant.ORDER_WAITREVIEW.getWord()); //待评价状态
+        List<OrderItem> orderItems = order.getOrderItems();
+
+        for (OrderItem orderItem : orderItems) {
+            Integer number = orderItem.getNumber(); //购买该项的产品数量
+            Product product = orderItem.getProduct();
+            Integer saleCount = product.getSaleCount();
+            product.setSaleCount(saleCount + number);
+            Integer stock = product.getStock();
+            product.setStock(stock - number);
+            productService.updateProduct(product); //修改销量和库存
+        }
         orderService.updateOrder(order); //更新
         return Result.success();
     }

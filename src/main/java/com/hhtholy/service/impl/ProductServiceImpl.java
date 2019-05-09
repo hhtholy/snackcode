@@ -263,13 +263,14 @@ public class ProductServiceImpl implements ProductService {
         int resultOrderItemId = 0;
         boolean flag = false;
         Product product = getProduct(pid); //根据产品id获取产品
-        List<OrderItem> orderItemByUser = orderItemService.getOrderItemByUser(user); //获取用户所在的订单项
+        List<OrderItem> orderItemByUser = orderItemService.getOrderItemByUserAndIncart(user,1); //获取用户所在的订单项
         if(orderItemByUser != null && orderItemByUser.size() > 0){
             for (OrderItem orderItem : orderItemByUser) {
                   if(orderItem.getProduct().getId().equals(pid)){ //如果说已经点击过立即购买或者添加到购物车了 那么订单项的数量加1即可
                       Integer number = orderItem.getNumber();
                       number+=buyNum;
                       orderItem.setNumber(number);
+                      orderItem.setIncart(1); //在购物车中 标志
                       orderItemService.updateOrderItem(orderItem); //更新订单项数据（也就是数量）
                       flag = true;
                       resultOrderItemId = orderItem.getId();
@@ -281,6 +282,7 @@ public class ProductServiceImpl implements ProductService {
             orderItem.setNumber(buyNum);
             orderItem.setUser(user); //关联用户
             orderItem.setProduct(product); //关联产品
+            orderItem.setIncart(1); //在购物车中 标志
             orderItemService.addOrderItem(orderItem); //存取进数据库
             resultOrderItemId = orderItem.getId();
         }
@@ -309,6 +311,17 @@ public class ProductServiceImpl implements ProductService {
             }
         }, pageable);
         return new Page<>(resultGet,5);
+    }
+
+    /**
+     * 根据名称获取产品
+     * @param name
+     * @return
+     */
+
+    @Override
+    public List<Product> getProductByName(String name) {
+        return productDao.getProductOfName(name);
     }
 
 

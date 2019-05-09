@@ -21,7 +21,7 @@ public interface OrderItemService {
     public List<OrderItem> getOrderItemsByOrder(Order_ order); //根据订单获取订单项
 
     public List<OrderItem> getOrderItemByProduct(Product product); //根据产品获取订单项
-    public List<OrderItem> getOrderItemByUser(User user); //根据用户获取订单项
+    public List<OrderItem> getOrderItemByUserAndIncart(User user,int incart); //根据用户获取订单项
 
     
 }

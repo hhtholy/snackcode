@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
-        return null;
+        return userDao.save(user);
     }
 
     /**
@@ -67,5 +67,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByName(String name) {
         return userDao.findByName(name);
+    }
+
+    @Override
+    public int getNumOfUsers() {
+        return userDao.getNumOfUsers();
     }
 }
