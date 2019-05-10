@@ -6,9 +6,11 @@ import com.hhtholy.config.aliPayConfig.AlipayConfig;
 import com.hhtholy.entity.OrderItem;
 import com.hhtholy.entity.Order_;
 import com.hhtholy.entity.Pay_;
+import com.hhtholy.entity.Product;
 import com.hhtholy.service.OrderItemService;
 import com.hhtholy.service.OrderService;
 import com.hhtholy.service.PayService;
+import com.hhtholy.service.ProductService;
 import com.hhtholy.utils.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,7 @@ public class CallbackController {
     @Autowired private PayService payService;
     @Autowired private OrderService orderService;
     @Autowired private OrderItemService orderItemService;
+    @Autowired private ProductService productService;
 
 
     /****
@@ -119,19 +122,32 @@ public class CallbackController {
             //创建交易记录
         //    SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+             Date time = new Date();
             Pay_ pay = new Pay_();
             pay.setOut_trade_no(out_trade_no);
             pay.setTrade_no(trade_no);
             pay.setTotal_fee(Float.parseFloat(total_amount));
-             pay.setPay_date(new Date());
+             pay.setPay_date(time);
             payService.addPay(pay); //存入交易记录
             Order_ orderResult = orderService.getOrderByOrderCode(out_trade_no);
             List<OrderItem> orderItems = orderResult.getOrderItems();
             for (OrderItem orderItem : orderItems) {
                 orderItem.setIncart(0); //不在购物车中 也代表已经支付过了
                 orderItemService.updateOrderItem(orderItem);
+
+                Integer number = orderItem.getNumber();//商品购买数量
+                Product product = orderItem.getProduct();
+                Integer stock = product.getStock();//库存
+                if(stock >= number){
+                    stock = stock - number;
+                }else {
+                    stock = 0;
+                }
+                product.setStock(stock);
+                productService.updateProduct(product);
             }
             orderResult.setStatus(Constant.ORDER_WAITDELIVERY.getWord());
+            orderResult.setPayDate(time);
             orderService.updateOrder(orderResult); //更新订单
 
             writer.write("success");

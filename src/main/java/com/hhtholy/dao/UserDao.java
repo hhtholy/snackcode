@@ -13,4 +13,5 @@ public interface UserDao extends JpaRepository<User,Integer> {
     public User findByName(String name); //根据用户名称进行查询
     @Query(value = "select count(*) from user",nativeQuery = true)
     public int  getNumOfUsers();
+
 }

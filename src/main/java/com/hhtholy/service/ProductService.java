@@ -31,4 +31,7 @@ public interface ProductService { //查询一个分类下的产品信息  分页
 
     List<Product> getProductByName(String name);//根据名称获取产品
     public void fillCategoryData(List<Category> cs);
+
+    public int getMaxId();
+    public int getMinId();
 }

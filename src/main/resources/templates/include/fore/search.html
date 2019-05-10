@@ -11,9 +11,9 @@
             <button  type="submit" class="searchButton">搜索</button>
             <div class="searchBelow">  <!--搜索框  下面推荐的分类-->
                 <!--categories_below_search 已经放在context域中-->
-				<span th:each="c,status: ${application.categories_below_search}" th:if="${status.index>=5 && status.index<=8}">
+				<span th:each="c,status: ${application.categories_below_search}"> <!--th:if="${status.index>=5 && status.index<=8}"-->
 					<a th:href="@{'toforeCategory?cid='+${c.id}}" th:text="${c.name}" ></a> <!--点击超链接的话 跳转到该分类下的产品-->
-					<span th:if="${status.index!=8}">|</span>
+					<!--<span th:if="${status.index!=8}">|</span>-->
 	            </span>
 
             </div>

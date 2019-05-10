@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -39,7 +40,7 @@ public class ForeCategoryController {
 
     @ApiOperation(value = "获取分类",notes = "前台获取分类")
     @GetMapping("/forehome")
-    public Object home(HttpSession session) {
+    public Object home(HttpSession session, HttpServletRequest request) {
         User user =(User)  session.getAttribute("user"); //用户登录数据
         List<Category> cs= categoryService.getCategoryList(); //获取所有的分类
          productService.fillCategoryData(cs); // 分类产品标题 按行显示
@@ -48,16 +49,17 @@ public class ForeCategoryController {
          }
         List<Order_> orders = orderService.getOrders(); //所有订单
         List<Product> products = recommendService.recommedProducts(user, orders);//推荐的产品
+//        List<Category> categories = recommendService.recommedCategories(user, orders);
 
         List<Product> list = new ArrayList<>();
-
         for (int i = 0; i < products.size(); i++) {
             productService.setSingleImageUrlFoJson(products.get(i)); //设置单图
             if(i >= 1){
                 list.add(products.get(i));
             }
         }
-
+        String contextPath= request.getServletContext().getContextPath();
+        //request.getServletContext().setAttribute("categories_below_search", categories);
         HashMap<String, Object> map = new HashMap<>();
         map.put("active",products.get(0));
         map.put("cs",cs);

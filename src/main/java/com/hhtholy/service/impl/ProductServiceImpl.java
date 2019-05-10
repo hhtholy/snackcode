@@ -345,4 +345,22 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * 获取最大id
+     * @return
+     */
+    @Override
+    public int getMaxId() {
+        return productDao.getMaxId();
+    }
+
+    /**
+     * 获取最小id
+     * @return
+     */
+    @Override
+    public int getMinId() {
+        return productDao.getMinId();
+    }
+
 }

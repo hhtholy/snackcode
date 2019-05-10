@@ -69,11 +69,7 @@ public class InitInterceptor implements HandlerInterceptor {
                   totalnum += item.getNumber(); //一个订单项指的是 一种商品的购买
               }
           }
-          //获取所有的分类   智能推荐应该写的
-        //List<Category> categories = recommendService.recommedCategories(user,orderService.getOrders());
-
         String contextPath= request.getServletContext().getContextPath();
-        //request.getServletContext().setAttribute("categories_below_search", categories);
         session.setAttribute("cartTotalItemNumber", totalnum);
         request.getServletContext().setAttribute("contextPath", contextPath);
     }

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="include/ForeCommonJs::html" ></head>  <!--引入js和css等 和一些公关的js函数-->
 <body>
+<div th:replace="include/fore/top::html" ></div>
 <script>
     $(function(){
         var data4Vue = {
@@ -24,11 +25,13 @@
                     this.message.phone = this.userfindpass.phone;
                     if(0==this.userfindpass.phone.length){
                         $("span.errorMessage").html("请输入接受验证码的手机");
+                        $("div.loginErrorMessageDiv").css("visibility","visible");
                         return;
                     }
                     var phone = this.userfindpass.phone;
                     if(!(/^1[34578]\d{9}$/.test(phone))){
                         $("span.errorMessage").html("手机号码格式错误");
+                        $("div.loginErrorMessageDiv").css("visibility","visible");
                         return;
                     }
                     var url = "sendMs?phone="+ this.message.phone;
@@ -40,19 +43,23 @@
                 find:function(){  //找回密码
                     if(0==this.userfindpass.name.length){
                         $("span.errorMessage").html("请输入用户名");
+                        $("div.loginErrorMessageDiv").css("visibility","visible");
                         return;
                     }
                     if(0==this.userfindpass.phone.length){
                         $("span.errorMessage").html("请输入接受验证码的手机");
+                        $("div.loginErrorMessageDiv").css("visibility","visible");
                         return;
                     }
                     var phone = this.userfindpass.phone;
                     if(!(/^1[34578]\d{9}$/.test(phone))){
                         $("span.errorMessage").html("手机号码格式错误");
+                        $("div.loginErrorMessageDiv").css("visibility","visible");
                         return;
                     }
                     if(0==this.userfindpass.password.length){
                         $("span.errorMessage").html("请输入新密码");
+                        $("div.loginErrorMessageDiv").css("visibility","visible");
                         return;
                     }
 
@@ -63,6 +70,7 @@
 
                     if(hex_md5(this.userfindpass.code) !=this.code){
                         $("span.errorMessage").html("验证码不一致");
+                        $("div.loginErrorMessageDiv").css("visibility","visible");
                         return;
                     }
                     var url = "userfindpass";
@@ -70,7 +78,7 @@
                         var result = res.data.code;
 
                         if(result == 1){
-                            alert("hey 修改密码成功~~~");
+                            alert("hey 修改密码成功~~~ 现在转向登录界面~~");
                             location.href="toLogin";
                         }else{
                             $("span.errorMessage").html(res.data.message);

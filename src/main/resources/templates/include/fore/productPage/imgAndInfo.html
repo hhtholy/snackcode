@@ -46,6 +46,7 @@
 								$(".addCartButton").css("background-color","lightgray")
 								$(".addCartButton").css("border-color","lightgray")
 								$(".addCartButton").css("color","black")
+								location.href="toforeProduct?pid="+vue.product.id;
 							}
 						});
 					}
@@ -128,7 +129,7 @@
 			<img  v-if="null != product.singleImageUrlForJson" height="50px" width="50px" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+product.singleImageUrlForJson" class="bigImg">
 			<!--展示单图-->
 			<div class="smallImageDiv">
-                <img v-for="pi in product.productImages" v-if="'single' === pi.type" :src= "'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/' + pi.imageurl" class="smallImage">
+                <img v-for="pi in product.productImages" v-if="'detail' === pi.type" :src= "'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/detail/' + pi.imageurl" class="smallImage">
 	        </div>
 	        <div class="img4load hidden" ></div>
 	    </div>
@@ -141,12 +142,12 @@
 	        </div>
 	        <div class="productPrice">
 	            <div class="juhuasuan">
-	                <span class="juhuasuanBig" >促销活动</span>
-	                <span>此商品即将参加大促，<span class="juhuasuanTime">1天19小时</span>后开始，</span>
+	                <span class="juhuasuanBig" >EAT AND EAT ~~</span>
+	                <span>晚些就没有了，<span class="juhuasuanTime">速度</span>种草，</span>
 	            </div>
 	            <div class="productPriceDiv">
-	                <div class="gouwujuanDiv"><img height="16px" src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/gouwuquan.jpg">
-	                <span> 全站通用</span>
+	                <div class="gouwujuanDiv"><img height="30px" src="http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/maimaimai.jpg">
+	                <span> 快下单吧 ~~</span>
 	                </div>
 	                <div class="originalDiv">
 	                    <span class="originalPriceDesc">价格</span>

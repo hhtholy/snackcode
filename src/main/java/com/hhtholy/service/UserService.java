@@ -16,4 +16,5 @@ public interface UserService {
     public boolean isExist(User user);
     public  User getUserByName(String name);
     public int getNumOfUsers();
+
 }

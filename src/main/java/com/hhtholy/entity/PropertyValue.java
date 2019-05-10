@@ -28,6 +28,6 @@ public class PropertyValue implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "pid")
-    @JsonBackReference
+   // @JsonBackReference
     private Product product;  //产品
 }

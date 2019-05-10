@@ -108,6 +108,7 @@ public class ForeUserController {
         String algorithmName = "md5";        //加密策略
         String encodePassword = new SimpleHash(algorithmName, password, salt, times).toString();        //密码加密
         userByName.setPassword(encodePassword);
+        userByName.setSalt(salt);        //设置用户信息
         userService.updateUser(userByName);
         return  Result.success();
 

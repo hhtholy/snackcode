@@ -16,6 +16,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -92,6 +94,7 @@ public class ProductController {
             @ApiImplicitParam(name="id",value="产品id",required=true,paramType="path", dataType = "string"),
     })
     @DeleteMapping("/products/{id}")
+    @Transactional(propagation= Propagation.REQUIRED,rollbackForClassName="Exception")
     public String deleteProduct(@PathVariable("id") String[] ids){
         String result = "success";
         try {

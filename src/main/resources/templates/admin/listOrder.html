@@ -59,6 +59,9 @@
                     axios.put(url).then(function (res) {
                         //成功后 把这个发货按钮隐藏
                         $(e.target).hide();
+                        if(res.data.code == 1){
+                            location.href = "admin_order_list";
+                        }
                     });
                 }
 

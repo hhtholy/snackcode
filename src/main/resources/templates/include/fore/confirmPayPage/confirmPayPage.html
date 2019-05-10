@@ -14,6 +14,15 @@
                     this.load();
                 },
                 methods: {
+                    confirmGetSnack:function(oid){ //确认收货
+                        var url = "foreOrderConfirmed?oid="+oid;
+                        axios.get(url).then(function(response) {
+                             if(response.data.code == 1){
+                                 alert("交易成功~~  跳转我的订单页");
+                                 location.href="bought";
+                             }
+                        });
+                    },
                     load:function(){
                         var url =  this.uri+"?oid="+oid;
                         axios.get(url).then(function(response) {
@@ -95,7 +104,7 @@
         </div>
         <div class="confirmPayButtonDiv">
             <div class="confirmPayWarning">已经收到零食</div>  <!--更新订单的状态-->
-            <a :href="'foreOrderConfirmed?oid='+order.id"><button class="confirmPayButton">确认支付</button></a>
+            <a><button class="confirmPayButton" @click="confirmGetSnack(order.id)">确认收货~</button></a>
         </div>
     </div>
 </div>

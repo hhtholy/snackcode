@@ -165,6 +165,10 @@
                             <div  v-if="o.status=='waitDelivery'">
                                 <span>待发货</span>
                             </div>
+                            <div  v-if="o.status=='finish'">
+                                <span>订单已结束~</span>
+                            </div>
+
 
                             <a v-if="o.status=='waitReview'" :href="'review?oid='+o.id">
                                 <button  class="orderListItemReview">评价</button>

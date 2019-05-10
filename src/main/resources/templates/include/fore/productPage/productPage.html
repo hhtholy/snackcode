@@ -11,7 +11,10 @@
                 productImageId:'', //图片展示的id
                 showReview:false,
                 showDetail:true,  //是否展示详情图
-                user:{name:'',password:''}
+                user:{name:'',password:''},
+                userfindpass:{name:'',phone:'',password: '',code:''}, //找回密码相关
+                message:{},
+                code:null
             };
             var vue = new Vue({
                 el:"#workingArea",
@@ -20,6 +23,77 @@
                     this.load();
                 },
                 methods:{
+                    modalFindPass:function(){
+                        $("#findPass").modal('show'); //展示找回密码的模态框
+                    },
+                    send:function(){ //发送验证码
+                        this.message.phone = this.userfindpass.phone;
+                        if(0==this.userfindpass.phone.length){
+                            $("span.errorMessage").html("请输入接受验证码的手机");
+                            $("div.loginErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }
+                        var phone = this.userfindpass.phone;
+                        if(!(/^1[34578]\d{9}$/.test(phone))){
+                            $("span.errorMessage").html("手机号码格式错误");
+                            $("div.loginErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }
+                        var url = "sendMs?phone="+ this.message.phone;
+                        axios.get(url).then(function (res) {
+                            var code = res.data.data;
+                            vue.code = hex_md5(code);
+                        });
+                    },
+                    find:function(){  //找回密码
+                        if(0==this.userfindpass.name.length){
+                            $("span.errorMessage").html("请输入用户名");
+                            $("div.loginErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }
+                        if(0==this.userfindpass.phone.length){
+                            $("span.errorMessage").html("请输入接受验证码的手机");
+                            $("div.loginErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }
+                        var phone = this.userfindpass.phone;
+                        if(!(/^1[34578]\d{9}$/.test(phone))){
+                            $("span.errorMessage").html("手机号码格式错误");
+                            $("div.loginErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }
+                        if(0==this.userfindpass.password.length){
+                            $("span.errorMessage").html("请输入新密码");
+                            $("div.loginErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }
+
+                        if(this.userfindpass.password !=this.userfindpass.repeatpassword){
+                            $("span.errorMessage").html("密码不一致");
+                            $("div.loginErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }
+
+                        if(hex_md5(this.userfindpass.code) !=this.code){
+                            $("span.errorMessage").html("验证码不一致");
+                            $("div.loginErrorMessageDiv").css("visibility","visible");
+                            return;
+                        }
+                        var url = "userfindpass";
+                        axios.post(url,this.userfindpass).then(function (res) {
+                            var result = res.data.code;
+
+                            if(result == 1){
+                                alert("hey 修改密码成功~~~ 现在转向登录界面~~");
+                                location.href="toLogin";
+                            }else{
+                                $("span.errorMessage").html(res.data.message);
+                                vue.code =null;
+                            }
+                        });
+
+
+                    },
                     toggle2Review:function () { //隐藏商品详情 展示评价信息
                         this.showReview = true;
                         this.showDetail = false;

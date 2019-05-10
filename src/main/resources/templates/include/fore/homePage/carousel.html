@@ -13,12 +13,12 @@
         </ol>
         <div class="carousel-inner" role="listbox">
             <div class="item active" >
-                <img class="carousel carouselImage" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+productRecommend.singleImageUrlForJson">
+               <a :href="'toforeProduct?pid='+productRecommend.id"> <img class="carousel carouselImage" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+productRecommend.singleImageUrlForJson"></a>
             </div>
 
             <template v-for="p in productsRecommend">
                 <div class="item">
-                    <img class="carouselImage" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+p.singleImageUrlForJson">
+                    <a :href="'toforeProduct?pid='+p.id"><img class="carouselImage" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+p.singleImageUrlForJson"></a>
                 </div>
             </template>
         </div>

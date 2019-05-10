@@ -21,4 +21,10 @@ public interface ProductDao extends JpaRepository<Product,Integer>, JpaSpecifica
     List<Product> findByCategory(Category category);   //不分页的方式
     @Query(value = "select * from product where name=?1",nativeQuery = true)
     List<Product> getProductOfName(String name); //根据产品名称去查询产品
+
+    @Query(value = "select max(id) from product",nativeQuery = true)
+    public int getMaxId();
+
+    @Query(value = "select min(id) from product",nativeQuery = true)
+    public int getMinId();
 }

@@ -44,7 +44,6 @@ public class PayController {
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
         alipayRequest.setReturnUrl(AlipayConfig.return_url);
         alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
-        pay.setTotal_fee("1");
         // 商户订单号，商户网站订单系统中唯一订单号，必填
         String out_trade_no = pay.getOut_trade_no();
         // 付款金额，必填 企业金额

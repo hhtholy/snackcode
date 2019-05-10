@@ -37,12 +37,14 @@ public class RecommendService {
      * @return
      */
     public List<Product> recommedProducts(User user,List<Order_> orders){
+         int max = productService.getMaxId();
+         int min = productService.getMinId();
         Random random = new Random();
         List<Product> products = new ArrayList<>(); //推荐的产品
         if(user == null){ //如果用户没有登录的话  不需要推荐  返回随机的4个产品即可
                int flag = 0;
                while(flag <= 3){
-                   int index = random.nextInt(20);
+                   int index = random.nextInt(max-min + 1) + min;
                    Product product = productService.getProduct(index);
                    if(product != null){
                        products.add(product);
@@ -141,7 +143,7 @@ public class RecommendService {
         if(userID.get(recommendUser) == null){ //没有买过东西的话  随机生成4个产品
             int flag = 0;
             while(flag <= 3){
-                int index = random.nextInt(20);
+                int index = random.nextInt(max-min + 1) + min;
                 Product product = productService.getProduct(index);
                 if(product != null){
                     products.add(product);
@@ -195,7 +197,7 @@ public class RecommendService {
         }//for(String item: items)
         if(flag && products.size() <= 4){ //推荐了 但是产品不足的话
             for (int i = 0; i < 4 - products.size(); i++) {
-                int index = random.nextInt(20); //目前随机前20
+                int index = random.nextInt(max-min + 1) + min; //目前随机前20
                 Product product = productService.getProduct(index);
                 products.add(product);
             }
@@ -203,7 +205,7 @@ public class RecommendService {
         if(!flag){ //没有推荐产品的话
             int flagInt = 0;
             while(flagInt <= 3){
-                int index = random.nextInt(20); //目前随机前20
+                int index = random.nextInt(max-min + 1) + min; //目前随机前20
                 Product product = productService.getProduct(index);
                 if(product != null){
                     products.add(product);
@@ -271,6 +273,7 @@ public class RecommendService {
                 List<OrderItem> orderItems = order.getOrderItems();//获取订单对应的订单项
                 for (OrderItem orderItem : orderItems) { //遍历每一个订单项
                     Category category = orderItem.getProduct().getCategory();//获取产品
+
                     list.add(category.getName());
                 }
                 arrList.add(list); //放到大集合中
