@@ -25,13 +25,17 @@ public class CustomeRealm extends AuthorizingRealm {
     private UserService userService;
     /**
      * 授权相关
+     * 告诉shiro当前登陆用户有哪些权限
      * @param principalCollection
      * @return
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        SimpleAuthorizationInfo s = new SimpleAuthorizationInfo();
-        return s;
+        String primaryPrincipal = (String) principalCollection.getPrimaryPrincipal();
+        User userByName = userService.getUserByName(primaryPrincipal);
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.addRole(userByName.getRole());
+        return info;
     }
     /**
      * 认证(就是核对密码用户)

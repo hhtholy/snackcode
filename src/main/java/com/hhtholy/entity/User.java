@@ -22,4 +22,6 @@ public class User implements Serializable {
     private String name;
     private String salt;
     private String anonymousName;
+
+    private String role;
 }

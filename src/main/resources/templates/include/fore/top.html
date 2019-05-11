@@ -7,7 +7,7 @@
     <span>你好，欢迎来到零食站~</span>
     <span th:if="${null!=session.user}"> <!--如果用户已经登录的话-->
 		<a href="login" th:text="${session.user.name}"></a>
-		<a href="logout" >退出</a>
+		<a href="logoutNotAdmin" >退出</a>
 	</span>
     <span th:if="${null==session.user}"> <!--如果用户没有登录的话-->
 		<a href="toLogin">登录</a>

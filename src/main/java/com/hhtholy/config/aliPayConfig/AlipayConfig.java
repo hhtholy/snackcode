@@ -18,10 +18,10 @@ public class AlipayConfig {
     public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmyr+Dxts8CkVmoSi3Htt/BN4yFZ7+UT3X9CoStrZxqHvU9suJoB8hscLT+nGp0ydXuR3FtodWAHtUnDip8QdaVYjdDcxMlxt/6DwyGzqx0Rufecn2gj8I85XvaxQpRVhVAdzU1wDaJzHOdjYMv716wzBtCH2pHNey19WT5AQXqfUmI5tS3DiSNAEquh+nT558F8hWr3TmkZ/zAz3/+EVpRIJtCRl5MKE5uRc5vdjzLw9QiPLRFw1fr5foe6yWMuv5XJnQqQMq94MIz554efeH8hdeUw/oe40P1iBXSSkuPfliPz5P5DvM5fcogreeHmUnv9IIU5lZtie1IXHzgu+NQIDAQAB";
 
     // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-    public static String notify_url = "http://6fhhkz.natappfree.cc/miniTrade/notifyUrl";
+    public static String notify_url = "http://4scpnx.natappfree.cc/miniTrade/notifyUrl";
 
     // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-      public static String return_url = "http://6fhhkz.natappfree.cc/miniTrade/returnUrl";
+      public static String return_url = "http://4scpnx.natappfree.cc/miniTrade/returnUrl";
 
    //public static String return_url = "http://62.234.17.235:8080/snacktrade/returnUrl";
 

@@ -92,5 +92,11 @@ public class AdminPageController {
         return "admin/listOrder";
     }
 
+    @GetMapping("/toAdminLogin")
+    public String toAdminLogin(){
+
+        return "admin/login";
+    }
+
 
 }

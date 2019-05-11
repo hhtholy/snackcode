@@ -273,8 +273,8 @@ span.categoryTitle {
 }
 
 div.productItem {
-	width: 189px;
-	height: 285px;
+	width: 246px;
+	height: 265px;
 	border: 1px solid white;
 	background-color: white;
 	margin: 8px 4px;
@@ -311,7 +311,7 @@ div.eachHomepageCategoryProducts {
 }
 
 div.productItem img {
-	width: 187px;
+	width: 244px;
 	height: 190px;
 }
 

@@ -5,6 +5,7 @@ import com.hhtholy.interceptor.CustomShiroFilter;
 import com.hhtholy.interceptor.SessionFilter;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -62,8 +63,8 @@ public class ShiroConfig {
         //拦截器
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
 
-        //配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
-        filterChainDefinitionMap.put("/logout", "logout");
+        //配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了  其实我们都可以不用自己写
+       // filterChainDefinitionMap.put("/logout", "logout");
         //　　anon:所有url都都可以匿名访问;
         //　　authc: 需要认证才能进行访问;
         //　　user:配置记住我或认证通过可以访问；
@@ -71,7 +72,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/img/**", "anon");
-        filterChainDefinitionMap.put("http://62.234.17.235:8080/snacktrade/notifyUrl", "anon");
+        filterChainDefinitionMap.put("/admin*", "myFilter");
+        filterChainDefinitionMap.put("/logout*", "myFilter");
         //放开登录等url的过滤
       /*  filterChainDefinitionMap.put("/toLogin", "anon");
         filterChainDefinitionMap.put("/home", "anon");
@@ -99,8 +101,11 @@ public class ShiroConfig {
          filterChainDefinitionMap.put("/toOrderSetAccount", "authc");
          filterChainDefinitionMap.put("/bought", "authc");
          filterChainDefinitionMap.put("/**", "anon");
+
+
         //如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilterFactoryBean.setLoginUrl("/toLogin");
+
         // 登录成功后要跳转的链接
         shiroFilterFactoryBean.setSuccessUrl("/home");
         // 未授权界面

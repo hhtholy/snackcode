@@ -1,0 +1,47 @@
+<head th:include="include/ForeCommonJs::html" ></head>  <!--引入js和css等 和一些公关的js函数-->
+<link href="css/adminLogin/login.css" rel="stylesheet">
+<script>
+    $(function(){
+        var data4Vue = {   //vue的数据域
+            uri:"backUserLogin",
+            user:{}
+        };
+        var vue = new Vue({  //定义vue对象
+            el:"#workingArea",
+            data:data4Vue,
+            mounted:function () {
+            },
+            methods:{
+                adminLogin:function(){
+                    debugger
+                    var url = this.uri;  //根据产品id 去获取产品
+                    axios.post(url,this.user).then(function (res) {
+                          if (res.data.code == 1){
+                              location.href="admin_category_list";
+                          }else{
+                              alert(res.data.message);
+                          }
+                    });
+
+                }
+
+
+            } //methods
+        }); //vue
+    });
+</script>
+<div id="workingArea">
+<div class = "container">
+    <div class="wrapper">
+        <div class="form-signin">
+            <h3 class="form-signin-heading">Welcome Back!Lord Administrtor!</h3>
+            <hr class="colorgraph"><br>
+
+            <input type="text" class="form-control" name="name" v-model="user.name" placeholder="Username" required="" autofocus="" />
+            <input type="password" class="form-control" name="password" v-model="user.password" placeholder="Password" required=""/>
+
+            <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" @click="adminLogin">Login</button>
+        </div>
+    </div>
+</div>
+</div>

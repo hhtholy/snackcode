@@ -65,16 +65,21 @@ public class ForePageController {
     }
 
     /**
-     * 用户注销 退出
+     * 用户注销 退出  已经在自定义Filter做了处理
      * @return
      */
-    @GetMapping("/logout")
+   /* @GetMapping("/logout")
     public String loginOut(HttpSession session){
         Subject subject = SecurityUtils.getSubject();
+        boolean flag = subject.hasRole("administrator");
         if(subject.isAuthenticated())  //用户已经登录的话
             subject.logout();
-        return "redirect:home";
-    }
+        if(flag){
+            return "redirect:admin"; //如果是后台管理员的话
+        }else {
+            return "redirect:home";
+        }
+    }*/
 
     /**
      * 跳转到产品的详情信息信息展示界面
