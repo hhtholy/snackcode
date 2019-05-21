@@ -5,6 +5,7 @@ import com.hhtholy.entity.OrderItem;
 import com.hhtholy.entity.User;
 import com.hhtholy.utils.Page;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,4 +32,8 @@ public interface OrderService {
     public List<Order_> getOrdersByUser(User user);
 
     public List<Order_> getOrders();
+
+    public List<Order_> getRecentServenDaysOrder();
+    public List<Order_> getRecentFifteenDaysOrder();
+    public List<Order_> getRecentThirtyDaysOrder();
 }

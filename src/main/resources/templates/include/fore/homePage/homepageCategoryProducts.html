@@ -1,6 +1,33 @@
 <!--全部产品的展示和对应的分类-->
 <div th:fragment="html">
     <div class="homepageCategoryProducts">
+
+        <!---->
+        <div class="eachHomepageCategoryProducts">
+            <div class="left-mark"></div>
+            <span class="categoryTitle">今日推荐</span> <!--分类名称-->
+            <br>
+            <!--遍历分类下的产品-->
+            <div class="productItem"  v-for="p,index in productsRecommend" v-if="index<5" >
+                <!--显示产品的单图-->
+                <a :href="'toforeProduct?pid='+p.id">
+                    <img  v-if="null != p.singleImageUrlForJson"  width="100px" height="220px" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+p.singleImageUrlForJson">
+                </a>
+
+                <a class="productItemDescLink" href="'product?pid='+p.id">
+									<span class="productItemDesc">[热销]
+									{{p.name | subStringFilter(0,20)}}
+									</span>
+                </a>
+                <span class="productPrice">
+									{{p.promotePrice | formatMoneyFilter}}
+								</span>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+
+        <!---->
         <!--遍历分类-->
         <div class="eachHomepageCategoryProducts" v-for="c in categories">
             <div class="left-mark"></div>

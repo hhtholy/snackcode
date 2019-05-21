@@ -5,7 +5,9 @@
                 uri:'forehome',
                 categories: [],
                 productsRecommend:[],
-                productRecommend:{}
+                productRecommend:{},
+                showcategory:false,
+                showcategory1:false
             };
             var vue = new Vue({
                 el: '#workingArea',
@@ -15,6 +17,24 @@
                     this.load();
                 },
                 methods: {
+                    mouseOver:function(){ // 放在零食分类上 显示分类
+                      this.showcategory = true;
+                    },
+                    mouseOver2:function(){
+                        this.showcategory1 = true;
+                    },
+                    mouseOver1:function(){
+                        this.showcategory = true;
+                        this.showcategory1 = true;
+                    },
+                    mouseLeave1:function(){
+                        this.showcategory = false;
+                        this.showcategory1 = false;
+                    },
+                    mouseLeave:function(){
+                        debugger
+                     this.showcategory = false;
+                    },
                     load:function(){
                         var url =  this.uri;
                         axios.get(url).then(function(response) {
@@ -93,7 +113,13 @@
                 if(v == 1)
                     $(this).css("color","#87CEFA");
             });
+
+
         }
+
+
+
+
     </script>
 
 

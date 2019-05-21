@@ -1,6 +1,5 @@
 package com.hhtholy.controller.admin;
 
-import org.apache.jasper.tagplugins.jstl.core.If;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import springfox.documentation.annotations.ApiIgnore;
@@ -92,11 +91,33 @@ public class AdminPageController {
         return "admin/listOrder";
     }
 
+    /**
+     * 跳转到商品评论管理界面
+     * @return
+     */
+    @GetMapping("/admin_review")
+    public String listReviews(){
+
+        return "admin/listReviews";
+    }
+
     @GetMapping("/toAdminLogin")
     public String toAdminLogin(){
 
         return "admin/login";
     }
 
+
+
+
+    /**
+     * 画图
+     * @return
+     */
+    @GetMapping("/toEchart")
+    public String toEchart(){
+
+        return "admin/echart/chart";
+    }
 
 }

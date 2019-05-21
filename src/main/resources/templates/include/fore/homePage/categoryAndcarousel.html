@@ -5,7 +5,7 @@
         <div class="headbar show1">
             <div class="head ">
                 <span style="margin-left:10px" class="glyphicon glyphicon-th-list"></span>
-                <span style="margin-left:10px" >零食分类</span>
+                <span style="margin-left:10px" @mouseenter="mouseOver">零食分类</span>
             </div>
             <div class="rightMenu"> <!--右侧显示的分类数目 显示7个-->
                 <span v-for="c,index in categories" v-if='index<=7'>
@@ -22,6 +22,7 @@
         <div style="position: relative;left: 0;top: 0;">
             <div th:replace="include/fore/homePage/productsAsideCategorys::html" ></div>
         </div>
+
 
 
         <div th:replace="include/fore/homePage/carousel::html" ></div>

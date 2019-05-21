@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--th:include 这样还会保留外面的head标签   加入导入界面的内容 不包含最外标签-->
+<!--主要是引入js  一些公共的js函数  比如判空等-->
+<head th:include="include/commonJs::commonJs('销售额和销量统计')"></head>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+
+<body>
+<div th:replace="include/admin/adminNavigator::navigator"></div>
+<script>
+    $(function () {
+        Vue.prototype.$echarts = echarts;
+        var data4Vue = {
+            uri: "getEchart",
+            uri2:"getEchartForPie"
+        };
+        //定义vue对象
+        var vue = new Vue({
+            el: "#workingArea",
+            data: data4Vue,
+            mounted: function () {
+                this.getData();
+                this.getPieData();
+            },
+            methods: {
+                getPieData:function(){
+                    ////
+                    //获取图表数据
+                    // 基于准备好的dom，初始化echarts实例
+                    let myChart1 = this.$echarts.init(document.getElementById("pie"));
+
+                    let option1 = {
+                        title : {
+                            text: '零食类别和对应的销量',
+                            subtext: '数据统计',
+                            x:'center'
+                        },
+                        tooltip : {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left',
+                            data: ['饮料类','糖果类','谷类','坚果类','豆及豆制类','奶及乳制品','薯类','肉蛋类及海产品']
+                        },
+                        series : [
+                            {
+                                name: '访问来源',
+                                type: 'pie',
+                                radius : '55%',
+                                center: ['50%', '60%'],
+                                data:[
+                                    {value:335, name:'直接访问'},
+                                    {value:310, name:'邮件营销'},
+                                    {value:234, name:'联盟广告'},
+                                    {value:135, name:'视频广告'},
+                                    {value:1548, name:'搜索引擎'}
+                                ],
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                        ]
+                    };
+                    myChart1.setOption(option1);
+                    var url = this.uri2;
+                    axios.post(url).then(function (res) {
+
+                        let listForPie= [];
+                        let names= [];
+                        listForPie = res.data.listForPie;
+                        names= res.data.names;
+                            myChart1.setOption({
+                                title : {
+                                    text: '零食类别和对应的销量',
+                                    subtext: '数据统计',
+                                    x:'center'
+                                },
+                                tooltip : {
+                                    trigger: 'item',
+                                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                                },
+                                legend: {
+                                    orient: 'vertical',
+                                    left: 'left',
+                                    //data: ['饮料类','糖果类','谷类','坚果类','豆及豆制类','奶及乳制品','薯类','肉蛋类及海产品']
+                                    data:names
+                                },
+                                series : [
+                                    {
+                                        name: '访问来源',
+                                        type: 'pie',
+                                        radius : '55%',
+                                        center: ['50%', '60%'],
+                                        data:listForPie,
+                                        itemStyle: {
+                                            emphasis: {
+                                                shadowBlur: 10,
+                                                shadowOffsetX: 0,
+                                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                            }
+                                        }
+                                    }
+                                ]
+                            });
+
+                    });
+
+                },
+                getData:function () {
+                    ////
+                    //获取图表数据
+                    // 基于准备好的dom，初始化echarts实例
+                    let myChart = this.$echarts.init(document.getElementById("main"));
+                    // 指定图表的配置项和数据
+                    let option = {
+                        title: {
+                            text: "零食销量和销售额分析",
+                            textStyle: {
+                                color: "#436EEE",
+                                fontSize: 17
+                            }
+                        },
+                        tooltip : {
+                            trigger: 'axis',
+                            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        legend: {
+                            data:['零食销量','销售额']
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis : [ //需要遍历
+                            {
+                                type : 'category',
+                                data : ['近七天','近半月','近一月']
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value'
+                            }
+                        ],
+                        series : [ //y坐标对应的值
+                            {
+                                name: "零食销量",
+                                type: "bar",
+                                stack: "业务",//折叠显示
+                                ////（此处的<%=zcfgData%>为后台传过来的数据，格式为[1,2,3,4,2,3,3],根据实际情况修改）
+                                data:[] //数据
+                            },
+                            {
+                                name: "销售额",
+                                type: "bar",
+                                stack: "业务",//折叠显示
+                                ////（此处的<%=zcfgData%>为后台传过来的数据，格式为[1,2,3,4,2,3,3],根据实际情况修改）
+                                data:[]
+                            }
+                        ]
+                    };
+                    myChart.setOption(option);
+                    ////
+                    var url = this.uri;
+                    axios.post(url).then(function (res) {
+                        //成功返回数据的话
+                        /*vue.list = res.data.list;
+                        vue.list1 = res.data.list1;
+                        vue.list2 = res.data.list2;*/
+
+                        let count = [];
+                        let total = [];
+
+                        count = res.data.count;
+                        total = res.data.total;
+
+                        myChart.setOption({
+                            title: {
+                                text: "零食销量和销售额分析",
+                                textStyle: {
+                                    color: "#436EEE",
+                                    fontSize: 17
+                                }
+                            },
+                            tooltip : {
+                                trigger: 'axis',
+                                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                }
+                            },
+                            legend: {
+                                data:['零食销量','销售额']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis : [ //需要遍历
+                                {
+                                    type : 'category',
+                                    data : ['近七天','近半月','近一月']
+                                }
+                            ],
+                            yAxis : [
+                                {
+                                    type : 'value'
+                                }
+                            ],
+                            series : [ //y坐标对应的值
+                                {
+                                    name: "零食销量",
+                                    type: "bar",
+                                    stack: "业务1",//折叠显示
+                                    ////（此处的<%=zcfgData%>为后台传过来的数据，格式为[1,2,3,4,2,3,3],根据实际情况修改）
+                                    data:count
+                                },
+                                {
+                                    name: "销售额",
+                                    type: "bar",
+                                    stack: "业务2",//折叠显示
+                                    ////（此处的<%=zcfgData%>为后台传过来的数据，格式为[1,2,3,4,2,3,3],根据实际情况修改）
+                                    data:total
+                                }
+                            ]
+                        });
+                    });
+
+
+                }
+
+
+            }
+        });
+
+    });
+
+</script>
+
+
+<div id="workingArea">
+    <div id="main" style="width: 600px;height:400px;float: left"></div>
+    <div id="pie" style="width: 600px;height:400px;float: left"></div>
+</div>
+
+
+</body>
+
+
+</html>

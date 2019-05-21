@@ -43,9 +43,6 @@
             <div  class="confirmPayTime2">
                 <fmt:formatDate value="{{order.payDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
             </div>
-            <div class="confirmPayTime3">
-                yyyy-MM-dd HH:mm:ss
-            </div>
         </div>
         <div class="confirmPayOrderInfoDiv">
             <div class="confirmPayOrderInfoText">我已收到货，同意支付宝付款</div>
@@ -89,11 +86,11 @@
             <table class="confirmPayOrderDetailTable">
                 <tr>
                     <td>订单编号：</td>
-                    <td>{{order.orderCode}} <img width="23px" src="img/site/confirmOrderTmall.png"></td>
+                    <td>{{order.orderCode}}</td>
                 </tr>
                 <tr>
                     <td>收货信息： </td>
-                    <td>{{order.address}}，{{order.receiver}}， {{order.mobile}}，{{order.post}} </td>
+                    <td>地址：{{order.address}}，收货人：{{order.receiver}}，收货号码： {{order.mobile}}，邮编：{{order.post}} </td>
                 </tr>
                 <tr>
                     <td>成交时间：</td>
@@ -104,7 +101,7 @@
         </div>
         <div class="confirmPayButtonDiv">
             <div class="confirmPayWarning">已经收到零食</div>  <!--更新订单的状态-->
-            <a><button class="confirmPayButton" @click="confirmGetSnack(order.id)">确认收货~</button></a>
+            <a><button class="confirmPayButton" @click="confirmGetSnack(order.id)">确认收货</button></a>
         </div>
     </div>
 </div>

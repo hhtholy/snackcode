@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -151,7 +152,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order_> getOrdersByUserAndStatus(User user,String status) {
-        return orderDao.findByUserAndStatus(user,status);
+        return orderDao.findByUserAndStatusOrderById(user,status);
     }
 
     /**
@@ -161,7 +162,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public List<Order_> getOrdersByUser(User user) {
-        return orderDao.findByUser(user);
+        return orderDao.findByUserOrderByIdDesc(user);
     }
 
     /**
@@ -171,6 +172,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order_> getOrders() {
         return orderDao.findAll();
+    }
+
+    @Override
+    public List<Order_> getRecentServenDaysOrder() {
+        return orderDao.getRecentServenDaysOrders();
+    }
+
+    @Override
+    public List<Order_> getRecentFifteenDaysOrder() {
+        return orderDao.getRecentFifteenDaysOrders();
+    }
+
+    @Override
+    public List<Order_> getRecentThirtyDaysOrder() {
+        return orderDao.getRecentThirtyDaysOrders();
     }
 
 }

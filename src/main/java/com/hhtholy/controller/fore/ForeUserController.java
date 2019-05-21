@@ -80,9 +80,13 @@ public class ForeUserController {
      * @return
      */
     @GetMapping("/foreCheckLogin")
-    public Object checkUserIsLongin(){
-        Subject subject = SecurityUtils.getSubject();
-        return subject.isAuthenticated() == false?Result.fail("用户没有登录"):Result.success();
+    public Object checkUserIsLongin(HttpSession session){
+ /*       Subject subject = SecurityUtils.getSubject();
+        return subject.isAuthenticated() == false?Result.fail("用户没有登录"):Result.success();*/
+
+        User user = (User)session.getAttribute("user");
+        return user == null ?Result.fail("用户没有登录"):Result.success();
+
     }
 
 

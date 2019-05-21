@@ -1,11 +1,11 @@
 <!--左侧 分类-->
 <div th:fragment="html">
-	<div class="categoryMenu">
-				<div :cid="c.id" class="eachCategory" v-for="c in categories">
+	<div class="categoryMenu showcate" v-show="showcategory" @mouseenter="mouseOver" @mouseleave="mouseLeave">
+				<div :cid="c.id" class="eachCategory" v-for="c in categories"  @mouseenter="mouseOver2">
 					<span class="glyphicon glyphicon-tag"></span>
 					<a :href="'toforeCategory?cid='+c.id">
 						{{c.name}}
 					</a>
 				</div>
-	</div>  
+	</div>
 </div>

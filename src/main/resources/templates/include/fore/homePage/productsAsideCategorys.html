@@ -1,7 +1,10 @@
 <!--每个分类下的具体 产品  每行5个-->
-<div th:fragment="html">
-	<div  :cid="c.id" class="productsAsideCategorys" v-for="c in categories">
-		<div class="row show1" v-for="ps in c.productsByRow">
+
+
+
+<div th:fragment="html" >
+	<div  :cid="c.id" class="productsAsideCategorys" v-for="c in categories" v-show="showcategory1" @mouseleave="mouseLeave1" @mouseenter="mouseOver1" >
+		<div class="row show1 showcate" v-for="ps in c.productsByRow" >
 					<a :href="'toforeProduct?pid='+p.id" v-for="p in ps" v-if="p.subTitle.length!=0">
 						{{p.subTitle | subTitleFilter}}
 					</a>		

@@ -12,7 +12,7 @@
     <artifactId>snacktrade</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>snacktrade</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <description>snacktrade project for Spring Boot</description>
 
     <properties>
@@ -109,11 +109,11 @@
         </dependency>-->
 
         <!-- junit -->
-        <dependency>
+       <!-- <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version> 4.12</version>
-        </dependency>
+        </dependency>-->
         <!-- commons-lang -->
         <dependency>
             <groupId>commons-lang</groupId>
@@ -275,8 +275,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

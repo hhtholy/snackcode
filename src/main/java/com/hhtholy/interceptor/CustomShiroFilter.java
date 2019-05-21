@@ -72,7 +72,10 @@ public class CustomShiroFilter extends AccessControlFilter {
             }else {
                 boolean administrator = subject.hasRole("administrator");
                 if(administrator){ //如果登录成功的话
-                    request.getRequestDispatcher("/admin_category_list").forward(request, response);
+                    if(url.equals("/admin")){
+                        url = "/admin_category_list";
+                    }
+                    request.getRequestDispatcher(url).forward(request, response);
                 }else{ //说明登录的只是 其他用户
                     request.getRequestDispatcher("/toAdminLogin").forward(request, response);
                 }

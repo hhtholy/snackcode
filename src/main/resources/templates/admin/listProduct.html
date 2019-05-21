@@ -162,6 +162,7 @@
 
                 <th width="80px">图片管理</th>
                 <th width="80px">设置属性值</th>
+                <th width="80px">评论管理</th>
                 <th>编辑</th>
                 <th>删除</th>
                 <th width="10%"><input type="checkbox"  v-model="checked"/>  <h1 class="label label-info" @click="deleteBatchBean" style="cursor: pointer">批量删除</h1>
@@ -186,6 +187,11 @@
                 <td>
                     <!-- 属性值的设定 -->
                     <a :href="'admin_propertyValue_edit?pid=' + bean.id "><span class="glyphicon glyphicon-th-list"></span></a>
+                </td>
+                <!--产品的评论管理-->
+                <td>
+                    <!-- 属性值的设定 -->
+                    <a :href="'admin_review?pid=' + bean.id "><span class="glyphicon glyphicon-th-list"></span></a>
                 </td>
                 <!--编辑产品-->
                 <td>

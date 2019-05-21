@@ -144,7 +144,7 @@ public class ForeProductController {
         order.setStatus(Constant.ORDER_WAITPAY.getWord()); //订单状态 待付款
         List<OrderItem> orderItems = (List<OrderItem>)session.getAttribute("orderItems"); //拿到session中的订单项
         //创建订单
-        List<Object> totals = orderService.addOrder(order, orderItems);
+        List<Object> totals = orderService.addOrder(order, orderItems);//给订单项加外键引用
         Float  price = (Float) totals.get(0); // 价格等信息放在 集合中
         Integer nums = (Integer) totals.get(1);
         order.setTotalPrice(price);
