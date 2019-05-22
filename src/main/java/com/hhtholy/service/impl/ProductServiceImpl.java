@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> getProductPage(Category category, Integer currentPage, Integer size, Integer navigateNum) {
         Sort sort = new Sort(Sort.Direction.DESC, "id");  //创建分页对象
         Pageable pageable = new PageRequest(currentPage, size, sort);
-        org.springframework.data.domain.Page<Product> page= productDao.findByCategory(category, pageable);
+        org.springframework.data.domain.Page<Product> page= productDao.findByCategoryAndIsDeleteNull(category, pageable);
         return new Page<>(page,navigateNum);
     }
 
@@ -71,9 +71,51 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String deleteProduct(Integer id) {
+
         String result = null;
         try {
-            productDao.deleteById(id);
+            Product product = getProduct(id);
+            product.setIsDelete(1); //删除状态
+            product.setIsputAway(2); //删除的同时 下架
+            updateProduct(product); //更新状态
+            result = "success";
+        } catch (Exception e){
+            result = "failure";
+        }
+        return result;
+    }
+
+    /**
+     * 下架商品
+     * @param id
+     * @return
+     */
+    @Override
+    public String putAwayNoProduct(Integer id) {
+        String result = null;
+        try {
+            Product product = getProduct(id);
+            product.setIsputAway(2); //下架
+            updateProduct(product); //更新状态
+            result = "success";
+        } catch (Exception e){
+            result = "failure";
+        }
+        return result;
+    }
+
+    /**
+     * 上架商品
+     * @param id
+     * @return
+     */
+    @Override
+    public String putAwayYesProduct(Integer id) {
+        String result = null;
+        try {
+            Product product = getProduct(id);
+            product.setIsputAway(1); //上架
+            updateProduct(product); //更新状态
             result = "success";
         } catch (Exception e){
             result = "failure";
@@ -96,6 +138,17 @@ public class ProductServiceImpl implements ProductService {
         if(optional.isPresent()){
             result = optional.get();
         }
+        return result;
+    }
+
+    /**
+     * 获取上架商品
+     * @param id
+     * @return
+     */
+    @Override
+    public Product getProductIsOnLine(Integer id) {
+        Product result = productDao.findByIsDeleteNullAndIsputAwayAndId(1, id);
         return result;
     }
 
@@ -201,13 +254,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
-     * 获取一个分类下的所有产品
+     * 获取一个分类下的所有产品 上架商品
      * @param category
      * @return
      */
     @Override
     public List<Product> getProductList(Category category) {
-        return productDao.findByCategory(category);
+        //上架商品
+        return productDao.findByCategoryAndIsDeleteNullAndIsputAway(category,1);
     }
 
     /**
@@ -326,16 +380,21 @@ public class ProductServiceImpl implements ProductService {
 
 
     /**
-     *
-     * @param categories
+     *   分类标题  按行显示
+     * @param categories  未删除的 分类
      */
     @Override
     public void fillCategoryData(List<Category> categories) {
         int step = 8;
         for (Category category : categories) {  //遍历每一个分类
             List<List<Product>> productsByRow =  new ArrayList<>(); //建立集合
-            List<Product> products = category.getProducts();//获取分类下的产品
+
+            List<Product> products = productService.getProductList(category); //上架的商品
+         //   List<Product> products = category.getProducts();  //获取分类下的产品
             for (int i = 0; i < products.size(); i+=step) {
+               /* if(){
+
+                }*/
                  int size = i + step;
                  size = size > products.size()?products.size():size;
                 List<Product> littleList = products.subList(i, size);//截取子集合

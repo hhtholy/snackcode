@@ -44,6 +44,14 @@ public class ForeProductController {
     @GetMapping("/foreproduct/{pid}")
     public Object product(@PathVariable("pid") Integer pid){
         Product product = productService.getProduct(pid);   //根据pid  获取产品
+        Integer isDelete = product.getIsDelete(); //是否已经删除
+        Integer isputAway = product.getIsputAway(); //是否下架
+        if(isDelete != null){ //删除的情况
+            return Result.fail("该商品下架啦~~");
+        }
+        if(isputAway.equals(2)){  //下架了
+            return Result.fail("该商品下架啦~~");
+        }
         productService.setSingleImageUrlFoJson(product); //单图
         List<PropertyValue> propertys = propertyValueService.getPropertyByProduct(product);  //查询出 产品的属性值
         List<Review> reviews = reviewService.getReviewsByProduct(product);  //查询出 产品的评价

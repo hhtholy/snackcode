@@ -127,17 +127,24 @@
                               }
                              */
                             //控制层返回的是 Result  result.data 是个map
+
                             var result = res.data;
-                            vue.product = result.data.product;
-                            vue.propertyvalues = result.data.pvalues;
-                            vue.reviews=result.data.reviews;
-                            //分类信息
-                            vue.category = vue.product.category;
-                            //显示图片 信息（imageid  单图显示）
-                            vue.productImageId = vue.product.productImageId;
-                            vue.$nextTick(function () {  //页面全部渲染成功后  监听事件
-                                imgAndInfoPageRegisterListeners(vue);
-                            });
+                            if(result.code == 1){
+                                vue.product = result.data.product;
+                                vue.propertyvalues = result.data.pvalues;
+                                vue.reviews=result.data.reviews;
+                                //分类信息
+                                vue.category = vue.product.category;
+                                //显示图片 信息（imageid  单图显示）
+                                vue.productImageId = vue.product.productImageId;
+                                vue.$nextTick(function () {  //页面全部渲染成功后  监听事件
+                                    imgAndInfoPageRegisterListeners(vue);
+                                });
+                            }else{
+                                alert(result.message); //提示已经下架
+                            }
+
+
                         });
                     }
                 }

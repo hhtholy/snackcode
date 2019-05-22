@@ -18,6 +18,7 @@
 <!--数据请求-->
 <script>
     $(function(){
+
         /**
          * vue的数据域
          * @type {{checkNames: Array
@@ -37,7 +38,8 @@
                 file:null, //文件对象
                 imageUrl:"",  //回显图片路径
                 listURL:"admin_category_list",
-                checkNames:[] // 针对复选框  全选
+                checkNames:[], // 针对复选框  全选
+                inventorys:[]  // 预警信息
             };
         /**
          * Vue实例
@@ -51,13 +53,22 @@
                     vue.bean = {category:{id:""}};
                 });
                 this.list(0);   //mounted　表示这个 Vue 对象加载成功了 可以理解成页面加载成功后  去调用这个方法  传递一个参数
+                this.searchInventory();
+
+
             },
             methods: {  //定义的方法
+                timer:function(){  //定时去查询库存
+                    this.searchInventory();
+                },
                 list:function(currentPage){    //展示数据 分页
                     var url =  this.uri + "?currentPage="+currentPage; //传递参数
                     axios.get(url).then(function(response) {    //发送异步请求
                         vue.beans = response.data.content;      //数据分开  其实response.data 已经有列表信息了
                         vue.pagination = response.data;  //返回的分页数据  包含分页数据和其他信息等
+                        vue.$nextTick(function(){
+                            setInterval(vue.timer, 20000);     //要等渲染结束之后，才来进行监听
+                        })
                     });
                 },
                 jump: function(page){
@@ -149,6 +160,18 @@
                 },
                 deleteBatchBean:function () {  //批量删除分类
                     this.deleteBean(this.checkNames);
+                },
+                searchInventory:function () { //库存预警
+                    var url =  "searchInventory";
+                    axios.get(url).then(function(response) {    //发送异步请求
+                        debugger
+                        var listdata = response.data;  //数组
+                        listdata.forEach(item => {
+                            narn("error",item.message);
+                        })
+
+                    });
+
                 }
             },
             computed:{ //计算属性  这里属性的改变取决于data数据域的改变
@@ -242,6 +265,6 @@
 
 
 <!--站脚-->
-<div th:replace="include/admin/adminFooter::footer" ></div>
+<!--<div th:replace="include/admin/adminFooter::footer" ></div>-->
 </body>
 </html>

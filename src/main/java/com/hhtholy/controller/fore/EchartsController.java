@@ -111,7 +111,7 @@ public class EchartsController {
         // 分类名  数量
         ArrayList<String> listNames = new ArrayList<>();
         Map<String,Integer> map = new HashMap<>();//初始化数据
-        categoryService.getCategoryList().stream().map(Category::getName).collect(Collectors.toList()).forEach(x->{
+        categoryService.getCategoryListAll().stream().map(Category::getName).collect(Collectors.toList()).forEach(x->{
             map.put(x,0); //初始化数量为0
             listNames.add(x);
         });

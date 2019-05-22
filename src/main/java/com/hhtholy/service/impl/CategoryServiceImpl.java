@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Page<Category> getCategoryPage(Integer currentPage, Integer size, int navigatePages) {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(currentPage, size, sort);
-        org.springframework.data.domain.Page<Category> page = categoryDao.findAll(pageable);
+        org.springframework.data.domain.Page<Category> page = categoryDao.findByIsDeleteNull(pageable);
         return  new Page<>(page,navigatePages);
     }
 
@@ -54,6 +54,15 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public List<Category> getCategoryList() {
+        return categoryDao.findByIsDeleteNull(); //不分页查询 未删除的分类
+    }
+
+    /**
+     * 获取所有的分类 包括删除的分类
+     * @return
+     */
+    @Override
+    public List<Category> getCategoryListAll() {
         return categoryDao.findAll();
     }
 
@@ -67,14 +76,22 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     /**
-     * 删除分类
+     * 删除分类 改分类的状态 以及对应商品的状态
      * @param id  分类的id
      * @return  删除成功 或者失败的标志
      */
     @Override
     public String deleteCategory(Integer id) {
+
         try {
-            categoryDao.deleteById(id);
+            Category category = getCategory(id);
+            category.setIsDelete(1); //改为删除标志
+            updateCategory(category); //更新
+            List<Product> products = category.getProducts();
+            for (Product product : products) {
+                product.setIsDelete(1);
+                productService.updateProduct(product); //更新商品状态
+            }
         }catch (Exception e){
             return "failure";
         }
@@ -121,6 +138,8 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public void setProductsForJsonOfCategory(Category category) {
+
+        ///上架商品
         List<Product> productList = productService.getProductList(category);
         for (Product p:productList){
             p.setCategory(null);       //消除引用  但是不会影响其他业务使用

@@ -3,14 +3,8 @@ package com.hhtholy.controller.fore;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.hhtholy.config.aliPayConfig.AlipayConfig;
-import com.hhtholy.entity.OrderItem;
-import com.hhtholy.entity.Order_;
-import com.hhtholy.entity.Pay_;
-import com.hhtholy.entity.Product;
-import com.hhtholy.service.OrderItemService;
-import com.hhtholy.service.OrderService;
-import com.hhtholy.service.PayService;
-import com.hhtholy.service.ProductService;
+import com.hhtholy.entity.*;
+import com.hhtholy.service.*;
 import com.hhtholy.utils.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -37,6 +32,8 @@ public class CallbackController {
     @Autowired private OrderService orderService;
     @Autowired private OrderItemService orderItemService;
     @Autowired private ProductService productService;
+
+    @Autowired private InventoryMessageService inventoryMessageService;
 
 
     /****
@@ -138,7 +135,14 @@ public class CallbackController {
                 Integer number = orderItem.getNumber();//商品购买数量
                 Product product = orderItem.getProduct();
                 Integer stock = product.getStock();//库存
+
                 if(stock >= number){
+                    if(stock <= 20){
+                        InventoryMessage inventoryMessage = new InventoryMessage();
+                        inventoryMessage.setMessage("零食名称"+"\""+product.getName()+"\"" +"      库存不足~~");
+                        inventoryMessage.setRead(2);   //消息未读取
+                        inventoryMessageService.addMessage(inventoryMessage); //保存信息
+                    }
                     stock = stock - number;
                 }else {
                     stock = 0;

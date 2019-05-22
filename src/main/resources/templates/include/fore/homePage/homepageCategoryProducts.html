@@ -8,7 +8,7 @@
             <span class="categoryTitle">今日推荐</span> <!--分类名称-->
             <br>
             <!--遍历分类下的产品-->
-            <div class="productItem"  v-for="p,index in productsRecommend" v-if="index<5" >
+            <div class="productItem"  v-for="p,index in productsRecommendForZhuYe" v-if="index<5" >
                 <!--显示产品的单图-->
                 <a :href="'toforeProduct?pid='+p.id">
                     <img  v-if="null != p.singleImageUrlForJson"  width="100px" height="220px" :src="'http://snacktrade.oss-cn-beijing.aliyuncs.com/snackpics/products/single/'+p.singleImageUrlForJson">

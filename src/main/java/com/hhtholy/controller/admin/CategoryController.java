@@ -102,11 +102,18 @@ public class CategoryController {
     }
 
     /**
-     * 删除分类的逻辑
+     * 删除分类的逻辑  只是改状态 然后其下面的商品改为删除标志
      * @param id 分类id
      * @return
      */
     public String deleteLogic(Integer id){
+        String deleteResult = categoryService.deleteCategory(id);
+        return deleteResult;
+    }
+
+
+
+    /*public String deleteLogic(Integer id){
         OSSClient ossClient= Ossutil.getOSSClient();
         Category category = categoryService.getCategory(id);//删除前先获取key
         String imageurl = category.getImageurl();  //分类的图片
@@ -133,7 +140,7 @@ public class CategoryController {
         Ossutil.deleteFile(ossClient,BACKET_NAME,FOLDER+"category/",imageurl);
         String deleteResult = categoryService.deleteCategory(id);
         return deleteResult;
-    }
+    }*/
 
     @ApiOperation(value = "获取分类",notes = "根据分类id获取分类")
     @ApiImplicitParams({

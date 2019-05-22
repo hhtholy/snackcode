@@ -52,5 +52,18 @@ public class Product implements Serializable {
     private List<PropertyValue> propertyValues;
 
 
+    private Integer isputAway;  //1  上架 2 下架  下架了主页不展示出来
+    private Integer isDelete;
 
+    public Product() {
+    }
+
+    public Product(String name) {
+        this.name = name;
+    }
+
+    public Product(String name, String subTitle) {
+        this.name = name;
+        this.subTitle = subTitle;
+    }
 }

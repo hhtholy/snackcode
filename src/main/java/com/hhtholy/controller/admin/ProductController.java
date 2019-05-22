@@ -65,6 +65,7 @@ public class ProductController {
     public Product addProduct(@RequestBody Product product){
 
         Date date = new Date();
+        product.setIsputAway(1); //初始化上架
         product.setCreateDate(date); //设置创建时间
         productService.addProduct(product);
         return product;
@@ -107,13 +108,40 @@ public class ProductController {
         }
         return result;
     }
-
     /**
-     * 删除产品的逻辑
+     * 删除产品的逻辑  改商品的  状态
      * @param id
      * @return
      */
     public String deleteLogic(Integer id){
+        String deleteResult = productService.deleteProduct(id);
+        return deleteResult;
+    }
+
+
+
+    /**
+     * 下架商品
+     * @param id
+     * @return
+     */
+    @GetMapping("/uriPutAwayno/{id}")
+    public String putAwayNoProduct(@PathVariable("id") Integer id){
+        String deleteResult = productService.putAwayNoProduct(id);
+        return deleteResult;
+    }
+
+    /**
+     * 上架商品
+     * @param id
+     * @return
+     */
+    @GetMapping("/uriPutAwayyes/{id}")
+    public String putAwayYesProduct(@PathVariable("id") Integer id){
+        String deleteResult = productService.putAwayYesProduct(id);
+        return deleteResult;
+    }
+   /* public String deleteLogic(Integer id){
         OSSClient ossClient= Ossutil.getOSSClient(); //删除产品的话 需要删除该产品下的产品图片
         List<ProductImage> images = productImageService.getProductImage(productService.getProduct(id));
         for (ProductImage image : images) {
@@ -128,7 +156,7 @@ public class ProductController {
         }
         String deleteResult = productService.deleteProduct(id);
         return deleteResult;
-    }
+    }*/
 
 
 }

@@ -31,6 +31,8 @@
                pagination:{},  //分页数据
                category:{},  //面包屑导航
                uri:"products",
+               uriPutAwayno:"uriPutAwayno",
+               uriPutAwayyes:"uriPutAwayyes",
                checkNames:[],  //全选判定
                listURL: "admin_product_list"  //更新成功后重新刷新界面
            };
@@ -98,6 +100,34 @@
                            $("#addProductModal").modal('hide');
                        });
                    },
+                   putAwayNo:function(id){ //下架
+                       debugger
+                       if(!checkPutAwayNoLink()) //确认下架~
+                           return;
+                       var url = this.uriPutAwayno +　"/" +id;
+                       axios.get(url).then(function (res) {
+                           if(res.data == "failure") {
+                               alert("下架失败~");
+                           }else{
+                               alert("下架成功~");
+                               vue.list(0); //刷新界面
+                               vue.checkNames = []; //复选框的值复位
+                           }
+                       });
+                   },
+                   putAwayYes:function(id){  //上架 uriPutAwayyes
+                       var url = this.uriPutAwayyes +　"/" +id;
+                       axios.get(url).then(function (res) {
+                           if(res.data == "failure") {
+                               alert("上架失败~");
+                           }else{
+                               alert("上架成功~");
+                               vue.list(0); //刷新界面
+                               vue.checkNames = []; //复选框的值复位
+                           }
+                       });
+
+                   },
                    deleteBatchBean:function(){
                        this.deleteBean(this.checkNames);
                    },
@@ -154,19 +184,20 @@
             <thead>
             <tr class="success">
                 <th>图片</th>
-                <th>产品名称</th>
-                <th>产品小标题</th>
+                <th width="200px">产品名称</th>
+                <th width="150px">产品小标题</th>
                 <th width="53px">原价格</th>
                 <th width="80px">优惠价格</th>
                 <th width="80px">库存数量</th>
-
                 <th width="80px">图片管理</th>
                 <th width="80px">设置属性值</th>
                 <th width="80px">评论管理</th>
                 <th>编辑</th>
                 <th>删除</th>
-                <th width="10%"><input type="checkbox"  v-model="checked"/>  <h1 class="label label-info" @click="deleteBatchBean" style="cursor: pointer">批量删除</h1>
-                    <h1 class="label label-info"  @click="modalAddProduct" style="cursor: pointer">添加产品</h1></th>
+                <th>状态</th>
+                <th width="10%">
+                    <input type="checkbox"  v-model="checked"/>  <h1 class="label label-info" @click="deleteBatchBean" style="cursor: pointer">批量删除</h1>
+                    <h1 class="label label-info"  @click="modalAddProduct" style="cursor: pointer">添加零食</h1></th>
             </tr>
             </thead>
             <tbody>
@@ -197,8 +228,11 @@
                 <td>
                     <span type="button" class="glyphicon glyphicon-edit"  @click="modalEditProduct(bean.id)" value="编辑产品"> </span>
                 </td>
-                <td>
+                <td> <!--删除 -->
                     <a href="#"  @click="deleteBean(bean.id)"><span class="   glyphicon glyphicon-trash"></span></a>
+                </td>
+                <td> <span v-if="bean.isputAway==1">已上架 <h1 class="label label-info" style="cursor: pointer" @click="putAwayNo(bean.id)">下架</h1></span>
+                    <span v-if="bean.isputAway==2">已下架 <h1 class="label label-info" style="cursor: pointer" @click="putAwayYes(bean.id)">上架</h1></span>
                 </td>
                 <td><input type="checkbox" :value="bean.id" v-model="checkNames"/></td>
             </tr>

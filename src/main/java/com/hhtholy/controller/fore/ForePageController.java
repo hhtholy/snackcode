@@ -238,4 +238,13 @@ public class ForePageController {
     }
 
 
+    /**
+     *  已经下架提示
+     * @return
+     */
+    @GetMapping(value="/isAlreadyPutAway")
+    public String isAlreadyPutAway(){
+
+        return "fore/isAlreadyPutAway";
+    }
 }

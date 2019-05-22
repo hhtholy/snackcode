@@ -5,6 +5,7 @@
                 uri:'forehome',
                 categories: [],
                 productsRecommend:[],
+                productsRecommendForZhuYe:[],
                 productRecommend:{},
                 showcategory:false,
                 showcategory1:false
@@ -39,7 +40,8 @@
                         var url =  this.uri;
                         axios.get(url).then(function(response) {
                             vue.categories = response.data.cs;//分类信息
-                            vue.productsRecommend = response.data.recommend;//推荐产品信息
+                            vue.productsRecommend = response.data.recommendForLunBo;//推荐产品信息 轮播
+                            vue.productsRecommendForZhuYe = response.data.recommendForZhuYe;//推荐产品信息 主页
                             vue.productRecommend = response.data.active;
                             vue.$nextTick(function(){
                                 homePageRegisterListeners();      //要等渲染结束之后，才来进行监听

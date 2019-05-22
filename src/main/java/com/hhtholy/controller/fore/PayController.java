@@ -5,8 +5,11 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.hhtholy.config.aliPayConfig.AlipayConfig;
+import com.hhtholy.entity.OrderItem;
 import com.hhtholy.entity.Order_;
+import com.hhtholy.entity.Product;
 import com.hhtholy.service.OrderService;
+import com.hhtholy.utils.Constant;
 import com.hhtholy.utils.Result;
 import com.hhtholy.utils.aliPay.Pay;
 import io.swagger.annotations.Api;
@@ -24,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author hht
@@ -34,6 +38,7 @@ import java.util.Date;
 public class PayController {
 
     @Autowired private OrderService orderService;
+
     @ApiOperation(value = "注册用户",notes = "注册用户信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name="pay",value="支付信息相关的实体",required=true,paramType="body",allowMultiple = true,dataType = "com.hhtholy.utils.aliPay.Pay")
@@ -46,6 +51,27 @@ public class PayController {
         alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
         // 商户订单号，商户网站订单系统中唯一订单号，必填
         String out_trade_no = pay.getOut_trade_no();
+        Order_ order = orderService.getOrderByOrderCode(out_trade_no);
+        List<OrderItem> orderItems = order.getOrderItems();
+
+        for (OrderItem orderItem : orderItems) {
+            Product product = orderItem.getProduct();
+            Integer isDelete = product.getIsDelete();
+            Integer isputAway = product.getIsputAway();
+            if(isDelete != null){ //商品删除
+                order.setStatus(Constant.ORDER_DELETE.getWord()); //订单删除
+                orderService.updateOrder(order);
+                return Result.fail("商品已经下架了~~  订单失效 请购买新的商品~");
+            }
+            if(isputAway.equals(2)){  //下架了
+                order.setStatus(Constant.ORDER_DELETE.getWord()); //订单删除
+                orderService.updateOrder(order);
+                return Result.fail("商品已经下架了~~  订单失效 请购买新的商品~");
+            }
+            break;
+        }
+
+
         // 付款金额，必填 企业金额
         String total_amount = pay.getTotal_fee();
         // 订单名称，必填

@@ -41,5 +41,8 @@ public class Category implements Serializable {
 
     @OneToMany(cascade={CascadeType.REMOVE},mappedBy="category",fetch = FetchType.LAZY)
     private List<Property> properties;
+    private Integer isDelete; // 1 删除了就不展示出来了
+
+
 
 }

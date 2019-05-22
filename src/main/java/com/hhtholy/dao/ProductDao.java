@@ -17,8 +17,13 @@ import java.util.List;
  * 产品相关的数据层接口
  */
 public interface ProductDao extends JpaRepository<Product,Integer>, JpaSpecificationExecutor<Product> {
-    Page<Product> findByCategory(Category category, Pageable pageable);  //查询一个分类下的所有产品 分页的方式
-    List<Product> findByCategory(Category category);   //不分页的方式
+    Page<Product> findByCategoryAndIsDeleteNull(Category category, Pageable pageable);  //查询一个分类下的所有产品 分页的方式
+
+
+    List<Product> findByCategoryAndIsDeleteNullAndIsputAway(Category category,Integer isputaway);   //不分页的方式 商品是上架商品（上架 未删除）
+
+    Product findByIsDeleteNullAndIsputAwayAndId(Integer isputAway,Integer id);
+
     @Query(value = "select * from product where name=?1",nativeQuery = true)
     List<Product> getProductOfName(String name); //根据产品名称去查询产品
 

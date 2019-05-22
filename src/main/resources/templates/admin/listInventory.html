@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--th:include 这样还会保留外面的head标签   加入导入界面的内容 不包含最外标签-->
+<!--主要是引入js  一些公共的js函数  比如判空等-->
+<head th:include="include/commonJs::commonJs('库存预警')" ></head>
+
+<!--引入分页函数-->
+<div th:include="include/commonFunctionsForPage::pageFunctions" ></div>
+
+
+<body>
+<!--th:replace  自己的最外标签不会保留 这里是div  直接放置导入界面的内容 包含导入内容的最外标签-->
+<!--引入导航页-->  <!--这里因为需要添加分类 于是放在这里-->
+<div th:replace="include/admin/adminNavigator::navigator" ></div>
+<script>
+    $(function(){
+            var data4Vue = {
+                uri:'inventorys', /*请求url*/
+                beans: [],   //接受返回的数据  为一个数组
+                pagination:{}  //分页数据
+            };
+        var vue = new Vue({
+            el: '#workingArea',
+            data: data4Vue,
+            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+                this.list(0);
+            },
+            methods: {
+                list:function(currentPage){
+                    var url =  this.uri + "?currentPage="+currentPage; //传递参数
+                    axios.get(url).then(function(response) {
+                        vue.beans = response.data.content;
+                        vue.pagination = response.data;
+                    });
+                },
+                jump: function(page){
+                    jumpPage(page,vue);  //定义在commonFunctionsForPage.html中  这里定义了翻页和跳转指定页码的逻辑
+                },
+                jumpByNumber: function(currentPage){
+                    jumpPageByNumber(currentPage,vue);
+                },   //分页跳转页码
+            }
+        });
+    });
+
+</script>
+
+<div id="workingArea" >
+    <h1 class="label label-info" >库存预警</h1>
+    <br>
+    <br>
+    <div class="listDataTableDiv">
+        <table class="table table-striped table-bordered table-hover  table-condensed">
+            <thead>
+            <tr class="success">
+                <th>顺序</th>
+                <th>预警内容</th>
+                <th>读取状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="bean in beans ">
+                <td>{{bean.id}}</td>
+                <td>
+                    {{bean.message}}
+                </td>
+                <td>
+                    <span v-if="bean.read==2">消息未读 <h1 class="label label-info" style="cursor: pointer" @click="">标记为已读</h1></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--分页条-->
+    <div th:replace="include/admin/adminPage::page"></div>
+</div>
+<!--站脚-->
+<div th:replace="include/admin/adminFooter::footer" ></div>
+</body>
+</html>

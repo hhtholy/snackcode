@@ -42,10 +42,13 @@ public class ForeCategoryController {
     @GetMapping("/forehome")
     public Object home(HttpSession session, HttpServletRequest request) {
         User user =(User)  session.getAttribute("user"); //用户登录数据
-        List<Category> cs= categoryService.getCategoryList(); //获取所有的分类
+        List<Category> cs= categoryService.getCategoryList(); //获取所有的分类  （未删除）
+
+        //未删除 下面 可能 有删除的商品 下架的商品  删除的商品
          productService.fillCategoryData(cs); // 分类产品标题 按行显示
+
          for (Category c : cs) {
-            categoryService.setProductsForJsonOfCategory(c); //为分类设置产品值
+            categoryService.setProductsForJsonOfCategory(c); //为分类设置产品值  上架商品（标志）
          }
         List<Order_> orders = orderService.getOrders(); //所有订单
         List<Product> products = recommendService.recommedProducts(user, orders);//推荐的产品
@@ -63,7 +66,8 @@ public class ForeCategoryController {
         HashMap<String, Object> map = new HashMap<>();
         map.put("active",products.get(0));
         map.put("cs",cs);
-        map.put("recommend",list);
+        map.put("recommendForLunBo",list); //轮播 必须这样操作 一个active 三个其他
+        map.put("recommendForZhuYe",products); //主页今日推荐
 
         return map;
     }

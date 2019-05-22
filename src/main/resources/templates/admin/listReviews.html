@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--th:include 这样还会保留外面的head标签   加入导入界面的内容 不包含最外标签-->
+<!--主要是引入js  一些公共的js函数  比如判空等-->
+<head th:include="include/commonJs::commonJs('后台零食评论管理')" ></head>
+
+<!--引入分页函数-->
+<div th:include="include/commonFunctionsForPage::pageFunctions" ></div>
+
+
+<body>
+<!--th:replace  自己的最外标签不会保留 这里是div  直接放置导入界面的内容 包含导入内容的最外标签-->
+<!--引入导航页-->  <!--这里因为需要添加分类 于是放在这里-->
+<div th:replace="include/admin/adminNavigator::navigator" ></div>
+<script>
+    $(function(){
+        var pid = getUrlParms("pid"); //获取url地址栏上pid 产品id
+        var data4Vue = {
+            uri:'reviews', /*请求url*/
+            beans: [],   //接受返回的数据  为一个数组
+            pagination:{},  //分页数据
+            product:{},
+            category:{},
+            checkNames:[]  //全选判定
+        };
+        var vue = new Vue({
+            el: '#workingArea',
+            data: data4Vue,
+            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+                this.list(0);
+                this.getProduct(); //显示面包屑导航的值
+            },
+            methods: {
+                deleteBatchBean:function(){
+                    this.deleteBean(this.checkNames);
+                },
+                deleteBean:function (id) {       //删除 评价
+                    if(id.length == 0){  //批量的时候 如果没有选择的话 提示选择后再进行删除
+                        alert("请选中一项后再进行批量操作~");
+                        return
+                    }
+                    if(!checkDeleteLink())
+                        return;
+                    var url = this.uri +　"/" +id;
+                    axios.delete(url).then(function (res) {
+                        if(res.data == "failure") {
+                            alert("删除失败~");
+                        }else{
+                            vue.list(0); //刷新界面
+                            vue.checkNames = []; //复选框的值复位
+                        }
+                    });
+                },
+                getProduct:function () {       //获取产品的数据 用于面包屑导航 以及初始化产品属性值（加上产品和属性引用）
+                    var url = "products/" + pid;
+                    axios.get(url).then(function (res) {
+                        vue.product = res.data; //产品
+                        vue.category = res.data.category; //产品所属于的分类
+
+                    });
+                },
+                list:function(currentPage){
+                    var url ="products" +"/" + pid +"/" + this.uri+"?currentPage=" + currentPage;;
+                    axios.get(url).then(function(response) {
+                        vue.beans = response.data.content; //评价内容
+                        vue.pagination = response.data;
+                    });
+                },
+                jump: function(page){
+                    jumpPage(page,vue);  //定义在commonFunctionsForPage.html中  这里定义了翻页和跳转指定页码的逻辑
+                },
+                jumpByNumber: function(currentPage){
+                    jumpPageByNumber(currentPage,vue);
+                }   //分页跳转页码
+            },
+            computed:{    //计算属性  这里属性的改变取决于data数据域的改变 选择框
+                checked:{
+                    get() {
+                        return this.checkNames.length == this.beans.length;
+                    },
+                    set(val){ //点击了全选的情况
+                        this.checkNames = [];
+                        if(val){
+                            this.beans.forEach((categoryevery) =>{
+                                this.checkNames.push(categoryevery.id);
+                            });
+                        }
+                    }
+                }
+            }
+
+        });
+    });
+
+</script>
+
+<div id="workingArea" >
+    <h1 class="label label-info" >零食评论管理</h1>
+    <br>
+    <br>
+    <ol class="breadcrumb">
+        <li><a href="admin_category_list">所有分类</a></li>
+        <li><a :href="'admin_product_list?cid='+category.id">{{category.name}}</a></li>
+        <li class="active">{{product.name}}</li>
+        <li class="active">产品属性值管理</li>
+    </ol>
+    <div class="listDataTableDiv">
+        <table class="table table-striped table-bordered table-hover  table-condensed">
+            <thead>
+            <tr class="success">
+                <th>评论内容</th>
+                <th>评论者名称</th>
+                <th>删除</th>
+                <th width="10%"><input type="checkbox"  v-model="checked"/>  <h1 class="label label-info" @click="deleteBatchBean" style="cursor: pointer">批量删除</h1>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="bean in beans ">
+                <td>
+                    {{bean.content}}
+                </td>
+                <td>
+                    {{bean.user.name}}
+                </td>
+                <td>
+                    <a href="#"  @click="deleteBean(bean.id)"><span class="   glyphicon glyphicon-trash"></span></a>
+                </td>
+                <td><input type="checkbox" :value="bean.id" v-model="checkNames"/></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--分页条-->
+    <div th:replace="include/admin/adminPage::page"></div>
+</div>
+<!--站脚-->
+<div th:replace="include/admin/adminFooter::footer" ></div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="cssAndjsForInventory/bootstrap-grid.min.css" rel="stylesheet">
+    <link href="cssAndjsForInventory/demo.css" rel="stylesheet">
+    <link href="cssAndjsForInventory/naranja.min.min.css" rel="stylesheet">
+    <script src="cssAndjsForInventory/naranja.js"></script>
+</head>
+<body>
+
+<!--
+<div class="container">
+   &lt;!&ndash; <div class="row" style="padding:2em 0">
+        <div class="col-md-2">
+            <button class="btn btn-error" onclick="narn('log')">默认（log）</button>
+        </div>
+        <div class="col-md-2"><button class="btn btn-success" onclick="narn('success')">成功（success）</button></div>
+        <div class="col-md-2"><button class="btn btn-warning" onclick="narn('warn')">警告（warn）</button></div>
+        <div class="col-md-2"><button class="btn btn-danger" onclick="narn('error')">危险（error）</button></div>
+    </div>&ndash;&gt;
+</div>
+-->
+
+<script type="text/javascript" src="js/naranja.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        narn("warn");
+        narn("warn");
+    });
+
+    function narn(type) {
+        naranja()[type]({
+            title: '库存预警提示',
+            text: '单击“已读”表示已经读取',
+            timeout: 'keep',
+            buttons: [{
+                text: '标记为已读',
+                click: function (e) {
+                    naranja().success({
+                        title: '已读',
+                        text: '消息已读取'
+                    })
+                }
+            }, {
+                text: '取消',
+                click: function (e) {
+                    e.closeNotification()
+                }
+            }]
+        })
+    }
+</script>
+
+
+</body>
+</html>

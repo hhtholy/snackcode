@@ -120,4 +120,22 @@ public class AdminPageController {
         return "admin/echart/chart";
     }
 
+    /**
+     * 库存预警
+     * @return
+     */
+    @GetMapping("/toInventoryWarn")
+    public String toInventoryWarn(){
+
+        return "admin/listInventory";
+    }
+
+
+    @GetMapping("/demo")
+    public String demo(){
+
+        return "admin/inventoryWarn";
+    }
+
+
 }
